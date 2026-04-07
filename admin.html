@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理パネル | ミラクル・ユニバーシティ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="stars.js" defer></script>
+</head>
+<body>
+
+<div id="auth-screen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:40px 24px;">
+  <div class="card fade-in" style="max-width:380px;width:100%;text-align:center;">
+    <div style="font-size:2.5rem;margin-bottom:12px;">🔐</div>
+    <h2 style="margin-bottom:8px;font-size:1.4rem;">管理者ログイン</h2>
+    <p style="font-size:0.85rem;margin:0 auto 24px;max-width:none;color:var(--text-dim);">このページはNaoチーム専用です。</p>
+    <div class="form-group" style="text-align:left;">
+      <label>パスワード</label>
+      <input type="password" id="admin-pw" placeholder="管理者パスワード">
+    </div>
+    <div id="auth-msg"></div>
+    <button class="btn btn-gold" style="width:100%;margin-top:8px;" onclick="checkAuth()">ログイン</button>
+    <p style="font-size:0.8rem;margin-top:16px;"><a href="index.html">← サイトに戻る</a></p>
+  </div>
+</div>
+
+<div id="admin-panel" style="display:none;">
+
+<header class="site-header">
+  <div class="container">
+    <span class="site-logo">🌌 管理パネル</span>
+    <nav class="site-nav">
+      <a href="dashboard.html">ダッシュボード</a>
+      <a href="#" onclick="signOutAdmin()">ログアウト</a>
+    </nav>
+  </div>
+</header>
+
+<div style="position:relative;z-index:1;padding:40px 0 80px;">
+<div class="container">
+
+  <div style="margin-bottom:36px;" class="fade-in">
+    <p class="section-label">管理者エリア</p>
+    <h1 style="font-size:2rem;margin-bottom:8px;">⚙️ コントロールパネル</h1>
+    <p style="font-size:0.9rem;">Zoomリンク、ホームワーク、コホート設定を管理します。</p>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:28px;">
+
+    <!-- Zoom Link -->
+    <div class="card fade-in" style="animation-delay:0.1s;">
+      <h3 style="margin-bottom:4px;">🎥 Zoomリンク設定</h3>
+      <p style="font-size:0.85rem;margin-bottom:20px;">ここで貼り付けたリンクがダッシュボードに表示されます。</p>
+      <div class="form-group">
+        <label>Zoom URL</label>
+        <input type="url" id="zoom-url-input" placeholder="https://zoom.us/j/your-meeting-id">
+      </div>
+      <button class="btn btn-gold" onclick="saveZoom()" style="width:100%;">保存する</button>
+      <div id="zoom-save-msg"></div>
+    </div>
+
+    <!-- Cohort Settings -->
+    <div class="card fade-in" style="animation-delay:0.2s;">
+      <h3 style="margin-bottom:4px;">📅 コホート設定</h3>
+      <p style="font-size:0.85rem;margin-bottom:20px;">現在のコホート情報を更新します。</p>
+      <div class="form-group">
+        <label>コホート名</label>
+        <input type="text" id="cohort-name-input" placeholder="第1期 — 2026年1月〜6月">
+      </div>
+      <div class="form-group">
+        <label>参加人数 / 上限</label>
+        <input type="text" id="cohort-count-input" placeholder="247 / 300名">
+      </div>
+      <button class="btn btn-outline" onclick="saveCohort()" style="width:100%;">保存する</button>
+      <div id="cohort-save-msg"></div>
+    </div>
+
+  </div>
+
+  <!-- Homework Editor -->
+  <div class="card fade-in" style="animation-delay:0.3s;margin-bottom:28px;">
+    <h3 style="margin-bottom:4px;">📝 今月のホームワーク</h3>
+    <p style="font-size:0.85rem;margin-bottom:20px;">HTMLタグも使えます（&lt;p&gt;、&lt;strong&gt;など）。</p>
+    <div class="form-group">
+      <label>ホームワーク本文</label>
+      <textarea id="hw-editor" rows="10" placeholder="今月のホームワーク内容を入力..."></textarea>
+    </div>
+    <button class="btn btn-gold" onclick="saveHomework()" style="width:100%;">ホームワークを保存</button>
+    <div id="hw-save-msg"></div>
+  </div>
+
+  <!-- Email Template Generator -->
+  <div class="card fade-in" style="animation-delay:0.4s;margin-bottom:28px;">
+    <h3 style="margin-bottom:4px;">✉️ メールテンプレート生成</h3>
+    <p style="font-size:0.85rem;margin-bottom:20px;">メーリングリスト向けのホームワーク告知メールを生成します。</p>
+    <div class="form-group">
+      <label>今月のテーマ</label>
+      <input type="text" id="email-theme" placeholder="例：お金との関係を再設計する">
+    </div>
+    <div class="form-group">
+      <label>Zoom日時</label>
+      <input type="text" id="email-zoom-date" placeholder="例：2026年5月1日（金）20:00 JST">
+    </div>
+    <button class="btn btn-purple" onclick="generateEmail()" style="width:100%;margin-bottom:16px;">メールを生成する</button>
+    <div class="form-group">
+      <label>生成されたメール（コピーしてご使用ください）</label>
+      <textarea id="email-output" rows="14" readonly style="background:rgba(255,255,255,0.03);font-size:0.85rem;"></textarea>
+    </div>
+  </div>
+
+  <!-- Member Table -->
+  <div class="card fade-in" style="animation-delay:0.5s;">
+    <h3 style="margin-bottom:20px;">👥 メンバー一覧（デモ）</h3>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>名前</th>
+            <th>メール</th>
+            <th>プラン</th>
+            <th>参加日</th>
+            <th>ステータス</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>田中 美咲</td>
+            <td>misaki.t@example.com</td>
+            <td><span class="badge badge-purple">グループ+個別</span></td>
+            <td>2026-01-05</td>
+            <td><span class="badge badge-gold">アクティブ</span></td>
+          </tr>
+          <tr>
+            <td>Yuki Nakamura</td>
+            <td>yuki.n@example.com</td>
+            <td><span class="badge badge-gold">グループ</span></td>
+            <td>2026-01-08</td>
+            <td><span class="badge badge-gold">アクティブ</span></td>
+          </tr>
+          <tr>
+            <td>佐藤 花子</td>
+            <td>hanako.s@example.com</td>
+            <td><span class="badge badge-purple">グループ+個別</span></td>
+            <td>2026-01-10</td>
+            <td><span class="badge badge-gold">アクティブ</span></td>
+          </tr>
+          <tr>
+            <td>山本 陽子</td>
+            <td>yoko.y@example.com</td>
+            <td><span class="badge badge-gold">グループ</span></td>
+            <td>2026-01-12</td>
+            <td><span class="badge badge-gold">アクティブ</span></td>
+          </tr>
+          <tr>
+            <td>Emma Suzuki</td>
+            <td>emma.s@example.com</td>
+            <td><span class="badge badge-gold">グループ</span></td>
+            <td>2026-01-15</td>
+            <td><span class="badge badge-gold">アクティブ</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+</div><!-- end admin-panel -->
+
+<script>
+const ADMIN_PASSWORD = 'miracleadmin2026';
+
+function checkAuth() {
+  const pw = document.getElementById('admin-pw').value;
+  if (pw === ADMIN_PASSWORD) {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    initStars(150);
+    loadStoredValues();
+  } else {
+    document.getElementById('auth-msg').innerHTML = '<div class="msg msg-error">パスワードが違います。</div>';
+  }
+}
+
+document.getElementById('admin-pw').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') checkAuth();
+});
+
+function signOutAdmin() {
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('admin-pw').value = '';
+}
+
+function loadStoredValues() {
+  const zoom = localStorage.getItem('mu_zoom_link');
+  if (zoom) document.getElementById('zoom-url-input').value = zoom;
+
+  const hw = localStorage.getItem('mu_homework');
+  if (hw) document.getElementById('hw-editor').value = hw;
+
+  const cohort = localStorage.getItem('mu_cohort_name');
+  if (cohort) document.getElementById('cohort-name-input').value = cohort;
+
+  const count = localStorage.getItem('mu_cohort_count');
+  if (count) document.getElementById('cohort-count-input').value = count;
+}
+
+function saveZoom() {
+  const url = document.getElementById('zoom-url-input').value.trim();
+  if (!url) return;
+  localStorage.setItem('mu_zoom_link', url);
+  document.getElementById('zoom-save-msg').innerHTML = '<div class="msg msg-success">✓ Zoomリンクを保存しました</div>';
+  setTimeout(() => document.getElementById('zoom-save-msg').innerHTML = '', 3000);
+}
+
+function saveHomework() {
+  const hw = document.getElementById('hw-editor').value;
+  localStorage.setItem('mu_homework', hw);
+  document.getElementById('hw-save-msg').innerHTML = '<div class="msg msg-success">✓ ホームワークを保存しました</div>';
+  setTimeout(() => document.getElementById('hw-save-msg').innerHTML = '', 3000);
+}
+
+function saveCohort() {
+  const name = document.getElementById('cohort-name-input').value;
+  const count = document.getElementById('cohort-count-input').value;
+  if (name) localStorage.setItem('mu_cohort_name', name);
+  if (count) localStorage.setItem('mu_cohort_count', count);
+  document.getElementById('cohort-save-msg').innerHTML = '<div class="msg msg-success">✓ コホート設定を保存しました</div>';
+  setTimeout(() => document.getElementById('cohort-save-msg').innerHTML = '', 3000);
+}
+
+function generateEmail() {
+  const theme = document.getElementById('email-theme').value || '今月のテーマ';
+  const zoomDate = document.getElementById('email-zoom-date').value || '日時未定';
+  const zoomLink = localStorage.getItem('mu_zoom_link') || '（Zoomリンクはダッシュボードでご確認ください）';
+
+  const template = `件名：【ミラクル・ユニバーシティ】今月のホームワークと次回Zoom日程のお知らせ
+
+━━━━━━━━━━━━━━━━━━━━
+ミラクル・ユニバーシティ メンバーへ
+━━━━━━━━━━━━━━━━━━━━
+
+いつも宇宙の流れに乗ってくださり、ありがとうございます。
+Naoです ✦
+
+今月のテーマをお届けします。
+
+【今月のテーマ】
+「${theme}」
+
+ダッシュボードにて今月のホームワーク詳細をご確認ください。
+→ https://miracle-university.github.io/dashboard.html
+
+【次回Zoomセッション】
+📅 ${zoomDate}
+🔗 ${zoomLink}
+
+カレンダーへの登録をお忘れなく。
+Zoomに入ったら、名前をフルネームで設定してお待ちください。
+
+宇宙はあなたを見ています。
+今月も一緒に流れに乗りましょう。
+
+愛と光を込めて、
+Nao
+
+✦ · · · · · ✦ · · · · · ✦
+ミラクル・ユニバーシティ
+https://miracle-university.github.io
+配信停止はこちら: [unsubscribe_link]
+━━━━━━━━━━━━━━━━━━━━`;
+
+  document.getElementById('email-output').value = template;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initStars(100);
+});
+</script>
+</body>
+</html>
