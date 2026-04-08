@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Milo Test Page</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at center, #1a1433 0%, #0a0a1a 70%);
+      overflow: hidden;
+      position: relative;
+      font-family: system-ui;
+    }
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 1;
+    }
+    #milo {
+      position: fixed;
+      z-index: 10;
+      width: 110px;
+      height: 140px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    /* Head */
+    #milo > div:nth-child(1) {
+      position: absolute;
+      top: 5px;
+      left: 20px;
+      width: 72px;
+      height: 72px;
+      background: #ffeb3b;
+      border-radius: 50%;
+      box-shadow: 0 6px 0 #fbc02d;
+      z-index: 3;
+    }
+    /* Ears -->
+    #milo > div:nth-child(2), #milo > div:nth-child(3) {
+      position: absolute;
+      top: 10px;
+      width: 22px;
+      height: 28px;
+      background: #ffeb3b;
+      z-index: 2;
+    }
+    #milo > div:nth-child(2) { left: 10px; border-radius: 50% 10% 40% 60%; transform: rotate(-35deg); }
+    #milo > div:nth-child(3) { left: 78px; border-radius: 10% 50% 60% 40%; transform: rotate(35deg); }
+    /* Eyes -->
+    #milo > div:nth-child(4), #milo > div:nth-child(5) {
+      position: absolute;
+      top: 25px;
+      width: 16px;
+      height: 22px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: inset 0 4px 0 #333;
+      z-index: 4;
+    }
+    #milo > div:nth-child(4) { left: 32px; }
+    #milo > div:nth-child(5) { left: 60px; }
+    /* Pupils -->
+    #left-pupil, #right-pupil {
+      position: absolute;
+      top: 30px;
+      width: 7px;
+      height: 10px;
+      background: #222;
+      border-radius: 50%;
+      z-index: 5;
+      transition: transform 0.2s;
+    }
+    #left-pupil { left: 37px; }
+    #right-pupil { left: 65px; }
+    /* Smile -->
+    #milo > div:nth-child(8) {
+      position: absolute;
+      top: 46px;
+      left: 37px;
+      width: 36px;
+      height: 10px;
+      border: 3px solid #222;
+      border-top: none;
+      border-radius: 0 0 50px 50px;
+      z-index: 4;
+    }
+    /* Body -->
+    #milo > div:nth-child(9) {
+      position: absolute;
+      top: 72px;
+      left: 23px;
+      width: 64px;
+      height: 58px;
+      background: #ffeb3b;
+      border-radius: 25px;
+      box-shadow: 0 6px 0 #fbc02d;
+      z-index: 1;
+    }
+    /* Heart -->
+    #milo > div:nth-child(10) {
+      position: absolute;
+      top: 85px;
+      left: 42px;
+      font-size: 24px;
+      color: #e91e63;
+      z-index: 2;
+    }
+    @keyframes miloFly {
+      0% { transform: translateX(-250px) translateY(0px) rotate(-15deg); }
+      25% { transform: translateX(25vw) translateY(-50px) rotate(12deg); }
+      50% { transform: translateX(55vw) translateY(40px) rotate(-12deg); }
+      75% { transform: translateX(80vw) translateY(-35px) rotate(15deg); }
+      100% { transform: translateX(130vw) translateY(25px) rotate(-5deg); }
+    }
+    #milo.flying {
+      animation: miloFly 8.5s linear forwards;
+      opacity: 1;
+    }
+    #milo.flying #left-pupil, #milo.flying #right-pupil {
+      animation: blink 3s infinite;
+    }
+    @keyframes blink {
+      0%, 92% { height: 10px; top: 30px; }
+      94% { height: 2px; top: 34px; }
+      96% { height: 10px; top: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div style="position:fixed; top:20px; left:20px; color:#f0c040; font-size:18px; z-index:100;">Milo Test Page - Press 'M' or click the button</div>
+  
+  <button onclick="flyMilo()" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#f0c040;color:#111;padding:12px 24px;border:none;border-radius:9999px;font-size:15px;cursor:pointer;box-shadow:0 5px 20px rgba(240,192,64,0.6);font-weight:700;">🐦 Test Milo Fly</button>
+  
+  <script>
+    // Create stars
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.style.cssText = `position:absolute; left:${Math.random()*100}%; top:${Math.random()*100}%; width:${Math.random()*2+1}px; height:${Math.random()*2+1}px; background:white; border-radius:50%; opacity:${Math.random()*0.8+0.2}; animation:twinkle ${Math.random()*3+2}s infinite;`;
+      document.getElementById('stars').appendChild(star);
+    }
+    const style = document.createElement('style');
+    style.textContent = `@keyframes twinkle { 0%,100% {opacity:0.3} 50% {opacity:1} }`;
+    document.head.appendChild(style);
+    
+    const milo = document.getElementById('milo');
+    
+    function flyMilo() {
+      const startBottom = 15 + Math.random() * 60;
+      const duration = 6 + Math.random() * 7;
+      milo.style.bottom = startBottom + '%';
+      milo.style.left = '-250px';
+      milo.style.opacity = '0';
+      void milo.offsetWidth;
+      milo.style.transition = 'opacity 0.4s ease';
+      milo.style.opacity = '1';
+      milo.classList.add('flying');
+      setTimeout(() => {
+        milo.classList.remove('flying');
+        milo.style.opacity = '0';
+      }, duration * 1000);
+    }
+    
+    // 'M' key
+    document.addEventListener('keydown', e => {
+      if (e.key.toLowerCase() === 'm') flyMilo();
+    });
+    
+    // Auto fly occasionally
+    setInterval(() => {
+      if (Math.random() > 0.4) flyMilo();
+    }, 12000);
+    
+    // Initial
+    setTimeout(flyMilo, 1000);
+    
+    console.log('%cMilo test page ready. Press M or click the button to make him fly with random path. The character is fully animated CSS (blinking eyes, flapping effect on body, random flight).', 'color:#f0c040;font-size:14px');
+  </script>
+</body>
+</html>
