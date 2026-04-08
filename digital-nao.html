@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Nao — Miracle University Campus</title>
+  <meta name="description" content="Digital Nao is trained on Nao Stanton's teachings — soul types, the Earth Matrix, manifestation, and your cosmic purpose. Chat with Nao's AI anytime." />
+  <meta property="og:title" content="Digital Nao — Chat with Nao's AI" />
+  <meta property="og:description" content="511 conversations worth of Nao's wisdom, available 24/7. Join the waitlist for beta access." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #D4AF37;
+      --gold-dark: #b8960c;
+      --gold-dim: rgba(212,175,55,0.35);
+      --gold-glow: rgba(212,175,55,0.15);
+      --bg: #0a0a1a;
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.1);
+      --text: rgba(255,255,255,0.85);
+      --muted: rgba(255,255,255,0.55);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Star field */
+    #star-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #star-field span {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--tw, 3s) ease-in-out infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.15; transform: scale(0.8); }
+      to { opacity: 0.9; transform: scale(1.1); }
+    }
+
+    /* Layout */
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Nav */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,26,0.7);
+    }
+    .nav-logo {
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #0a0a1a;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.88; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(212,175,55,0.12);
+      border: 1px solid var(--gold-dim);
+      border-radius: 20px;
+      padding: 0.35rem 1rem;
+      color: var(--gold);
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 .accent { color: var(--gold); }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    /* Chat preview bubble */
+    .chat-preview {
+      background: rgba(212,175,55,0.07);
+      border: 1px solid var(--gold-dim);
+      border-radius: 16px;
+      padding: 1.5rem;
+      max-width: 520px;
+      margin: 0 auto 3rem;
+      text-align: left;
+    }
+    .chat-msg {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .chat-msg:last-child { margin: 0; }
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), #8B6914);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .chat-bubble {
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .chat-bubble.user {
+      background: rgba(212,175,55,0.12);
+      color: rgba(255,255,255,0.9);
+    }
+    .chat-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Social proof */
+    .social-proof {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 0 0 5rem;
+    }
+    .sp-stat .number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+    }
+    .sp-stat .label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* Waitlist section */
+    .waitlist-section {
+      max-width: 560px;
+      margin: 0 auto 5rem;
+      padding: 0 1.5rem;
+    }
+    .section-eyebrow {
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .section-sub {
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid var(--gold-dim);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .pricing-badge .price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .pricing-badge .price-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .pricing-badge .limited {
+      font-size: 0.75rem;
+      color: rgba(255,80,80,0.9);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      background: rgba(255,80,80,0.1);
+      border: 1px solid rgba(255,80,80,0.3);
+      border-radius: 8px;
+      padding: 0.2rem 0.6rem;
+    }
+
+    .waitlist-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .waitlist-form input {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .waitlist-form input:focus {
+      border-color: var(--gold-dim);
+    }
+    .waitlist-form input::placeholder { color: rgba(255,255,255,0.3); }
+    .btn-waitlist {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #0a0a1a;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 0.9rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      box-shadow: 0 0 30px rgba(212,175,55,0.3);
+      transition: all 0.2s;
+    }
+    .btn-waitlist:hover { opacity: 0.9; transform: translateY(-1px); }
+    #waitlist-success {
+      display: none;
+      text-align: center;
+      color: var(--gold);
+      font-size: 0.95rem;
+      padding: 1rem;
+      background: rgba(212,175,55,0.08);
+      border: 1px solid var(--gold-dim);
+      border-radius: 10px;
+    }
+
+    /* Features */
+    .features-section {
+      max-width: 900px;
+      margin: 0 auto 5rem;
+      padding: 0 1.5rem;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .feature-card:hover { border-color: var(--gold-dim); }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+    .feature-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* FAQ */
+    .faq-section {
+      max-width: 700px;
+      margin: 0 auto 5rem;
+      padding: 0 1.5rem;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 0;
+    }
+    .faq-item:last-child { border: none; }
+    .faq-q {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .faq-q::after {
+      content: '+';
+      color: var(--gold);
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-top: 0.75rem;
+      display: none;
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* Divider */
+    .cosmic-divider {
+      text-align: center;
+      color: rgba(212,175,55,0.35);
+      letter-spacing: 0.25em;
+      margin: 3rem 0;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.25rem; }
+      .hero { padding: 4rem 1.25rem 3rem; }
+      .social-proof { gap: 1.5rem; padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="star-field" aria-hidden="true"></div>
+
+  <div class="page-wrap">
+    <!-- Nav -->
+    <nav>
+      <a href="#" class="nav-logo">✦ Digital Nao</a>
+      <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-eyebrow">🌌 Powered by Earth Metaverse wisdom</div>
+      <h1>Chat with Nao's AI.<br><span class="accent">Ask anything</span> about<br>your soul mission.</h1>
+      <p class="hero-sub">
+        Digital Nao is trained on Nao Stanton's teachings — soul types, the Earth Matrix, manifestation, and your cosmic purpose.
+      </p>
+
+      <!-- Chat preview -->
+      <div class="chat-preview">
+        <div class="chat-msg">
+          <div>
+            <p class="chat-label">You</p>
+            <div class="chat-bubble user">Why do I keep attracting the same patterns in relationships?</div>
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar">✨</div>
+          <div>
+            <p class="chat-label">Digital Nao</p>
+            <div class="chat-bubble">The patterns you repeat aren't accidents — they're your soul's way of creating the exact conditions you need to complete a specific Earth lesson. The Earth Matrix is designed to loop you through similar scenarios until you shift the inner belief that's generating them. Tell me: in these relationships, what role do you always find yourself playing?</div>
+          </div>
+        </div>
+      </div>
+
+      <a href="#waitlist" class="nav-cta" style="font-size:1rem;padding:0.85rem 2.2rem;border-radius:12px;box-shadow:0 0 30px rgba(212,175,55,0.3);">
+        🌟 Join the Waitlist — Beta Starting Soon
+      </a>
+    </section>
+
+    <!-- Social proof stats -->
+    <div class="social-proof">
+      <div class="sp-stat">
+        <span class="number">511</span>
+        <span class="label">conversations of Nao's wisdom</span>
+      </div>
+      <div class="sp-stat">
+        <span class="number">7</span>
+        <span class="label">soul types fully mapped</span>
+      </div>
+      <div class="sp-stat">
+        <span class="number">24/7</span>
+        <span class="label">available, any timezone</span>
+      </div>
+      <div class="sp-stat">
+        <span class="number">100</span>
+        <span class="label">beta spots available</span>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <section class="features-section">
+      <p class="section-eyebrow">✦ What you can explore</p>
+      <h2 class="section-title">Nao's wisdom, always available</h2>
+      <p class="section-sub">Ask anything you'd want to ask Nao directly — your soul type, your manifestation blocks, your Earth mission.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🌿</div>
+          <div class="feature-title">Discover Your Soul Type</div>
+          <div class="feature-desc">Chat your way to understanding whether you're a Server, Artisan, Warrior, Performer, Scholar, Priest, or King — and what it means for your life right now.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌀</div>
+          <div class="feature-title">Unblock Your Manifestation</div>
+          <div class="feature-desc">Explore the hidden "conflicts" — contradictory inner beliefs — that are blocking your desires from arriving. Nao's 9-step framework, in conversation form.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🪐</div>
+          <div class="feature-title">Understand the Earth Matrix</div>
+          <div class="feature-desc">Ask the deep questions: Why did I choose this life? What is my soul mission? Who are my alien support team? Why do I feel like I don't belong here?</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-title">Activate Your B-Life</div>
+          <div class="feature-desc">The shift from Side A (others' values) to Side B (your soul's values) is the most important transition of your Earth game. Get guidance on what your B-Life looks like.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👽</div>
+          <div class="feature-title">Connect with Your Alien Team</div>
+          <div class="feature-desc">Learn how to communicate with your higher-dimensional soul family. They're already assigned to you — waiting for you to place your order.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌸</div>
+          <div class="feature-title">Japanese & English</div>
+          <div class="feature-desc">Nao's teachings flow equally in both languages. Digital Nao is trained in both — ask in Japanese or English, receive wisdom in your preferred language.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cosmic-divider">✦ · · · ✦ · · · ✦</div>
+
+    <!-- Waitlist form -->
+    <section class="waitlist-section" id="waitlist">
+      <p class="section-eyebrow">✦ Join the waitlist</p>
+      <h2 class="section-title">Be among the first 100</h2>
+      <p class="section-sub">Beta access opens soon. Reserve your spot now.</p>
+
+      <div class="pricing-badge">
+        <div>
+          <div class="price">$29<span style="font-size:1rem;font-weight:400;color:rgba(255,255,255,0.5)">/month</span></div>
+          <div class="price-label">Beta pricing — locked in for life</div>
+        </div>
+        <div class="limited">⚡ 100 spots only</div>
+      </div>
+
+      <form class="waitlist-form" onsubmit="submitWaitlist(event)">
+        <input type="text" id="wl-name" placeholder="Your first name" required />
+        <input type="email" id="wl-email" placeholder="Your email address" required />
+        <button type="submit" class="btn-waitlist">✦ Reserve My Beta Spot</button>
+      </form>
+      <div id="waitlist-success">
+        ✅ You're on the list! We'll reach out when beta opens.<br>
+        <span style="font-size:0.85rem;color:rgba(255,255,255,0.5);">In the meantime, take the <a href="https://gomunikagear5.github.io/soul-mission-quiz/" target="_blank" rel="noopener">Soul Mission Quiz</a></span>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <p class="section-eyebrow">✦ Questions</p>
+      <h2 class="section-title" style="margin-bottom:1.5rem;">Answered</h2>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Is this really Nao?</div>
+        <div class="faq-a">Digital Nao is an AI trained on 511 conversations worth of Nao Stanton's actual teachings, frameworks, and voice. It's not Nao — it's a distillation of her wisdom, available anytime. Think of it as having access to Nao's knowledge base in conversational form. Nao has been involved in shaping its training data from her book and sessions.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">What can I ask Digital Nao?</div>
+        <div class="faq-a">Anything related to Nao's Earth Matrix framework: soul types, manifestation, the 9-step process, your B-Life, the YAP gene, Lemuria, your alien support team, the Five Elements, relationships between soul types, shadow work, parallel realities — and more. You can also just share what's going on in your life and ask for a cosmic perspective on it.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">When does beta launch?</div>
+        <div class="faq-a">We're targeting beta launch in Q2 2026. Waitlist members get first access and will be notified by email before public launch. The first 100 beta members lock in their $29/month pricing permanently — even when we raise prices after beta.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">What's included in beta access?</div>
+        <div class="faq-a">Unlimited conversations with Digital Nao, access to all soul type deep-dives, manifestation coaching conversations, and early access to new features as we develop them. Beta members also get the opportunity to contribute feedback that shapes the final product.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Is Digital Nao available in Japanese?</div>
+        <div class="faq-a">Yes! Nao's teachings are deeply connected to Japanese spiritual heritage (the YAP gene, Jomon/Lemuria connection, and Nao's own Japanese background). Digital Nao is trained in both English and Japanese — simply ask in Japanese and it responds in Japanese.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Can I cancel anytime?</div>
+        <div class="faq-a">Absolutely. Monthly billing, cancel anytime. No commitments, no tricks. We're building something you'll want to stay for — not something that traps you.</div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section style="text-align:center;padding:3rem 1.5rem 5rem;">
+      <p style="color:var(--gold);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:1rem;">✦ Before you leave</p>
+      <h2 style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;color:#fff;margin-bottom:0.75rem;">Not sure of your soul type yet?</h2>
+      <p style="color:var(--muted);max-width:420px;margin:0 auto 2rem;font-size:0.95rem;">Take the free 15-question Soul Mission Quiz — discover your soul type in 3 minutes.</p>
+      <a href="https://gomunikagear5.github.io/soul-mission-quiz/" target="_blank" rel="noopener" style="display:inline-block;background:var(--card);border:1px solid var(--gold-dim);color:var(--gold);font-weight:600;font-size:0.95rem;padding:0.85rem 2rem;border-radius:10px;text-decoration:none;letter-spacing:0.03em;transition:all 0.2s;">
+        ✨ Take the Free Quiz →
+      </a>
+    </section>
+
+    <footer>
+      <p>© 2026 Miracle Universe · Based on <em>The Earth Matrix</em> by Nao Stanton (Greenleaf Book Group)</p>
+      <p style="margin-top:0.5rem;"><a href="https://gomunikagear5.github.io/soul-mission-quiz/">Soul Mission Quiz</a> · <a href="https://www.amazon.com/dp/9798886454543">Get the Book</a></p>
+    </footer>
+  </div>
+
+  <script>
+    // Star field
+    (function() {
+      const field = document.getElementById('star-field');
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 220; i++) {
+        const s = document.createElement('span');
+        const size = Math.random() < 0.15 ? (Math.random() * 2.5 + 2) : (Math.random() * 1.5 + 0.8);
+        s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;--tw:${(Math.random()*5+1.5).toFixed(1)}s;animation-delay:${(Math.random()*8).toFixed(1)}s`;
+        frag.appendChild(s);
+      }
+      field.appendChild(frag);
+    })();
+
+    // Waitlist form
+    function submitWaitlist(e) {
+      e.preventDefault();
+      const name = document.getElementById('wl-name').value;
+      const email = document.getElementById('wl-email').value;
+      const CONVERTKIT_FORM_ID = 'CONVERTKIT_FORM_ID_DIGITAL_NAO'; // Charles: replace with real form ID
+      fetch(`https://api.convertkit.com/v3/forms/${CONVERTKIT_FORM_ID}/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          api_key: 'CONVERTKIT_API_KEY',
+          email,
+          first_name: name,
+          fields: { product: 'digital-nao-beta' }
+        })
+      }).catch(() => {});
+      e.target.style.display = 'none';
+      document.getElementById('waitlist-success').style.display = 'block';
+    }
+
+    // FAQ accordion
+    function toggleFAQ(el) {
+      const item = el.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    }
+  </script>
+</body>
+</html>

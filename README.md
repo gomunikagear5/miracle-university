@@ -10,6 +10,7 @@ Nao Stanton's group consulting platform. Cosmic aesthetic matching the Soul Miss
 | `login.html` | /login | Member login |
 | `dashboard.html` | /dashboard | Member dashboard (cohort, Zoom, homework) |
 | `community.html` | /community | **Discord-like Community Campus** — full interactive chat UI inspired by The Real World. Joy Boy energy, soul mission channels, viral lab, live voice simulation, persistent local messages. |
+| `digital-nao.html` | /digital-nao | **Digital Nao AI** — the official AI embodiment of Nao Stanton. Trained on 500+ pairs from her book, transcripts, and teachings. Soul type readings, manifestation guidance, Empathy Gap wisdom, and cosmic truth drops in her exact voice. Linked from Campus top nav. |
 | `admin.html` | /admin | Admin panel (password protected) |
 
 ## Credentials
