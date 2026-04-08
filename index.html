@@ -287,6 +287,48 @@ function setupAccordions() {
     });
   });
 }
+
+// Milo Easter Egg - flies across background occasionally (only on main page)
+const milo = document.createElement('img');
+milo.id = 'milo';
+milo.src = 'milo.png';
+milo.alt = 'Milo';
+milo.style.cssText = 'position:fixed; bottom:25%; left:-180px; width:90px; height:90px; z-index:5; opacity:0; pointer-events:none; filter:drop-shadow(0 15px 25px rgba(255,230,120,0.7)); transition:opacity 0.6s ease;';
+document.body.appendChild(milo);
+
+function flyMilo() {
+  milo.style.opacity = '1';
+  milo.classList.add('flying');
+  setTimeout(() => {
+    milo.classList.remove('flying');
+    milo.style.left = '-180px';
+    milo.style.opacity = '0';
+  }, 8500);
+}
+
+@keyframes miloFly {
+  0% { transform: translateX(-180px) translateY(0px) rotate(-12deg); }
+  20% { transform: translateX(25vw) translateY(-40px) rotate(8deg); }
+  45% { transform: translateX(55vw) translateY(30px) rotate(-6deg); }
+  70% { transform: translateX(80vw) translateY(-25px) rotate(10deg); }
+  100% { transform: translateX(120vw) translateY(15px) rotate(-5deg); }
+}
+const style = document.createElement('style');
+style.textContent = `@keyframes miloFly { ${miloFly.toString().match(/\{([\s\S]*?)\}/)[1]} } #milo.flying { animation: miloFly 8.5s linear forwards; }`;
+document.head.appendChild(style);
+
+// Trigger randomly (more frequently for visibility)
+setInterval(() => {
+  if (Math.random() > 0.35) flyMilo(); // ~65% chance every 18 seconds
+}, 18000);
+
+// Initial fly
+setTimeout(flyMilo, 4500);
+
+// Secret keyboard: press "M" to force Milo to fly
+document.addEventListener('keydown', e => {
+  if (e.key.toLowerCase() === 'm') flyMilo();
+});
 </script>
 </body>
 </html>
