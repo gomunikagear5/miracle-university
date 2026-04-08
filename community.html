@@ -390,7 +390,7 @@
     <!-- Server Bar -->
     <div class="server-bar">
       <div class="server-icon active" onclick="alert('You are already in the main Miracle University server 🧡')">☀️</div>
-      <div class="server-icon" style="background:#222; font-size:22px;" onclick="alert('Soul Mission Quiz Hub coming soon')">🧩</div>
+      <div class="server-icon" style="background:#222; font-size:22px;" onclick="alert('Yin/Yang Quiz coming soon — reserved for group activation')">🧩</div>
       <div class="server-icon" style="background:linear-gradient(#ff6b6b,#4ecdc4);font-size:20px;" onclick="alert('The Earth Metaverse Book Club')">📖</div>
       <div style="height:2px; width:32px; background:rgba(240,192,64,0.3); margin:8px 0;"></div>
       <div style="color:#666; font-size:10px; writing-mode: vertical-rl; transform:rotate(180deg); margin-top:auto; margin-bottom:20px;">MUOS v0.2</div>
@@ -454,7 +454,7 @@
       <div class="members-header" style="margin-top:20px;">OFFLINE — 225</div>
       <div style="padding:0 16px; font-size:13px; opacity:0.6;">
         NaoStanton (away)<br>
-        SoulScholar42<br>
+        YinScholar42<br>
         ManifestKing<br>
         PleiadianWeaver
       </div>
@@ -462,7 +462,7 @@
   </div>
 
   <script>
-    // Sample data - embodying SOUL.md, Joy Boy, Empathy Gap, YAP, GTD
+    // Sample data - embodying SOUL.md, Joy Boy, Empathy Gap, YAP, GTD (Yin/Yang focused for group program)
     let channels = [
       {
         id: 0,
@@ -481,7 +481,7 @@
             author: "DrivenDragon",
             avatar: "🐲",
             time: "1h",
-            text: "Just had the biggest laugh-reset of my life realizing my \"hollow\" feeling was actually a Soul Mission calling. Gear 5 energy is undefeated 😂☀️ Who else felt the chains break this week?",
+            text: "Just had the biggest laugh-reset of my life realizing my \"hollow\" feeling was a call to activate my Yang side. Gear 5 energy is undefeated 😂☀️ Who else felt the chains break this week?",
             role: "Warrior",
             win: true
           },
@@ -498,7 +498,7 @@
         id: 1,
         name: "announcements",
         icon: "📢",
-        topic: "Next Zoom: Soul Type Integration • April 18th",
+        topic: "Next Zoom: Yin & Yang Integration • April 18th",
         messages: [
           {
             author: "NaoStanton",
@@ -511,9 +511,9 @@
       },
       {
         id: 2,
-        name: "soul-missions",
-        icon: "#",
-        topic: "What is your dominant soul type? Share your reading.",
+        name: "yin-yang-paths",
+        icon: "⚖️",
+        topic: "Share how your Yin or Yang nature shows up. What are you activating this week?",
         messages: []
       },
       {
@@ -573,8 +573,8 @@
         <div class="channel active" onclick="switchChannel(0)" id="ch-0"><span>#</span> welcome</div>
         <div class="channel" onclick="switchChannel(1)" id="ch-1"><span>#</span> announcements</div>
         
-        <div class="category" style="margin-top:16px;">🔥 SOUL MISSIONS</div>
-        <div class="channel" onclick="switchChannel(2)" id="ch-2"><span>#</span> soul-missions</div>
+        <div class="category" style="margin-top:16px;">⚖️ YIN & YANG PATHS</div>
+        <div class="channel" onclick="switchChannel(2)" id="ch-2"><span>⚖️</span> yin-yang-paths</div>
         
         <div class="category" style="margin-top:16px;">✨ CREATION LAB</div>
         <div class="channel" onclick="switchChannel(3)" id="ch-3"><span>🏆</span> manifestation-wins</div>
@@ -690,7 +690,7 @@
       const texts = [
         "Just shattered another limiting belief with laughter. 10/10 recommend.",
         "Anyone else seeing 11:11 and 444 everywhere since starting the homework?",
-        "My Soul Mission Quiz result was Priest. The amount of 'but I shouldn't teach' resistance I had was hilarious in retrospect."
+        "My Yin Yang Quiz result was Priest. The amount of 'but I shouldn't teach' resistance I had was hilarious in retrospect."
       ];
       const randomText = texts[Math.floor(Math.random() * texts.length)];
       
@@ -730,7 +730,7 @@
     }
 
     function toggleServerMenu() {
-      showToast('Server switcher would go here (Quiz Hub / Book Club / Private Cohort rooms)');
+      showToast('Server switcher would go here (Yin/Yang Quiz / Book Club / Private Cohort rooms)');
     }
 
     function addEmoji() {

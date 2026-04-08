@@ -1,6 +1,6 @@
 # Miracle University — Member Portal
 
-Nao Stanton's group consulting platform. Cosmic aesthetic matching the Soul Mission Quiz.
+Nao Stanton's group consulting platform. Cosmic aesthetic with Yin/Yang focus for the community program.
 
 ## Pages
 
@@ -9,8 +9,8 @@ Nao Stanton's group consulting platform. Cosmic aesthetic matching the Soul Miss
 | `index.html` | / | Landing/sales page with pricing |
 | `login.html` | /login | Member login |
 | `dashboard.html` | /dashboard | Member dashboard (cohort, Zoom, homework) |
-| `community.html` | /community | **Discord-like Community Campus** — full interactive chat UI inspired by The Real World. Joy Boy energy, soul mission channels, viral lab, live voice simulation, persistent local messages. |
-| `digital-nao.html` | /digital-nao | **Digital Nao AI** — the official AI embodiment of Nao Stanton. Trained on 500+ pairs from her book, transcripts, and teachings. Soul type readings, manifestation guidance, Empathy Gap wisdom, and cosmic truth drops in her exact voice. Linked from Campus top nav. |
+| `community.html` | /community | **Discord-like Community Campus** — full interactive chat UI inspired by The Real World. Joy Boy energy, Yin/Yang paths, viral lab, live voice simulation, persistent local messages. |
+| `digital-nao.html` | /digital-nao | **Digital Nao AI** — the official AI embodiment of Nao Stanton. Trained on her teachings. Manifestation guidance, Empathy Gap wisdom, B-Life design, and cosmic truth drops in her exact voice. Linked from Campus top nav. (Soul mission work reserved for 1:1 clients) |
 | `admin.html` | /admin | Admin panel (password protected) |
 
 ## Credentials
@@ -21,7 +21,7 @@ Nao Stanton's group consulting platform. Cosmic aesthetic matching the Soul Miss
 ## Deploy to GitHub Pages
 
 ```bash
-# One-time setup (already done for soul-mission-quiz):
+# One-time setup:
 gh repo create miracle-university --public --source=. --remote=origin
 
 # Push
