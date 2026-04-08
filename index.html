@@ -9,46 +9,6 @@
   <script defer>document.addEventListener('DOMContentLoaded', () => { initStars(220); setupAccordions(); });</script>
 </head>
 <body>
-  <!-- Milo Easter Egg - flies across background occasionally on main page only -->
-  <img id="milo" src="milo.png" alt="Milo" style="position:fixed; bottom:20%; left:-150px; width:80px; height:80px; z-index:1; opacity:0; pointer-events:none; filter:drop-shadow(0 10px 20px rgba(255,220,100,0.6)); transition:opacity 0.4s;">
-  <style>
-    @keyframes miloFly {
-      0% { transform: translateX(-150px) translateY(0) rotate(-8deg); }
-      25% { transform: translateX(30%) translateY(-30px) rotate(5deg); }
-      50% { transform: translateX(60%) translateY(20px) rotate(-5deg); }
-      75% { transform: translateX(85%) translateY(-15px) rotate(8deg); }
-      100% { transform: translateX(120vw) translateY(10px) rotate(-3deg); }
-    }
-    #milo.flying {
-      animation: miloFly 9s linear forwards;
-      opacity: 1;
-    }
-  </style>
-  <script>
-    const milo = document.getElementById('milo');
-    function flyMilo() {
-      milo.classList.add('flying');
-      setTimeout(() => {
-        milo.classList.remove('flying');
-        milo.style.left = '-150px';
-        milo.style.opacity = '0';
-      }, 9500);
-    }
-    // Trigger occasionally (increased frequency for visibility)
-    setInterval(() => {
-      if (Math.random() > 0.3) flyMilo(); // 70% chance every 15s
-    }, 15000);
-    // Initial fly
-    setTimeout(flyMilo, 3000);
-    
-    // Secret keyboard combination: press "M" to force Milo to fly by
-    document.addEventListener('keydown', (e) => {
-      if (e.key.toLowerCase() === 'm') {
-        flyMilo();
-      }
-    });
-  </script>
-<body>
 
 <!-- Header -->
 <header class="site-header">
@@ -291,7 +251,7 @@ function setupAccordions() {
 // Milo Easter Egg - flies across background occasionally (only on main page)
 const milo = document.createElement('img');
 milo.id = 'milo';
-milo.src = 'milo.png';
+milo.src = 'milo.jpg';
 milo.alt = 'Milo';
 milo.style.cssText = `position:fixed; bottom:25%; left:-180px; width:90px; height:90px; z-index:5; opacity:0; pointer-events:none; filter:drop-shadow(0 15px 25px rgba(255,230,120,0.7)); transition:opacity 0.6s ease; image-rendering:pixelated;`;
 document.body.appendChild(milo);
