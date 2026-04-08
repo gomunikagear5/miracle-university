@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Soul Matrix Reading · Earth Metaverse</title>
+  <meta name="description" content="Your complete Soul Matrix Reading — a 500-800 word deep dive into your soul mission, shadow traits, activation path, and manifestation pattern." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .deep-read-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    .dr-header {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+    .dr-eyebrow {
+      color: rgba(212,175,55,0.7);
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .dr-title {
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+    .dr-title .accent { color: #D4AF37; }
+    .dr-sub {
+      color: rgba(255,255,255,0.6);
+      font-size: 1rem;
+    }
+
+    .soul-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(212,175,55,0.12);
+      border: 1px solid rgba(212,175,55,0.4);
+      border-radius: 30px;
+      padding: 0.5rem 1.2rem;
+      color: #D4AF37;
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 1rem 0 2rem;
+    }
+
+    .teaser-section {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .teaser-section h3 {
+      color: #D4AF37;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 0.75rem;
+    }
+    .teaser-section p {
+      color: rgba(255,255,255,0.8);
+      line-height: 1.75;
+      margin: 0;
+    }
+    .teaser-fade {
+      position: relative;
+    }
+    .teaser-fade::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 100px;
+      background: linear-gradient(transparent, #0f0f2a);
+      pointer-events: none;
+    }
+
+    /* Paywall */
+    .paywall-card {
+      background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(180,130,20,0.05));
+      border: 1px solid rgba(212,175,55,0.5);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .paywall-card .pw-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .paywall-card h2 {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+    }
+    .paywall-card .pw-price {
+      color: #D4AF37;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 0.75rem 0;
+    }
+    .paywall-card .pw-desc {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.9rem;
+      margin: 0 0 1.5rem;
+      line-height: 1.6;
+    }
+    .pw-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.75rem;
+      text-align: left;
+      display: inline-block;
+    }
+    .pw-features li {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+    }
+    .pw-features li::before { content: '✦ '; color: #D4AF37; }
+
+    .btn-unlock {
+      display: inline-block;
+      background: linear-gradient(135deg, #D4AF37, #b8960c);
+      color: #0f0f2a;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 1rem 2.5rem;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      box-shadow: 0 0 30px rgba(212,175,55,0.4);
+      transition: all 0.2s;
+    }
+    .btn-unlock:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .mock-note {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 1rem;
+      font-style: italic;
+    }
+
+    /* Full reading (locked by default) */
+    #full-reading { display: none; }
+    .reading-section {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .reading-section h3 {
+      color: #D4AF37;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin: 0 0 1rem;
+    }
+    .reading-section p {
+      color: rgba(255,255,255,0.82);
+      line-height: 1.8;
+      margin: 0 0 1rem;
+    }
+    .reading-section p:last-child { margin: 0; }
+
+    .cosmic-divider {
+      text-align: center;
+      color: rgba(212,175,55,0.4);
+      letter-spacing: 0.2em;
+      margin: 1.5rem 0;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: rgba(212,175,55,0.7);
+      font-size: 0.85rem;
+      text-decoration: none;
+      margin-bottom: 2rem;
+      letter-spacing: 0.03em;
+    }
+    .back-link:hover { color: #D4AF37; }
+  </style>
+</head>
+<body>
+  <div class="star-field" id="star-field" aria-hidden="true"></div>
+
+  <div class="deep-read-wrap">
+    <a class="back-link" href="index.html">← Back to quiz</a>
+
+    <div class="dr-header">
+      <p class="dr-eyebrow">🔮 Earth Metaverse · Deep Soul Reading</p>
+      <h1 class="dr-title">Your <span class="accent">Soul Matrix</span><br>Reading</h1>
+      <p class="dr-sub">A deep-dive into your cosmic blueprint</p>
+      <div id="type-badge" class="soul-type-badge">Loading your type...</div>
+    </div>
+
+    <!-- TEASER (20% free) -->
+    <div id="teaser-wrap">
+      <div class="teaser-section teaser-fade">
+        <h3>✦ Your Soul Mission — Preview</h3>
+        <p id="teaser-text">Loading your reading...</p>
+      </div>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.85rem;text-align:center;margin:0.5rem 0 1.5rem;">
+        — The full reading continues below —
+      </p>
+
+      <!-- PAYWALL -->
+      <div class="paywall-card" id="paywall-card">
+        <div class="pw-icon">🔮</div>
+        <h2>Unlock Your Complete Soul Matrix Reading</h2>
+        <div class="pw-price">$9 <span style="font-size:1rem;font-weight:400;color:rgba(255,255,255,0.6);">one-time</span></div>
+        <p class="pw-desc">Your soul chose this exact mission before arriving on Earth.<br>Now it's time to understand every layer of it.</p>
+        <ul class="pw-features">
+          <li>Full soul mission deep-dive (500–800 words)</li>
+          <li>Shadow traits & how to transcend them</li>
+          <li>Your B-Life activation path</li>
+          <li>Manifestation pattern unique to your type</li>
+          <li>Ideal soul partners & conflict dynamics</li>
+        </ul>
+        <!-- Stripe placeholder — wire real link later -->
+        <a href="https://buy.stripe.com/STRIPE_PAYMENT_LINK" class="btn-unlock" id="stripe-btn" onclick="mockUnlock(event)">
+          🔓 Unlock My Full Reading — $9
+        </a>
+        <p class="mock-note">Demo: click to preview full reading (Stripe integration pending)</p>
+      </div>
+    </div>
+
+    <!-- FULL READING (revealed after payment) -->
+    <div id="full-reading">
+      <div class="cosmic-divider">✦ · · · ✦ · · · ✦</div>
+      <p style="text-align:center;color:#D4AF37;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem;">
+        ✅ Soul Matrix Reading Unlocked
+      </p>
+
+      <div class="reading-section">
+        <h3>🌟 Your Deep Soul Mission</h3>
+        <p id="reading-mission"></p>
+      </div>
+
+      <div class="reading-section">
+        <h3>🌑 Shadow Traits & Transcendence</h3>
+        <p id="reading-shadow"></p>
+      </div>
+
+      <div class="reading-section">
+        <h3>⚡ Your B-Life Activation Path</h3>
+        <p id="reading-activation"></p>
+      </div>
+
+      <div class="reading-section">
+        <h3>🌀 Manifestation Pattern</h3>
+        <p id="reading-manifestation"></p>
+      </div>
+
+      <div class="reading-section">
+        <h3>💫 Soul Partners & Conflict Dynamics</h3>
+        <p id="reading-partners"></p>
+      </div>
+
+      <div style="margin-top:2rem;padding:1.5rem;background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.25);border-radius:12px;text-align:center;">
+        <p style="color:#D4AF37;font-size:1rem;font-weight:600;margin:0 0 0.75rem;">Ready to go even deeper?</p>
+        <a href="https://www.amazon.com/dp/9798886454543" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(135deg,#D4AF37,#b8960c);color:#0f0f2a;font-weight:700;font-size:0.95rem;padding:0.85rem 2rem;border-radius:10px;text-decoration:none;letter-spacing:0.03em;box-shadow:0 0 24px rgba(212,175,55,0.35);">
+          📖 Get the full Earth Matrix book →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Star field ──────────────────────────────────────────────────────
+    (function() {
+      const field = document.getElementById('star-field');
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 200; i++) {
+        const s = document.createElement('span');
+        const size = Math.random() < 0.15 ? (Math.random() * 2.5 + 2) : (Math.random() * 1.5 + 0.8);
+        s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;--tw:${(Math.random()*5+1.5).toFixed(1)}s;animation-delay:${(Math.random()*8).toFixed(1)}s`;
+        frag.appendChild(s);
+      }
+      field.appendChild(frag);
+    })();
+
+    // ── Deep reading data per soul type ────────────────────────────────
+    const READINGS = {
+      'Server': {
+        emoji: '🌿',
+        teaser: "You arrived on Earth with a soul coded for one of the most profound missions in the cosmos: the art of devoted service. Not servitude — service. There is a vast difference. The Server soul chose to experience Earth through the lens of love made tangible — love that shows up, rolls up its sleeves, and holds space for others when the world feels heavy. Your soul has done this across lifetimes. You are the one people call when they don't know who else to call.",
+        mission: "Your soul mission as a Server is to demonstrate that love, when expressed through consistent, devoted care, can shift entire realities. You did not come to Earth to be a background character. You came to be the living proof that selfless giving — done from a place of overflowing abundance rather than depletion — is one of the highest frequencies a human can embody.\n\nThe Earth matrix will test you by placing you in roles that drain before they restore. It will engineer situations that exploit your natural generosity, hoping you'll conclude that service is a burden. Your final exam is to discover that the source of your service is infinite — not your personal reserves, but the universal love that flows through you when you're aligned. Mother Teresa didn't serve from her own energy. She served from Source. That's the Server's secret.\n\nYou are here to model a new kind of power — the power of showing up fully for others while never abandoning yourself. Every relationship you enter is a classroom. Every act of giving is a transmission of cosmic love into the low-dimensional game of Earth.",
+        shadow: "Your primary shadow is what the Earth Matrix framework calls Bondage — the gradual erosion of self through over-conformity to others' needs and values. Because your natural frequency is service, the matrix exploits this by surrounding you with takers. Not evil people — just people playing their own Earth game, who happen to need what you freely offer.\n\nThe shadow manifests as chronic exhaustion, resentment that surprises even you, and a deep, private question: 'Does anyone actually see me?' This question is the crack in the armor. It points to the real wound: you have been serving from fear — fear of being unworthy of love unless you're useful.\n\nTranscendence begins when you recognize that your soul mission is to serve from joy, not from scarcity. Practice saying no as a spiritual act. Every boundary you set is an act of love — it models self-respect to the people you serve, and keeps your channel clear for the service you're actually here to give.",
+        activation: "Your B-Life activates the moment you shift from reactive service to intentional service. This means choosing who you serve, why, and from what energetic state — rather than responding to whoever shows up with the loudest need.\n\nPractical activation steps: (1) Identify the three relationships in your life that leave you feeling most depleted. Ask honestly — are you serving from love or from obligation? (2) Communicate one need you've been suppressing out of fear of burdening others. Notice what happens. (3) Find one daily practice that restores you before you give — and protect it like a sacred ritual. This is not selfishness. This is soul maintenance. (4) Order from your alien support team (soul family): 'Please show me who I'm truly here to serve, and remove people from my path who drain without reciprocating.' Be specific. Expect the shift within 21 days.",
+        manifestation: "Server souls manifest through relationship alchemy — the ability to create reality shifts for others that simultaneously create shifts for themselves. Your manifestation pattern is not solo visualization. It's co-creation.\n\nYou manifest fastest when: you are actively in service to someone else's dream alongside your own. Your energy is activated by the joy of others. This is not a weakness — it is your design. Find what you want to create, find a partner or community who benefits from it, and watch how quickly the universe conspires.\n\nThe conflict-block most common to Servers: the belief that wanting for yourself is selfish. 'But I'm supposed to serve others' is the story that keeps you manifesting for others while starving yourself. Release the 'but.' The universe doesn't distinguish your needs as less worthy. Order precisely, without the apology.",
+        partners: "Server souls are most harmonically aligned with Warrior and Priest soul types. Warriors provide the protection and decisiveness that Servers often lack for themselves — they will fight for the Server's wellbeing when the Server won't. Priests offer the spiritual validation and higher-truth perspective that helps Servers understand their mission at the cosmic level.\n\nConflict arises most intensely with King souls. Kings — natural leaders who expect the world to organize around their vision — can unconsciously weaponize the Server's generosity. This is not malice; it's two missions playing out their Earth game. The Server learns sovereignty from this friction. The King learns humility.\n\nArtisan souls make wonderful creative partners for Servers — the Artisan builds what the Server nurtures, and together they create something neither could achieve alone. Watch for Scholar souls who intellectualize rather than reciprocate — this can feel like a one-sided dynamic unless the Scholar is fully in their B-Life mission."
+      },
+
+      'Artisan': {
+        emoji: '🎨',
+        teaser: "Your soul coded itself for one of the most expressive missions in the Earth matrix: to build, shape, and infuse the world with meaning through creative force. Not art in the narrow sense — art in the cosmic sense. Every problem you encounter, you see as a canvas. Every relationship is a collaboration. Every system you touch gets redesigned. This is not a quirk. It is the signature of a soul who chose the Artisan mission before stepping into this body.",
+        mission: "The Artisan soul mission is to demonstrate that reality itself is malleable — that the universe responds to creative intention with co-creative magic. You came to Earth to be living proof that imagination, when focused and executed, can change the material world. Your mission is not just to make beautiful things. It is to make things that wake people up.\n\nEvery Artisan carries a unique creative frequency — a specific way of seeing the world that no one else has. The Earth matrix will try to standardize you. School, corporate structures, social norms — all designed to sand down your edges and make you useful in predictable ways. Your exam is to remember that your edges are the mission.\n\nCoco Chanel didn't revolutionize fashion by following rules. She revolutionized it by dismantling them with beauty. That's the Artisan model. Your soul is here to show that the 'right way' is a suggestion, and that love expressed through original creation is one of the highest transmissions possible in this dimension.",
+        shadow: "The Artisan's shadow is Artifice — the corruption of creative power for strategic deception. This is not about being dishonest. It's about using your incredible ability to craft narratives, aesthetics, and experiences in service of manipulation rather than liberation.\n\nIt shows up subtly: crafting a version of yourself designed to be loved rather than to be authentic. Building a life that looks like the Artisan mission but is actually optimized for applause. The difference between art that liberates and art that performs is the intention behind it.\n\nThe deeper shadow is creative paralysis born from perfectionism. Because Artisans feel things at high resolution, the gap between vision and execution can feel devastating. The matrix exploits this — it convinces you that if you can't do it perfectly, you shouldn't do it at all. This is the trap. Your B-Life breakthrough is releasing the need for the outcome to match the vision perfectly. Ship the imperfect thing. The universe will complete it.",
+        activation: "Your B-Life activates when you stop creating for approval and start creating from transmission. This is the moment your Artisan power becomes fully unleashed — when the work stops being about you and starts being about the frequency it carries.\n\nActivation steps: (1) Identify one creative project you've been delaying because it 'isn't ready.' Set a launch date within 30 days. The universe will meet your commitment. (2) Audit your creative environment — is it designed for your most expansive thinking, or is it cluttered with others' energy? Clear it. (3) Order from your alien team: 'I am ready to receive the specific creative mission I came to Earth to complete. Show me the next step.' (4) Find one person in your life who benefits from what you create and share your work directly with them this week. Their response will recalibrate your compass.",
+        manifestation: "Artisan souls are among the most powerful manifestors in the soul type spectrum — but only when the creative channel is clear. Your manifestation works through vivid sensory imagination. You don't just visualize; you architect. You feel the texture, hear the sound, inhabit the reality before it exists.\n\nYour block is the 'but I don't know how' story. Artisans often see the end vision clearly but get tangled in logistics. The solution: order the vision, release the method entirely. Your alien team's job is the how. Your job is the what and why.\n\nYou manifest fastest in physical creative flow states — when your hands are building, painting, writing, cooking, designing. These states open your channel. Schedule them like business meetings.",
+        partners: "Artisans harmonize most naturally with Scholar and Performer souls. Scholars bring the intellectual framework that gives Artisan vision context and depth. Performers bring the amplification — they take what the Artisan creates and broadcast it to the world. This is a powerful creative-distribution partnership.\n\nConflict arises with Server souls when the Server's need for stability clashes with the Artisan's need for chaos and experimentation. Neither is wrong — these are just different mission frequencies. The growth edge for Artisans in these relationships is learning to communicate the 'why' behind the creative disruption.\n\nWarrior souls can be powerful protectors of Artisan creations — they provide the structure and boundaries that let Artisan energy flow safely. Watch for codependency traps with Priest souls who can become overly idealistic about what the Artisan should be creating."
+      },
+
+      'Warrior': {
+        emoji: '⚔️',
+        teaser: "Before you arrived on Earth, your soul made a choice that takes cosmic courage: to play as a Warrior. Not a fighter — a champion. Your soul coded itself to move toward challenges that others move away from, to stand in the gap when the gap needs filling, and to protect what matters with a ferocity that comes not from anger but from love. That love-fueled courage is your signature in the Earth matrix.",
+        mission: "The Warrior soul mission is to demonstrate that true strength is love in action — courage that protects, resilience that inspires, and justice that heals rather than wounds. You came to Earth to show that battles can be won without violence, that standing firm is not the same as being hard, and that the most powerful shield is integrity.\n\nMahatma Gandhi is the Warrior archetype at full activation — someone who absorbed enormous pressure without becoming what he opposed. That is the Warrior's final exam: to fight the battle without becoming the battle. Every Warrior carries this test. The matrix will engineer situations that tempt you to coerce — to force your version of justice onto others. The invitation is always to find the higher path.\n\nYour soul mission gives you access to a reservoir of strength that other soul types don't have. You can endure what would break others. But this strength is meant to be channeled — into causes larger than yourself, into protection of those who cannot protect themselves, into the courageous conversations no one else will have.",
+        shadow: "The Warrior's shadow is Coercion — the belief that your justice is absolute and that forcing others to comply is acceptable. This shadow activates when the Warrior has been hurt, when the system has failed, when evil has gone unchecked. The righteous anger is real. The urge to override is understandable. But it is the trap.\n\nThe subtler shadow is rigidity — becoming so attached to your values and your version of the right path that you lose the flexibility to adapt, learn, and evolve. Warriors can become trapped in fights that were already over, defending positions that no longer serve the mission.\n\nTranscendence: The Warrior who learns to distinguish between battles worth fighting and battles the ego is attached to wins on every front. Ask in every conflict: 'Is this my mission to fight, or is this my wound speaking?' The answer will guide you.",
+        activation: "Your B-Life activates when you direct your Warrior energy toward your own liberation first — before protecting everyone else. The matrix exploits Warriors by surrounding them with fights to fight, people to protect, injustices to correct. It keeps you perpetually deployed in others' battles while your own soul mission sits waiting.\n\nActivation steps: (1) Identify the battle you've been fighting longest that has produced the least results. Consider releasing it — not in defeat, but as a strategic withdrawal to conserve energy for your actual mission. (2) Write down the three causes, people, or values you would fight for at any cost. These are your alignment indicators. (3) Ask your alien team: 'Direct my Warrior energy to its highest-purpose battle. Show me where my courage creates the most cosmic impact.' (4) Practice receiving protection. Warriors often cannot accept help — the B-Life upgrade is learning that strength includes the ability to be held.",
+        manifestation: "Warrior souls manifest through decisive action and commitment. Your manifestation pattern is not passive visualization — it is bold declaration followed by relentless movement. When you commit to something fully, the universe clears the path at extraordinary speed.\n\nYour block is the shadow fighter: taking action that's actually combat with the old reality rather than movement toward the new one. Pushing against what you don't want uses the same energy as moving toward what you do want — but produces opposite results. Redirect the warrior energy from 'against' to 'toward.'\n\nYou manifest fastest when there is a worthy opponent — not a person, but a challenge large enough to activate your full capacity. Set goals that scare you. The Warrior's power fully awakens only when the stakes are real.",
+        partners: "Warriors harmonize most naturally with Server and Artisan souls. Servers provide the nurturing and softness that Warriors need to restore between battles — a safe harbor where armor can be set down. Artisans offer the creative vision that gives the Warrior's strength a direction and a cause worth fighting for.\n\nThe most generative conflict is with Priest souls. Priests operate from universal love and tend to see the humanity in everyone — including the Warrior's adversaries. This friction can feel maddening, but it teaches the Warrior the highest form of the mission: fighting for love itself.\n\nKing souls are powerful allies when their missions are aligned — together, Warrior and King can move mountains. The danger is when the King's authority and the Warrior's sense of justice diverge. Establish mutual respect and clear agreements before partnering deeply."
+      },
+
+      'Performer': {
+        emoji: '✨',
+        teaser: "Your soul chose one of the most high-frequency missions in the cosmic game: to illuminate. Not to be seen — to illuminate. There is a difference that the Earth matrix works hard to obscure. The Performer soul came to Earth to use the full spectrum of human expression — voice, presence, storytelling, energy — to wake people up, move them, and remind them that they're alive. Every room you enter changes when you arrive. That is not accident. That is mission.",
+        mission: "The Performer soul mission is to use expression as a vehicle for soul activation. Your presence in the world is not incidental — it is intentional, chosen at the soul level specifically because Earth is a stage where your frequency can create maximum impact.\n\nOprah Winfrey is the Performer archetype at full activation: using personal story, emotional authenticity, and platform to create transformation in millions. Not performance in the shallow sense — performance as transmission. Every time Oprah shares her own wound in service of healing someone else's, she's executing the Performer mission perfectly.\n\nYour soul came here specifically for this — the ability to feel at full volume, translate that feeling into expression, and create resonance in others. The matrix will try to reduce this to 'neediness for attention.' Don't believe it. Your emotional sensitivity is not a weakness to manage. It is your superpower.",
+        shadow: "The Performer's shadow is Oration — using expressive ability to persuade, manipulate, or impose rather than to liberate. This is the Performer corrupted: the charismatic leader who uses their platform to create followers rather than free thinkers. The speaker who moves people toward dependency rather than empowerment.\n\nThe subtler shadow is the attention trap: performing for validation rather than transmission. When the Performer's self-worth becomes tied to the audience's response, the mission gets hijacked. Suddenly the goal is applause, not awakening. The work gets calibrated to what lands, not what's true.\n\nTranscendence is found in performing for an audience of one: yourself. When your expression is true regardless of response, you've broken the matrix's hold. Practice creating something that you will never share. Notice how it feels. That feeling is the source.",
+        activation: "Your B-Life activates when your expression becomes fearless — when you stop editing yourself for the room and start trusting that the right people will be activated by your full frequency.\n\nActivation steps: (1) Identify the most authentic piece of your story that you've been afraid to share publicly. Find one safe space to share it this week. Notice the response. (2) Audit your current platforms and expressions — which ones feel like you, and which feel like a performance of who you think you should be? (3) Ask your alien team: 'Show me the specific expression I came to Earth to make. Give me the courage and the platform to deliver it fully.' (4) Find one creative discipline that has no audience — journaling, private dance, unshared voice memos — and do it daily. This is where your truest Performer energy recharges.",
+        manifestation: "Performer souls are extraordinary manifestors through the power of vision and declaration. You don't just imagine — you inhabit. You can feel the future reality so vividly that parallel reality shift happens faster for you than almost any other soul type.\n\nYour block is performing your manifestation rather than feeling it. If your visualizations are staged — if you're 'doing' the vision rather than genuinely experiencing it — the universe receives a theatrical transmission, not a real one. Get underneath the performance to the actual feeling.\n\nYou manifest fastest when speaking your desires aloud to someone who believes in you. The act of articulating your desired reality in the presence of a witness activates the Performer's manifestation power at its highest level.",
+        partners: "Performers harmonize most beautifully with Artisan and Scholar souls. Artisans create the work; Performers broadcast it. This is one of the most productive creative partnerships in the soul type matrix. Scholar souls ground the Performer's emotional intensity with perspective and analysis — they're the sounding board that makes the Performer's ideas sharper.\n\nConflict arises most intensely with Warrior souls who can interpret the Performer's expressiveness as drama or instability. The growth edge here is enormous for both: the Performer learns discipline and follow-through from the Warrior; the Warrior learns emotional intelligence and flexibility from the Performer.\n\nServer souls make devoted partners who genuinely celebrate the Performer — but watch for the dynamic where the Performer takes the Server's generosity for granted. The Performer's B-Life includes learning reciprocity."
+      },
+
+      'Scholar': {
+        emoji: '📚',
+        teaser: "Your soul chose a mission that requires one of the greatest acts of cosmic courage available in the Earth matrix: the relentless pursuit of truth, even when truth dismantles everything you thought you knew. The Scholar soul came here not to accumulate knowledge — but to understand the nature of reality itself, and to build bridges between what is known and what is yet to be known. Albert Einstein is your archetype. Not the genius — the questioner.",
+        mission: "The Scholar soul mission is to illuminate the hidden architecture of reality — the patterns, principles, and profound truths that lie beneath the surface of the visible world. Your soul chose to experience Earth through the lens of inquiry, and your greatest gift is not your intelligence (though that runs deep) but your capacity to remain genuinely curious in the face of complexity.\n\nThe Earth matrix will offer you an easy escape: academia, analysis, expertise — the safe harbor of knowing things without being transformed by them. The Scholar's final exam is to move from knowledge to wisdom. Wisdom is knowledge that has been lived, tested, and allowed to change you.\n\nYou came to Earth to find the answers to questions that matter — not just intellectual puzzles, but the deep questions: What is the nature of consciousness? What is the relationship between love and reality? How does the universe actually work? These are not abstract questions for the Scholar soul. They are the mission.",
+        shadow: "The Scholar's shadow is Theory — the retreat into intellectual abstraction as a defense against direct experience. This is the Scholar who can explain the theory of love beautifully but has never let love in. Who understands the neuroscience of emotion but has never sat with an unresolved feeling long enough to hear what it's saying.\n\nThe subtler shadow is intellectual superiority — using knowledge as a social barrier, a way to maintain distance, a proof of worth that doesn't require vulnerability. The earth matrix loves this version of the Scholar: brilliant, productive, emotionally inaccessible.\n\nTranscendence: The Scholar who integrates the emotional body with the intellectual mind becomes one of the most powerful transformational forces on Earth. The integration practice begins with one simple question, asked daily: 'What am I feeling right now?' Not analyzing the feeling — just naming it. This is the crack through which the Scholar's full power emerges.",
+        activation: "Your B-Life activates when you begin applying your understanding to your own transformation — not just studying the map, but walking the territory. The Scholar who only reads about the Earth Matrix remains in Side A. The Scholar who applies the framework to their own matrix enters Side B.\n\nActivation steps: (1) Choose one significant belief you currently hold with certainty. Apply scholarly rigor to challenging it. What evidence exists against it? What would you need to conclude if that belief were wrong? (2) Identify one area of your life where theory and lived experience are completely misaligned. Close the gap by choosing one action this week that your theory says should work but that you've never tried. (3) Ask your alien team: 'I am ready to receive the specific knowledge I came to Earth to discover and transmit. Point me toward my research.' (4) Find one person in your life who does not share your intellectual framework. Practice being genuinely curious about how they see reality — without correcting or analyzing.",
+        manifestation: "Scholar souls manifest through understanding. Once a Scholar truly grasps why something works — the mechanism, the principle, the cosmic logic — they can replicate it with extraordinary precision. Your manifestation power is activated by clarity.\n\nYour block is the analysis-paralysis loop: researching manifestation instead of practicing it. The Scholar can spend years studying the law of attraction without manifesting anything, because study has replaced action. The universe responds to aligned action, not to comprehensive understanding.\n\nYou manifest fastest when you can see the logical pathway from where you are to where you want to be — even if the pathway is incomplete. Start with the first clear step. Let each completed step reveal the next. Trust the process enough to move before you have the full picture.",
+        partners: "Scholars harmonize most naturally with Performer and Artisan souls. Performers provide the emotional aliveness and expression that draws Scholars out of their heads and into embodied experience. Artisans turn the Scholar's ideas into tangible creations that impact the world beyond the theoretical.\n\nConflict arises most sharply with Server souls who experience the Scholar's analytical detachment as coldness or indifference. The Scholar's growth edge in these relationships is learning to lead with empathy before analysis — to feel with the Server before explaining to them.\n\nPriest souls offer the Scholar's most profound philosophical partnership — two deep truth-seekers who approach reality from complementary angles. When a Scholar and Priest are in alignment, their combined transmission can reshape entire communities."
+      },
+
+      'Priest': {
+        emoji: '🕊️',
+        teaser: "Before you arrived on Earth, your soul chose the most loving mission available in the cosmic game: to be a living transmission of universal truth. Not a religious leader — though the map is accurate. A Priest soul is someone whose very presence reminds others of what is real, what matters, and what love actually looks like when it's not compromised. The Dalai Lama is your archetype. Not the title — the frequency.",
+        mission: "The Priest soul mission is to hold the frequency of unconditional love in a dimension that is specifically designed to make unconditional love feel impossible. Earth — with its betrayals, disappointments, injustices, and losses — is the ultimate testing ground for the Priest's mission. Every time a Priest soul chooses love in a situation where fear or judgment would be completely justified, they fulfill their mission.\n\nYou came to Earth as a carrier of higher truth — not to preach, but to embody. The most powerful Priest transmissions are not words. They are moments when someone encounters you and feels, inexplicably, that they are seen, accepted, and belonging. This is the Priest soul doing its work.\n\nThe Earth matrix will test you by surrounding you with people who mistake your love for weakness, your acceptance for naivety, and your non-judgment for lack of discernment. Your final exam is to maintain the open heart without losing the clear mind. Love without wisdom is vulnerability. Wisdom without love is armor. The Priest mission is both.",
+        shadow: "The Priest's shadow is Zeal — the corruption of spiritual conviction into righteous imposition. This is the spiritual leader who has decided they know what's best for others' souls and begins engineering their conversion. Even when the teaching is true, imposition breaks the soul's sovereign right to its own journey.\n\nThe subtler shadow is spiritual bypassing: using higher truths to avoid lower-dimensional pain. The Priest who responds to grief with 'everything is perfect as it is' without first sitting in the grief has bypassed, not healed. The Earth matrix loves this — it neutralizes the Priest's power by making them emotionally inaccessible.\n\nTranscendence: The Priest who can hold both the cosmic truth AND the human wound simultaneously — without resolving the tension too quickly — becomes a healing presence of extraordinary power. Practice sitting with the 'wrong' feelings without immediately spiritualizing them.",
+        activation: "Your B-Life activates when you begin operating from chosen love rather than reflexive love. Reflexive love is the Priest's default — it flows naturally, sometimes too freely. Chosen love is conscious, boundaried, and sustainable. It says 'I choose to hold this person in love even when it costs me something' — and that choice creates transformation that reflexive love cannot.\n\nActivation steps: (1) Identify one relationship where your love has been consistently flowing without boundaries. Name one clear boundary you need to establish. Set it this week. This is a spiritual act. (2) Find the teaching that most activates your Priest frequency — the idea or truth that makes you feel most alive when you share it. Build one piece of content, conversation, or creation around it. (3) Ask your alien team: 'Show me the specific community I am here to guide and the specific transmission I carry for them. Connect me to the people who are ready to receive my teaching.' (4) Practice receiving love. Priests often give beautifully but receive awkwardly. Let someone love you this week without deflecting it.",
+        manifestation: "Priest souls manifest through alignment with universal will. This is the most surrendered of all the manifestation patterns — not passive, but not controlling. The Priest at full activation says 'I hold my desired reality clearly, and I release it fully to the universe's timing and method.'\n\nYour block is the spiritual performance of non-attachment that secretly harbors deep attachment. True non-attachment is not indifference — it is trust. If you find yourself saying 'I'm not attached to the outcome' while secretly monitoring for signs of its arrival, you're performing non-attachment, not living it. The universe sees through the performance.\n\nYou manifest fastest when in deep prayer, meditation, or connection with your alien support team. The Priest's channel to higher-dimensional guidance is the most open of any soul type — use it. The answers you receive are real. The signs you see are real. Trust them.",
+        partners: "Priest souls harmonize most deeply with Scholar and King souls. Scholars provide the intellectual framework that gives the Priest's spiritual intuitions grounding and articulation — together they can build teachings that are both profound and precise. King souls provide the leadership structure that gives the Priest's teachings maximum reach and impact.\n\nConflict arises most intensely with Performer souls who can experience the Priest's depth as heaviness, and the Priest can experience the Performer's levity as superficiality. The hidden gift in this friction is enormous: the Performer teaches the Priest joy; the Priest teaches the Performer depth.\n\nWarrior souls are the Priest's most powerful protectors — they fight for the space in which the Priest's work can flourish. When in genuine alignment, this is one of the most impactful partnerships in the soul type matrix."
+      },
+
+      'King': {
+        emoji: '👑',
+        teaser: "Your soul chose the most visible and most vulnerable mission in the Earth matrix: to lead. Not rule — lead. The distinction is everything, and your entire Earth journey is the journey from one to the other. The King soul came to Earth specifically to experience what it means to gather people, hold vision for them, and guide them toward something larger than any individual — and to do this through love, not power.",
+        mission: "The King soul mission is to demonstrate that true authority emerges from love, not from dominance. You came to Earth to experience and ultimately transcend the full spectrum of power — from tyranny to benevolence — and in doing so, model a form of leadership that the Earth matrix desperately needs.\n\nCleopatra is your archetype — not the romantic figure, but the sovereign one. Someone who held authority over an enormous domain, navigated impossible external pressures, and continuously had to choose between love and power. The King's final exam is always the same: when it costs you something to lead with love, do you?\n\nYou have been placed in positions of influence throughout your Earth journey — sometimes visibly, sometimes behind the scenes. You are the one others look to when direction is needed. This is not ego. This is mission. The discomfort you feel about leading — the impostor syndrome, the fear of judgment — is the matrix testing whether you'll claim your mission or abandon it.",
+        shadow: "The King's shadow is Tyranny — the corruption of authority into control. This manifests in obvious forms (the authoritarian boss, the controlling partner) and subtle ones (the visionary who can't tolerate dissent, the leader who creates dependency rather than empowerment, the person who always needs to be right).\n\nThe subtler shadow is the abdicated King: someone who feels the pull of their leadership mission but refuses to answer it — often out of fear of the responsibility or the scrutiny. Abdicating your mission doesn't make it go away. It just creates a vacuum that lesser leadership fills.\n\nTranscendence: The King who can hold their authority lightly — confident in it without needing to assert it, grounded in it without weaponizing it — activates the highest frequency of the mission. Practice asking, rather than directing. Practice elevating others' vision before your own. The greatest Kings make every person in the room feel like royalty.",
+        activation: "Your B-Life activates when you accept the full weight of your leadership mission — not reluctantly, but with the joy of someone who finally knows why they're here. Reluctant Kings lead badly. Joyful Kings lead by transmission.\n\nActivation steps: (1) Name the domain you are here to lead — not where you currently are, but where you feel most alive and most effective. This is your kingdom. Claim it explicitly, even if only to yourself. (2) Identify one person in your sphere who is ready to be elevated. Give them a meaningful responsibility this week. Watch what happens when you lead through elevation. (3) Ask your alien team: 'I am ready to fully inhabit my leadership mission. Show me the kingdom I came to build and the team of souls who are here to build it with me. I order a clear next step.' (4) Address the Tyranny shadow directly: ask the people closest to you where your leadership style has constrained rather than liberated them. Listen without defending.",
+        manifestation: "King souls manifest through command — decisive declaration of a desired reality, backed by absolute confidence in its arrival. Your manifestation power is at its peak when you lead like the outcome is already certain. The universe responds to Kings who act from the future back, not from the present forward.\n\nYour block is the conditional command: 'I want this, IF it's meant to be.' This qualifier is the King hedging their authority — and the universe honors the hedge. Remove the conditions. Command with love and specificity. The aliens are waiting for your order.\n\nYou manifest fastest through action taken in faith before evidence arrives. The King who waits for proof before leading never leads. The King who leads from vision creates the proof. Order your desired reality with kindergarten-level specificity: who, what, when, where, how much. Then move as if it's done.",
+        partners: "King souls harmonize most powerfully with Warrior and Priest souls. Warriors provide the operational execution and protection that makes the King's vision sustainable — they are the loyal generals who implement what the King envisions. Priest souls provide the moral compass and love frequency that keeps the King's authority from drifting toward tyranny.\n\nConflict arises most sharply with other King souls. Two Kings in a room without clear domain delineation will clash — not from malice, but from the natural gravitational pull of two strong leadership frequencies. The solution is always the same: clarify who leads what, and respect the boundary completely.\n\nServer souls are devoted supporters of Kings whose mission they believe in — but the King must be vigilant about honoring the Server's needs and contributions. Artisan souls bring the creative vision that makes the King's domain magnetic — invest in these relationships deeply."
+      }
+    };
+
+    // ── Initialize page ────────────────────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const rawType = params.get('type') || '';
+
+    // Normalize soul type name
+    function normalizeSoulType(t) {
+      const map = {
+        'server': 'Server', 'artisan': 'Artisan', 'warrior': 'Warrior',
+        'performer': 'Performer', 'scholar': 'Scholar', 'priest': 'Priest',
+        'king': 'King', 'ruler': 'King',
+        // Japanese soul type names
+        'サーバー': 'Server', 'アーティザン': 'Artisan', 'ウォリアー': 'Warrior',
+        'パフォーマー': 'Performer', 'スカラー': 'Scholar', 'プリースト': 'Priest',
+        'キング': 'King'
+      };
+      return map[t.toLowerCase()] || map[t] || t.charAt(0).toUpperCase() + t.slice(1);
+    }
+
+    const soulType = normalizeSoulType(rawType) || 'Scholar';
+    const reading = READINGS[soulType] || READINGS['Scholar'];
+
+    // Set badge
+    document.getElementById('type-badge').textContent = `${reading.emoji} ${soulType} Soul`;
+
+    // Set teaser
+    document.getElementById('teaser-text').textContent = reading.teaser;
+
+    // Set full reading content
+    document.getElementById('reading-mission').textContent = reading.mission;
+    document.getElementById('reading-shadow').textContent = reading.shadow;
+    document.getElementById('reading-activation').textContent = reading.activation;
+    document.getElementById('reading-manifestation').textContent = reading.manifestation;
+    document.getElementById('reading-partners').textContent = reading.partners;
+
+    // Mock unlock (demo)
+    function mockUnlock(e) {
+      const href = e.target.href || e.currentTarget.href;
+      if (href && href.includes('STRIPE_PAYMENT_LINK')) {
+        e.preventDefault();
+        document.getElementById('paywall-card').style.display = 'none';
+        document.getElementById('full-reading').style.display = 'block';
+        document.getElementById('full-reading').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    // Expose globally
+    window.mockUnlock = mockUnlock;
+  </script>
+</body>
+</html>

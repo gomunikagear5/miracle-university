@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ソウルミッション診断 · 地球大暴露</title>
+  <meta name="description" content="Nao Stantonの「地球大暴露」フレームワークに基づき、あなたのソウルタイプと宇宙的ミッションを発見しましょう。15の質問で明らかになります。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif; }
+
+    .lang-toggle-wrap {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 999;
+    }
+    #lang-toggle {
+      background: rgba(15,15,42,0.85);
+      border: 1px solid rgba(212,175,55,0.4);
+      color: #D4AF37;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+    }
+    #lang-toggle:hover {
+      background: rgba(212,175,55,0.15);
+      border-color: rgba(212,175,55,0.7);
+    }
+
+    /* Section labels in Japanese */
+    .result-section-label { font-family: 'Noto Sans JP', sans-serif; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Language Toggle ─────────────────────────────────────────────── -->
+  <div class="lang-toggle-wrap">
+    <button id="lang-toggle" onclick="window.location.href='index.html'">🌐 English</button>
+  </div>
+
+  <!-- ── Star Field ─────────────────────────────────────────────────── -->
+  <div class="star-field" id="star-field" aria-hidden="true"></div>
+
+  <!-- ── App ────────────────────────────────────────────────────────── -->
+  <div id="app">
+
+    <!-- SCREEN 1: Welcome -->
+    <section id="welcome-screen" class="screen active" role="main" aria-label="ようこそ">
+      <div class="card">
+        <p class="welcome-eyebrow">🌌 地球大暴露 · ソウルミッション診断</p>
+        <h1 class="welcome-title">
+          宇宙はあなたをここに送った——<br>
+          <span class="accent">理由がある。</span><br>
+          一緒に見つけよう。
+        </h1>
+        <p class="welcome-subtitle">
+          「あなたは生物学の偶然の産物ではありません。あなたはこの人生を選んだのです——この体、この時代、このまさにその挑戦を——特定のミッションを果たすために。15の質問で、あなたのエネルギーが7つのソウルタイプのどれに属するかを発見しましょう。」
+        </p>
+        <div class="soul-types-preview" aria-label="7つのソウルタイプ">
+          <span class="soul-badge">🌿 サーバー</span>
+          <span class="soul-badge">🎨 アーティザン</span>
+          <span class="soul-badge">⚔️ ウォリアー</span>
+          <span class="soul-badge">✨ パフォーマー</span>
+          <span class="soul-badge">📚 スカラー</span>
+          <span class="soul-badge">🕊️ プリースト</span>
+          <span class="soul-badge">👑 キング</span>
+        </div>
+        <button id="begin-btn" class="btn-primary">
+          ✦ 診断を始める
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 1.5: Email Gate -->
+    <section id="email-gate-screen" class="screen" role="main" aria-label="メールアドレス入力">
+      <div class="card" style="max-width:480px;margin:0 auto;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🌌</div>
+        <h2 style="font-size:1.4rem;margin-bottom:0.5rem;">結果をどこに送りますか？</h2>
+        <p style="color:rgba(255,255,255,0.7);margin-bottom:1.5rem;font-size:0.95rem;">メールアドレスを入力していただくと、あなたのソウルタイプの鑑定と宇宙的使命ガイドを無料でお届けします。</p>
+        <form id="email-gate-form" onsubmit="submitEmailGate(event)" style="display:flex;flex-direction:column;gap:0.85rem;">
+          <input
+            type="text"
+            id="gate-name-input"
+            placeholder="お名前（ニックネームでもOK）"
+            style="padding:0.75rem 1rem;border-radius:8px;border:1px solid rgba(212,175,55,0.4);background:rgba(255,255,255,0.07);color:#fff;font-size:1rem;outline:none;"
+            required
+          />
+          <input
+            type="email"
+            id="gate-email-input"
+            placeholder="メールアドレス"
+            style="padding:0.75rem 1rem;border-radius:8px;border:1px solid rgba(212,175,55,0.4);background:rgba(255,255,255,0.07);color:#fff;font-size:1rem;outline:none;"
+            required
+          />
+          <button type="submit" class="btn-primary" style="margin-top:0.25rem;">
+            ✦ ソウルタイプを診断する
+          </button>
+        </form>
+        <p style="margin-top:1rem;font-size:0.78rem;color:rgba(255,255,255,0.4);">スパムは送りません。いつでも配信停止できます。</p>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: Quiz -->
+    <section id="quiz-screen" class="screen" role="main" aria-label="診断">
+      <div class="card">
+
+        <!-- Progress -->
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="progress-text">質問 1 / 15</span>
+            <span id="progress-pct">0%</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- Question -->
+        <p id="question-text"></p>
+
+        <!-- Answers -->
+        <div id="answers-grid" role="group" aria-label="回答の選択肢"></div>
+
+      </div>
+    </section>
+
+    <!-- SCREEN 3: Results -->
+    <section id="result-screen" class="screen" role="main" aria-label="ソウルミッション診断結果">
+      <div class="card" style="max-width:680px;margin:0 auto;padding:2.5rem 1.5rem 3.5rem;">
+
+        <!-- Cosmic Revelation Header -->
+        <div style="text-align:center;padding:2rem 0 1.5rem;">
+          <div id="result-emoji" role="img" aria-label="ソウルタイプ絵文字" style="font-size:4.5rem;display:block;margin-bottom:1rem;filter:drop-shadow(0 0 24px rgba(212,175,55,0.6));"></div>
+          <p style="color:rgba(212,175,55,0.7);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;margin:0 0 0.6rem;font-family:'Noto Sans JP',sans-serif;">あなたのソウルタイプ</p>
+          <h2 id="result-name" style="font-size:clamp(2.2rem,7vw,3.2rem);font-weight:800;color:#fff;margin:0 0 0.6rem;letter-spacing:0.04em;font-family:'Noto Sans JP',sans-serif;"></h2>
+          <p id="result-tagline" style="color:rgba(212,175,55,0.9);font-size:0.97rem;font-weight:500;margin:0;line-height:1.6;font-family:'Noto Sans JP',sans-serif;"></p>
+        </div>
+
+        <div style="text-align:center;color:rgba(212,175,55,0.35);letter-spacing:0.25em;margin:0.5rem 0 2rem;font-size:0.9rem;">✦ · · · · · ✦ · · · · · ✦</div>
+
+        <!-- Soul Mission Card -->
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:1.75rem 2rem;margin-bottom:1.25rem;">
+          <div style="color:#D4AF37;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.75rem;font-weight:600;font-family:'Noto Sans JP',sans-serif;">⭐ あなたのソウルミッション</div>
+          <p id="result-mission" style="color:rgba(255,255,255,0.85);line-height:2;margin:0;font-size:0.95rem;font-family:'Noto Sans JP',sans-serif;"></p>
+        </div>
+
+        <!-- Trap Card -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,100,80,0.15);border-radius:16px;padding:1.75rem 2rem;margin-bottom:1.25rem;">
+          <div style="color:#e07060;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.75rem;font-weight:600;font-family:'Noto Sans JP',sans-serif;">⚠️ あなたのマトリックスの罠</div>
+          <p id="result-trap" style="color:rgba(255,255,255,0.8);line-height:2;margin:0;font-size:0.95rem;font-family:'Noto Sans JP',sans-serif;"></p>
+        </div>
+
+        <!-- Activation Card -->
+        <div style="background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.2);border-radius:16px;padding:1.75rem 2rem;margin-bottom:1.25rem;">
+          <div style="color:#D4AF37;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.75rem;font-weight:600;font-family:'Noto Sans JP',sans-serif;">⚡ あなたのB-Life起動</div>
+          <p id="result-activation" style="color:rgba(255,255,255,0.85);line-height:2;margin:0;font-size:0.95rem;font-family:'Noto Sans JP',sans-serif;"></p>
+        </div>
+
+        <!-- Planet Card -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.75rem 2rem;margin-bottom:1.5rem;">
+          <div style="color:rgba(180,160,220,0.9);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.75rem;font-weight:600;font-family:'Noto Sans JP',sans-serif;">🪐 あなたのホームプラネット・エネルギー</div>
+          <p id="result-planet" style="color:rgba(255,255,255,0.78);line-height:2;margin:0;font-size:0.95rem;font-family:'Noto Sans JP',sans-serif;"></p>
+        </div>
+
+        <!-- Secondary Type -->
+        <p id="secondary-type" style="text-align:center;color:rgba(255,255,255,0.5);font-size:0.88rem;line-height:1.8;margin:0 0 2rem;padding:0 0.5rem;font-family:'Noto Sans JP',sans-serif;"></p>
+
+        <!-- Divider -->
+        <div style="text-align:center;color:rgba(212,175,55,0.3);letter-spacing:0.2em;margin-bottom:2rem;font-size:0.85rem;">✦ · · · ✦ · · · ✦</div>
+
+        <!-- Primary CTA — Gold Card -->
+        <div style="
+          background: linear-gradient(135deg, rgba(20,10,40,0.95) 0%, rgba(10,5,25,0.98) 100%);
+          border: 1px solid rgba(212,175,55,0.4);
+          border-radius: 16px;
+          padding: 2rem 1.75rem;
+          margin: 2rem auto;
+          max-width: 420px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        ">
+          <!-- Starfield dots (CSS) -->
+          <div style="position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%), radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.2) 0%, transparent 100%), radial-gradient(1px 1px at 50% 20%, rgba(255,255,255,0.3) 0%, transparent 100%), radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.15) 0%, transparent 100%);pointer-events:none;"></div>
+          <div style="font-size:3rem;margin-bottom:1rem;">🔮</div>
+          <h3 style="font-size:1.5rem;font-weight:800;color:#fff;margin:0 0 0.75rem;line-height:1.2;font-family:'Noto Sans JP',sans-serif;">
+            ソウルマトリックスの完全鑑定を解放する
+          </h3>
+          <p style="margin:0 0 1.25rem;">
+            <span style="font-size:2rem;font-weight:800;color:#D4AF37;">$9</span>
+            <span style="color:rgba(255,255,255,0.6);font-size:0.95rem;margin-left:0.4rem;font-family:'Noto Sans JP',sans-serif;">一回限り</span>
+          </p>
+          <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;margin:0 0 1.25rem;line-height:1.8;font-family:'Noto Sans JP',sans-serif;">
+            あなたの魂は地球に来る前に、この使命を選びました。<br>
+            今こそ、そのすべての層を理解する時です。
+          </p>
+          <ul style="list-style:none;padding:0;margin:0 0 1.5rem;text-align:left;font-family:'Noto Sans JP',sans-serif;">
+            <li style="color:rgba(255,255,255,0.85);padding:0.3rem 0;font-size:0.9rem;">✦ ソウルミッションの完全解説（500〜800文字）</li>
+            <li style="color:rgba(255,255,255,0.85);padding:0.3rem 0;font-size:0.9rem;">✦ シャドウの特質とその超え方</li>
+            <li style="color:rgba(255,255,255,0.85);padding:0.3rem 0;font-size:0.9rem;">✦ あなたのBライフ活性化パス</li>
+            <li style="color:rgba(255,255,255,0.85);padding:0.3rem 0;font-size:0.9rem;">✦ あなたのタイプ固有の引き寄せパターン</li>
+            <li style="color:rgba(255,255,255,0.85);padding:0.3rem 0;font-size:0.9rem;">✦ 理想のソウルパートナーと対立のダイナミクス</li>
+          </ul>
+          <a id="deep-read-btn" href="deep-read.html" style="
+            display:block;
+            background: linear-gradient(135deg, #D4AF37 0%, #F0CC50 50%, #D4AF37 100%);
+            color:#1a0a2e;
+            font-weight:800;
+            font-size:1.05rem;
+            padding:1rem 1.5rem;
+            border-radius:12px;
+            text-decoration:none;
+            margin-bottom:0.75rem;
+            text-align:center;
+            font-family:'Noto Sans JP',sans-serif;
+          ">🔑 完全鑑定を解放する — $9</a>
+          <p style="color:rgba(255,255,255,0.35);font-size:0.75rem;font-style:italic;margin:0;font-family:'Noto Sans JP',sans-serif;">
+            デモ：クリックして完全鑑定をプレビュー（Stripe連携予定）
+          </p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;margin-bottom:2rem;">
+          <!-- Secondary CTA — soft -->
+          <a
+            href="https://www.amazon.co.jp/dp/XXXXXXXXXX"
+            target="_blank"
+            rel="noopener"
+            style="display:block;width:100%;max-width:480px;background:rgba(212,175,55,0.07);border:1px solid rgba(212,175,55,0.35);color:rgba(212,175,55,0.85);font-weight:600;font-size:0.92rem;padding:0.95rem 1.75rem;border-radius:14px;text-decoration:none;letter-spacing:0.03em;text-align:center;transition:all 0.25s;font-family:'Noto Sans JP',sans-serif;">
+            📚 地球メタバースの本を読む
+          </a>
+        </div>
+
+        <!-- Retake / Print row -->
+        <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+          <button id="retake-btn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.65);font-size:0.85rem;padding:0.6rem 1.25rem;border-radius:8px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all 0.2s;">🔄 もう一度診断する</button>
+          <button id="print-btn" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.65);font-size:0.85rem;padding:0.6rem 1.25rem;border-radius:8px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all 0.2s;">🖨️ 印刷</button>
+        </div>
+        <p style="text-align:center;font-size:0.75rem;color:rgba(255,255,255,0.3);margin:0.75rem 0 0;font-family:'Noto Sans JP',sans-serif;">
+          しっくりこなかった？毎回異なる質問セットが出題されます。
+        </p>
+
+      </div>
+    </section>
+
+  </div><!-- /#app -->
+
+  <script>
+    // ── Star Field ───────────────────────────────────────────────────────
+    (function() {
+      const field = document.getElementById('star-field');
+      const frag  = document.createDocumentFragment();
+      for (let i = 0; i < 250; i++) {
+        const s = document.createElement('span');
+        const size = Math.random() < 0.15 ? (Math.random() * 2.5 + 2) : (Math.random() * 1.5 + 0.8);
+        s.style.cssText = [
+          `left:${Math.random()*100}%`,
+          `top:${Math.random()*100}%`,
+          `width:${size}px`,
+          `height:${size}px`,
+          `--tw:${(Math.random()*5+1.5).toFixed(1)}s`,
+          `animation-delay:${(Math.random()*8).toFixed(1)}s`
+        ].join(';');
+        frag.appendChild(s);
+      }
+      field.appendChild(frag);
+    })();
+  </script>
+  <script>
+    // Sync deep-read-btn href with soul type when results render
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new MutationObserver(() => {
+        const nameEl = document.getElementById('result-name');
+        const btn = document.getElementById('deep-read-btn');
+        if (nameEl && btn && nameEl.textContent) {
+          btn.href = 'deep-read.html?type=' + encodeURIComponent(nameEl.textContent.trim());
+        }
+      });
+      const nameEl = document.getElementById('result-name');
+      if (nameEl) observer.observe(nameEl, { childList: true, characterData: true, subtree: true });
+    });
+  </script>
+  <script src="question-bank-jp.js"></script>
+  <script src="quiz-jp.js"></script>
+
+  <!-- Pretext text measurement — auto-sizes result cards, Japanese text wrapping -->
+  <script type="module">
+    import { sizeResultCard } from './pretext-measure.js';
+
+    // Japanese uses different font and tighter line wrapping rules
+    // setLocale('ja') enables Japanese-aware word break logic in Pretext
+    import('https://esm.sh/@chenglou/pretext').then(({ setLocale }) => {
+      setLocale('ja');
+    }).catch(() => {});
+
+    const resultScreen = document.getElementById('result-screen');
+    if (resultScreen) {
+      const observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          if (m.type === 'attributes' && m.attributeName === 'class') {
+            if (resultScreen.classList.contains('active')) {
+              requestAnimationFrame(() => {
+                // Japanese: use Noto Sans JP or system Japanese font
+                sizeResultCard(
+                  '16px "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif',
+                  28  // slightly taller line height for Japanese glyphs
+                );
+              });
+            }
+          }
+        }
+      });
+      observer.observe(resultScreen, { attributes: true });
+    }
+  </script>
+</body>
+</html>

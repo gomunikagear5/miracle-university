@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>あなたの魂の使命を見つけよう · 地球メタバース</title>
+  <meta name="description" content="スタントン菜穂の『地球大暴露』をもとに、あなたの魂のタイプと宇宙的使命を発見する15問のクイズ。サーバー・職人・戦士・パフォーマー・学者・神父・キングの7タイプから診断します。" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Star Field ─────────────────────────────────────────────────── -->
+  <div class="star-field" id="star-field" aria-hidden="true"></div>
+
+  <!-- ── App ────────────────────────────────────────────────────────── -->
+  <div id="app">
+
+    <!-- SCREEN 1: Welcome -->
+    <section id="welcome-screen" class="screen active" role="main" aria-label="ようこそ">
+      <div class="card">
+        <p class="welcome-eyebrow">🌌 地球メタバース · 魂の使命クイズ</p>
+        <h1 class="welcome-title">
+          宇宙はあなたをここへ送った<br>
+          <span class="accent">理由がある。</span><br>
+          一緒に見つけよう。
+        </h1>
+        <p class="welcome-subtitle">
+          「あなたはランダムに生まれたのではない。この人生を、この身体を、このタイミングを、自ら選んだのだ。特定の使命を果たすために。15の質問で、あなたのエネルギーがどの魂のタイプに属するかを発見しよう。」<br>
+          <em>― スタントン菜穂『地球大暴露』より</em>
+        </p>
+        <div class="soul-types-preview" aria-label="7つの魂のタイプ">
+          <span class="soul-badge">🌿 サーバー</span>
+          <span class="soul-badge">🎨 職人</span>
+          <span class="soul-badge">⚔️ 戦士</span>
+          <span class="soul-badge">✨ パフォーマー</span>
+          <span class="soul-badge">📚 学者</span>
+          <span class="soul-badge">🕊️ 神父</span>
+          <span class="soul-badge">👑 キング</span>
+        </div>
+        <button id="begin-btn" class="btn-primary">
+          ✦ 使命の探求を始める
+        </button>
+        <p style="margin-top:1.2rem;font-size:0.8rem;opacity:0.5;"><a href="index.html" style="color:inherit;">English version →</a></p>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: Quiz -->
+    <section id="quiz-screen" class="screen" role="main" aria-label="クイズ">
+      <div class="card">
+
+        <!-- Progress -->
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="progress-text">質問 1 / 15</span>
+            <span id="progress-pct">0%</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- Question -->
+        <p id="question-text"></p>
+
+        <!-- Answers -->
+        <div id="answers-grid" role="group" aria-label="回答の選択肢"></div>
+
+      </div>
+    </section>
+
+    <!-- SCREEN 3: Results -->
+    <section id="result-screen" class="screen" role="main" aria-label="魂の使命 診断結果">
+      <div class="card">
+
+        <!-- Header -->
+        <div class="result-header">
+          <span id="result-emoji" role="img" aria-label="魂のタイプ絵文字"></span>
+          <h2 id="result-name"></h2>
+          <p id="result-tagline"></p>
+        </div>
+
+        <div class="cosmic-divider">✦ · · · ✦</div>
+
+        <!-- Mission -->
+        <div class="result-section section-mission">
+          <div class="result-section-label">⭐ あなたの魂の使命</div>
+          <p id="result-mission"></p>
+        </div>
+
+        <!-- Trap -->
+        <div class="result-section section-trap">
+          <div class="result-section-label">⚠️ あなたのマトリックストラップ（落とし穴）</div>
+          <p id="result-trap"></p>
+        </div>
+
+        <!-- Activation -->
+        <div class="result-section section-activation">
+          <div class="result-section-label">⚡ あなたのB面人生アクティベーション</div>
+          <p id="result-activation"></p>
+        </div>
+
+        <!-- Planet -->
+        <div class="result-section section-planet">
+          <div class="result-section-label">🪐 あなたのホームプラネットエネルギー</div>
+          <p id="result-planet"></p>
+        </div>
+
+        <!-- Secondary -->
+        <p class="secondary-mention" id="secondary-type"></p>
+
+        <!-- Actions -->
+        <div class="result-actions">
+          <button id="print-btn" class="btn-primary">🖨️ 使命をプリントする</button>
+          <button id="retake-btn" class="btn-secondary">🔄 もう一度診断する</button>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /#app -->
+
+  <script>
+    // ── Generate star field ──────────────────────────────────────────────
+    (function() {
+      const field = document.getElementById('star-field');
+      const count = 200;
+      const frag  = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
+        const s = document.createElement('span');
+        const size = Math.random() * 2 + 1;
+        s.style.cssText = [
+          `left:${Math.random()*100}%`,
+          `top:${Math.random()*100}%`,
+          `width:${size}px`,
+          `height:${size}px`,
+          `opacity:${Math.random()*0.6+0.2}`,
+          `--tw:${(Math.random()*4+2).toFixed(1)}s`,
+          `animation-delay:${(Math.random()*5).toFixed(1)}s`
+        ].join(';');
+        frag.appendChild(s);
+      }
+      field.appendChild(frag);
+    })();
+  </script>
+  <script src="quiz-ja.js"></script>
+</body>
+</html>
