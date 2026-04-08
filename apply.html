@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>申請 | ミラクル・ユニバーシティ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="stars.js" defer></script>
+  <style>
+    .lang-toggle {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: rgba(15,15,36,0.9);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 13px;
+      z-index: 100;
+    }
+    .lang-toggle a {
+      color: #c39bd3;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    .lang-toggle a.active {
+      color: #f0c040;
+      font-weight: 700;
+    }
+    .form-container {
+      max-width: 620px;
+      margin: 40px auto;
+      background: rgba(15,15,36,0.95);
+      border: 1px solid rgba(240,192,64,0.3);
+      border-radius: 24px;
+      padding: 40px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 16px;
+      background: #111127;
+      border: 1px solid rgba(240,192,64,0.3);
+      color: white;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    textarea {
+      height: 120px;
+      resize: vertical;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(to right, #f0c040, #c39bd3);
+      color: #0a0a1a;
+      font-weight: 700;
+      border: none;
+      border-radius: 9999px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="lang-toggle">
+    <a href="en/apply.html">EN</a> | <a href="apply.html" class="active">JP</a>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <span class="site-logo">🌌 ミラクル・ユニバーシティ</span>
+      <nav class="site-nav">
+        <a href="index.html">ホーム</a>
+        <a href="#program">プログラム</a>
+        <a href="payment.html">プラン</a>
+        <a href="#faq">FAQ</a>
+        <a href="login.html" class="btn btn-gold" style="padding:10px 24px;font-size:0.95rem;font-weight:700;">👤 ログイン</a>
+      </nav>
+    </div>
+  </header>
+
+  <div style="text-align:center;padding:80px 20px;position:relative;z-index:2;">
+    <div style="font-size:3rem;margin-bottom:16px;">🌌</div>
+    <h1 style="font-size:2.6rem;color:#f0c040;margin-bottom:16px;">申請フォーム</h1>
+    <p style="max-width:520px;margin:0 auto 40px;font-size:1.1rem;color:#ccc;">
+      宇宙はあなたをここに呼んでいます。<br>
+      あなたの目標とフィット感を教えてください。<br>
+      申請後、個別に価格と詳細をお送りします。
+    </p>
+  </div>
+
+  <div class="form-container">
+    <form onsubmit="submitApplication(event)">
+      <input type="text" placeholder="お名前" required>
+      <input type="email" placeholder="メールアドレス" required>
+      <textarea placeholder="なぜ参加したいですか？あなたの目標は何ですか？" required></textarea>
+      <textarea placeholder="なぜこのプログラムにフィットするとお考えですか？ (魂のミッションや過去の経験など)" required></textarea>
+      <button type="submit" class="btn-submit">申請を送信する</button>
+    </form>
+  </div>
+
+  <div style="text-align:center;padding:40px;color:#666;font-size:0.9rem;">
+    申請は個別にレビューされ、適合する方に価格と次のステップをお送りします。<br>
+    すでにメンバーの方は <a href="login.html" style="color:#c39bd3;">ログイン</a>
+  </div>
+
+  <script>
+    function submitApplication(e) {
+      e.preventDefault();
+      alert('申請ありがとうございます。レビュー後、個別に価格と詳細をお送りします。宇宙があなたを待っています 🧡');
+      // In production this would send to a backend or email.
+    }
+    initStars(180);
+  </script>
+</body>
+</html>
