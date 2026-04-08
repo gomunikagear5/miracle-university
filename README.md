@@ -11,6 +11,7 @@ Nao Stanton's group consulting platform. Cosmic aesthetic with Yin/Yang focus fo
 | `dashboard.html` | /dashboard | Member dashboard (cohort, Zoom, homework) |
 | `community.html` | /community | **Discord-like Community Campus** — full interactive chat UI inspired by The Real World. Joy Boy energy, Yin/Yang paths, viral lab, live voice simulation, persistent local messages. |
 | `digital-nao.html` | /digital-nao | **Digital Nao AI** — the official AI embodiment of Nao Stanton. Trained on her teachings. Manifestation guidance, Empathy Gap wisdom, B-Life design, and cosmic truth drops in her exact voice. Linked from Campus top nav. (Soul mission work reserved for 1:1 clients) |
+| `payment.html` | /payment | Dedicated payment page with the two plans ($3,800 / $5,500). No pricing on main index.html. Matches the provided design exactly. |
 | `admin.html` | /admin | Admin panel (password protected) |
 
 ## Credentials

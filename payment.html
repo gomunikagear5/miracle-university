@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プランを選択 | ミラクル・ユニバーシティ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="stars.js" defer></script>
+  <style>
+    body {
+      background: #0a0a1a;
+      color: #e8e0f0;
+    }
+    .pricing-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      position: relative;
+      z-index: 2;
+    }
+    .plan-card {
+      background: rgba(15,15,36,0.95);
+      border: 1px solid rgba(240,192,64,0.25);
+      border-radius: 24px;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+      transition: transform 0.3s ease;
+    }
+    .plan-card:hover {
+      transform: translateY(-8px);
+    }
+    .recommended {
+      position: absolute;
+      top: -14px;
+      right: 32px;
+      background: linear-gradient(90deg, #f0c040, #c39bd3);
+      color: #0a0a1a;
+      font-size: 0.8rem;
+      padding: 4px 20px;
+      border-radius: 9999px;
+      font-weight: 700;
+      box-shadow: 0 10px 15px -3px rgb(240 192 64);
+    }
+    .price {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #f0c040;
+      margin: 16px 0;
+    }
+    .plan-title {
+      background: rgba(240,192,64,0.1);
+      color: #f0c040;
+      padding: 6px 20px;
+      border-radius: 9999px;
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .features {
+      list-style: none;
+      margin: 24px 0;
+    }
+    .features li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(240,192,64,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .features li:last-child {
+      border-bottom: none;
+    }
+    .btn-apply {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-group {
+      background: transparent;
+      border: 2px solid #f0c040;
+      color: #f0c040;
+    }
+    .btn-premium {
+      background: linear-gradient(to right, #f0c040, #c39bd3);
+      color: #0a0a1a;
+      border: none;
+    }
+    .top-note {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.95rem;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .back-link {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      color: #c39bd3;
+      text-decoration: none;
+      font-size: 0.95rem;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">← メインに戻る</a>
+  
+  <div style="text-align:center;padding-top:80px;position:relative;z-index:2;">
+    <div style="font-size:2.8rem;margin-bottom:8px;">🌌</div>
+    <h1 style="font-size:2.4rem;color:#f0c040;margin-bottom:8px;">プランを選択してください</h1>
+    <div class="top-note">
+      分割払い対応。返金不可ですが、ターム変更は可能です。
+    </div>
+  </div>
+
+  <div class="pricing-container">
+    <!-- Group Plan -->
+    <div class="plan-card">
+      <div class="plan-title">グループコース</div>
+      <div class="price">$3,800</div>
+      <div style="color:#aaa;font-size:0.95rem;margin-bottom:24px;">6ヶ月タームプログラム</div>
+      
+      <ul class="features">
+        <li>🌙 月1回 Naoグループ Zoom（90分）</li>
+        <li>📝 月次ホームワーク配信</li>
+        <li>📊 メンバー専用ダッシュボード</li>
+        <li>👥 最大300名の少人数制</li>
+        <li>💳 分割払い相談可</li>
+      </ul>
+      
+      <button onclick="window.location.href='https://buy.stripe.com/placeholder-group'" class="btn-apply btn-group">
+        このプランで申し込む
+      </button>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="plan-card" style="border-color:#f0c040;box-shadow:0 0 40px rgba(240,192,64,0.3);">
+      <div class="recommended">⭐ おすすめ</div>
+      <div class="plan-title" style="background:#c39bd3;color:#0a0a1a;">グループ + プライベート</div>
+      <div class="price" style="color:#f0c040;">$5,500</div>
+      <div style="color:#aaa;font-size:0.95rem;margin-bottom:24px;">6ヶ月 + Naoと30分1対1</div>
+      
+      <ul class="features">
+        <li>🌟 グループコース全て含む</li>
+        <li>👤 Naoとの30分プライベートセッション</li>
+        <li>🔮 個別の宇宙鑑定付き</li>
+        <li>🚀 優先サポート</li>
+        <li>💳 分割払い相談可</li>
+      </ul>
+      
+      <button onclick="window.location.href='https://buy.stripe.com/placeholder-private'" class="btn-apply btn-premium">
+        このプランで申し込む
+      </button>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:60px;padding-bottom:80px;color:#888;font-size:0.9rem;position:relative;z-index:2;">
+    ※ 支払いはStripeにて安全に処理されます<br>
+    すでにメンバーの方は <a href="login.html" style="color:#c39bd3;">こちらからログイン</a>
+  </div>
+
+  <script>
+    initStars(220);
+  </script>
+</body>
+</html>
