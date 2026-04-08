@@ -28,12 +28,12 @@
       position: fixed;
       z-index: 10;
       width: 180px;
-      height: 220px;
+      height: 180px; /* Tighter crop to hide the text and focus only on the character */
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.5s ease;
       object-fit: cover;
-      object-position: center 20%; /* Crop to focus on the character, not the text */
+      object-position: center 10%; /* Strong crop to the character only */
       border-radius: 20px;
       box-shadow: 0 20px 40px rgba(255,240,100,0.6);
     }
