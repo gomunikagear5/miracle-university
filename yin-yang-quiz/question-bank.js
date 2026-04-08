@@ -1,27 +1,312 @@
-// ── Soul Mission Quiz — Question Bank (EN) ──────────────────────────────────
-// 45+ questions across 7 soul types + forced-choice + reverse-scored
-// Used by quiz.js to randomly pull 15 per session
-
-// Standard question format:
-// { id, text, answers: [{ text, type, score }], reversed?: true }
-// Forced-choice format:
-// { id, type: 'forced_choice', text, optionA: { text, type, score }, optionB: { text, type, score } }
+// ── Yin or Yang Quiz — Question Bank (EN) ──────────────────────────────────
+// 30 questions measuring Yin (receptive/flow/intuition/release) vs Yang (laughter/action/leadership/decisive joy)
+// Used by quiz.js to randomly pull 15 per session. Scores added to Yin or Yang total.
 
 const questionBank = [
+  // 30 questions for Yin (receptive/flow/intuition/release/receiving) vs Yang (laughter/action/leadership/bold joy)
+  // The quiz.js aggregates scores for 'Y' (Yin) and 'A' (Yang). Results show %Yin / %Yang with descriptions, book link, and campus CTA.
 
-  // ─────────────────────────────────────────────
-  // SERVER (S) — 6 questions
-  // ─────────────────────────────────────────────
   {
-    id: 'q_s_01',
+    id: 'q1',
     text: 'When a friend is struggling, your first instinct is to...',
     answers: [
-      { text: 'Drop everything and simply be present with them', type: 'S', score: 3 },
-      { text: 'Research the best solutions and send them resources', type: 'Sc', score: 2 },
-      { text: 'Rally others to help as a team', type: 'K', score: 2 },
-      { text: 'Share a story that might shift their perspective', type: 'Pr', score: 2 },
+      { text: 'Sit with them in silence and hold space', type: 'Y', score: 3 },
+      { text: 'Make them laugh to shift their energy', type: 'A', score: 3 },
+      { text: 'Offer practical steps to solve the problem', type: 'A', score: 2 },
+      { text: 'Share a story from your own journey to relate', type: 'Y', score: 2 },
     ]
   },
+  {
+    id: 'q2',
+    text: 'In the face of uncertainty, you tend to...',
+    answers: [
+      { text: 'Trust the flow and wait for the right feeling', type: 'Y', score: 3 },
+      { text: 'Take bold action and laugh at the unknown', type: 'A', score: 3 },
+      { text: 'Research and plan every detail', type: 'Y', score: 2 },
+      { text: 'Lead the way with decisive vision', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q3',
+    text: 'Your ideal way to spend a free day is...',
+    answers: [
+      { text: 'Quiet reflection, nature, and inner listening', type: 'Y', score: 3 },
+      { text: 'Adventure, laughter, and bold new experiences', type: 'A', score: 3 },
+      { text: 'Creating art or something beautiful in flow', type: 'Y', score: 2 },
+      { text: 'Leading a group or starting a new project', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q4',
+    text: 'When manifesting a desire, you trust more in...',
+    answers: [
+      { text: 'Releasing attachment and allowing it to come', type: 'Y', score: 3 },
+      { text: 'Decisive ordered action with joyful expectation', type: 'A', score: 3 },
+      { text: 'Visualizing and feeling the desire deeply', type: 'Y', score: 2 },
+      { text: 'Taking immediate steps and laughing at doubt', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q5',
+    text: 'People come to you for...',
+    answers: [
+      { text: 'Calm presence and deep listening', type: 'Y', score: 3 },
+      { text: 'Motivation, laughter, and bold ideas', type: 'A', score: 3 },
+      { text: 'Creative inspiration and new perspectives', type: 'Y', score: 2 },
+      { text: 'Clear direction and leadership', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q6',
+    text: 'Your natural response to conflict is to...',
+    answers: [
+      { text: 'Pause, breathe, and seek understanding', type: 'Y', score: 3 },
+      { text: 'Use humor to defuse it and speak truth boldly', type: 'A', score: 3 },
+      { text: 'Withdraw and reflect on your part', type: 'Y', score: 2 },
+      { text: 'Take charge and resolve it decisively', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q7',
+    text: 'You feel most alive when...',
+    answers: [
+      { text: 'In quiet connection with nature or the divine', type: 'Y', score: 3 },
+      { text: 'Taking bold action and making people laugh', type: 'A', score: 3 },
+      { text: 'Creating something in a state of flow', type: 'Y', score: 2 },
+      { text: 'Leading a mission or vision with joy', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q8',
+    text: 'When you see someone in pain, you...',
+    answers: [
+      { text: 'Offer silent presence and empathetic listening', type: 'Y', score: 3 },
+      { text: 'Use humor and encouragement to lift them up', type: 'A', score: 3 },
+      { text: 'Share your own similar experience', type: 'Y', score: 2 },
+      { text: 'Take action to help fix the situation', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q9',
+    text: 'Your decision making style is...',
+    answers: [
+      { text: 'Intuitive and waiting for the right feeling', type: 'Y', score: 3 },
+      { text: 'Decisive with a laugh and forward momentum', type: 'A', score: 3 },
+      { text: 'Balanced between feeling and thinking', type: 'Y', score: 2 },
+      { text: 'Bold and vision-driven', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q10',
+    text: 'You recharge by...',
+    answers: [
+      { text: 'Solitude, meditation, and inner reflection', type: 'Y', score: 3 },
+      { text: 'Social connection, adventure, and laughter', type: 'A', score: 3 },
+      { text: 'Creative hobbies in a state of flow', type: 'Y', score: 2 },
+      { text: 'Leading or starting new projects', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q11',
+    text: 'When the world feels chaotic, you...',
+    answers: [
+      { text: 'Turn inward and trust the larger flow', type: 'Y', score: 3 },
+      { text: 'Laugh at the chaos and take bold action', type: 'A', score: 3 },
+      { text: 'Seek quiet to regain clarity', type: 'Y', score: 2 },
+      { text: 'Organize and lead others through it', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q12',
+    text: 'Your greatest strength is...',
+    answers: [
+      { text: 'Deep empathy and intuitive understanding', type: 'Y', score: 3 },
+      { text: 'Joyful leadership and decisive action', type: 'A', score: 3 },
+      { text: 'Creative flow and seeing beauty in everything', type: 'Y', score: 2 },
+      { text: 'Inspiring others with humor and vision', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q13',
+    text: 'In relationships you tend to...',
+    answers: [
+      { text: 'Listen and hold space for the other', type: 'Y', score: 3 },
+      { text: 'Bring energy, laughter, and bold love', type: 'A', score: 3 },
+      { text: 'Mirror their emotions with empathy', type: 'Y', score: 2 },
+      { text: 'Lead with clear boundaries and joy', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q14',
+    text: 'When you receive a big dream, you...',
+    answers: [
+      { text: 'Surrender and let the universe guide the timing', type: 'Y', score: 3 },
+      { text: 'Take immediate action with joyful expectation', type: 'A', score: 3 },
+      { text: 'Journal and feel into it deeply', type: 'Y', score: 2 },
+      { text: 'Declare it boldly and move', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q15',
+    text: 'Your natural state is...',
+    answers: [
+      { text: 'Receptive, calm, and connected to the flow', type: 'Y', score: 3 },
+      { text: 'Joyful, decisive, and full of laughter', type: 'A', score: 3 },
+      { text: 'Reflective and intuitive', type: 'Y', score: 2 },
+      { text: 'Energetic and leading with vision', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q16',
+    text: 'When something ends, you...',
+    answers: [
+      { text: 'Allow the grief and trust the next beginning', type: 'Y', score: 3 },
+      { text: 'Laugh at the closure and leap into the new', type: 'A', score: 3 },
+      { text: 'Reflect on the lessons with gratitude', type: 'Y', score: 2 },
+      { text: 'Celebrate and move on with momentum', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q17',
+    text: 'You express love by...',
+    answers: [
+      { text: 'Deep listening and being fully present', type: 'Y', score: 3 },
+      { text: 'Bold gestures, laughter, and adventure', type: 'A', score: 3 },
+      { text: 'Quiet acts of service and care', type: 'Y', score: 2 },
+      { text: 'Inspiring and leading with joy', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q18',
+    text: 'Your relationship with time is...',
+    answers: [
+      { text: 'Patient and trusting the perfect timing', type: 'Y', score: 3 },
+      { text: 'Urgent and seizing the moment with laughter', type: 'A', score: 3 },
+      { text: 'Reflective and savoring the now', type: 'Y', score: 2 },
+      { text: 'Decisive and action-oriented', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q19',
+    text: 'When you see injustice, you...',
+    answers: [
+      { text: 'Hold space and send loving energy', type: 'Y', score: 3 },
+      { text: 'Take bold action and rally others with joy', type: 'A', score: 3 },
+      { text: 'Reflect on the larger cosmic picture', type: 'Y', score: 2 },
+      { text: 'Lead the change with decisive vision', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q20',
+    text: 'Your inner voice sounds like...',
+    answers: [
+      { text: 'Gentle guidance and intuitive knowing', type: 'Y', score: 3 },
+      { text: 'Bold encouragement and laughter at fear', type: 'A', score: 3 },
+      { text: 'Quiet wisdom and deep feeling', type: 'Y', score: 2 },
+      { text: 'Decisive commands to take action', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q21',
+    text: 'You feel most connected to the universe when...',
+    answers: [
+      { text: 'In silent meditation or nature', type: 'Y', score: 3 },
+      { text: 'Dancing, laughing, or creating boldly', type: 'A', score: 3 },
+      { text: 'Journaling and feeling the flow', type: 'Y', score: 2 },
+      { text: 'Leading a group in joyful purpose', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q22',
+    text: 'Your shadow pattern is...',
+    answers: [
+      { text: 'Over-giving or losing yourself in others', type: 'Y', score: 3 },
+      { text: 'Pushing too hard or forcing outcomes', type: 'A', score: 3 },
+      { text: 'Avoiding action by over-reflecting', type: 'Y', score: 2 },
+      { text: 'Dominating instead of leading with love', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q23',
+    text: 'The best advice you've ever received was...',
+    answers: [
+      { text: 'Trust the flow and release control', type: 'Y', score: 3 },
+      { text: 'Laugh at fear and take the leap', type: 'A', score: 3 },
+      { text: 'Listen to your inner guidance', type: 'Y', score: 2 },
+      { text: 'Lead with joy and bold vision', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q24',
+    text: 'Your favorite way to celebrate is...',
+    answers: [
+      { text: 'Quiet gratitude and reflection', type: 'Y', score: 3 },
+      { text: 'Big laughter, music, and dancing', type: 'A', score: 3 },
+      { text: 'Sharing with close friends in intimacy', type: 'Y', score: 2 },
+      { text: 'Leading a celebration for others', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q25',
+    text: 'When you wake up in the morning, you...',
+    answers: [
+      { text: 'Lie in bed feeling the energy of the day', type: 'Y', score: 3 },
+      { text: 'Jump up with a laugh and start the adventure', type: 'A', score: 3 },
+      { text: 'Meditate or journal to set the tone', type: 'Y', score: 2 },
+      { text: 'Declare the day with bold intention', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q26',
+    text: 'Your relationship with money is...',
+    answers: [
+      { text: 'Trusting that it flows when you align', type: 'Y', score: 3 },
+      { text: 'Using it boldly to create joy and freedom', type: 'A', score: 3 },
+      { text: 'Seeing it as energy to receive with gratitude', type: 'Y', score: 2 },
+      { text: 'Using it to lead and manifest vision', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q27',
+    text: 'The most important thing in life is...',
+    answers: [
+      { text: 'Inner peace and connection to the flow', type: 'Y', score: 3 },
+      { text: 'Joy, laughter, and bold self-expression', type: 'A', score: 3 },
+      { text: 'Deep relationships and empathy', type: 'Y', score: 2 },
+      { text: 'Leadership and creating positive change', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q28',
+    text: 'When you make a mistake, you...',
+    answers: [
+      { text: 'Reflect, forgive yourself, and release it', type: 'Y', score: 3 },
+      { text: 'Laugh at it and use it as fuel to move forward', type: 'A', score: 3 },
+      { text: 'Journal the lesson and integrate it', type: 'Y', score: 2 },
+      { text: 'Own it boldly and inspire others with the story', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q29',
+    text: 'Your ideal future self is...',
+    answers: [
+      { text: 'Peaceful, receptive, and deeply connected', type: 'Y', score: 3 },
+      { text: 'Joyful, free, and leading with laughter', type: 'A', score: 3 },
+      { text: 'Creative and in constant flow', type: 'Y', score: 2 },
+      { text: 'A beacon of bold, loving leadership', type: 'A', score: 2 },
+    ]
+  },
+  {
+    id: 'q30',
+    text: 'The universe speaks to you through...',
+    answers: [
+      { text: 'Synchronicities, feelings, and inner knowing', type: 'Y', score: 3 },
+      { text: 'Opportunities, laughter, and bold signs', type: 'A', score: 3 },
+      { text: 'Quiet moments and dreams', type: 'Y', score: 2 },
+      { text: 'Action and the results of your leaps', type: 'A', score: 2 },
+    ]
+  }
+];
   {
     id: 'q_s_02',
     text: 'What you care about most is...',

@@ -135,8 +135,8 @@ function setProgress(idx) {
 // ── Quiz Logic ────────────────────────────────────────────────────────────────
 function startQuiz() {
   current    = 0;
-  rawScores  = { S: 0, A: 0, W: 0, P: 0, Sc: 0, Pr: 0, K: 0 };
-  typeCounts = { S: 0, A: 0, W: 0, P: 0, Sc: 0, Pr: 0, K: 0 };
+  rawScores  = { Y: 0, A: 0 };
+  typeCounts = { Y: 0, A: 0 };
   sessionQuestions = buildSession();
   showScreen('quiz-screen');
   renderQuestion();
@@ -227,6 +227,27 @@ function advance() {
 }
 
 // ── Results ───────────────────────────────────────────────────────────────────
+const soulTypes = {
+  'Y': {
+    emoji: '🌊',
+    name: 'Yin Flow',
+    tagline: 'Receptive, intuitive, and trusting the flow',
+    mission: 'To receive and allow the universe to deliver with ease',
+    trap: 'Over-giving or losing yourself in others',
+    activation: 'Add joyful Yang action and laughter to accelerate results',
+    planet: 'Water or Earth'
+  },
+  'A': {
+    emoji: '☀️',
+    name: 'Yang Fire',
+    tagline: 'Decisive, joyful, and leading with laughter',
+    mission: 'To act boldly and liberate with Gear 5 joy',
+    trap: 'Forcing outcomes or pushing too hard',
+    activation: 'Balance with Yin flow, trust, and receptive listening',
+    planet: 'Fire or Air'
+  }
+};
+
 function showResults() {
   // Normalize: divide raw score by number of questions that targeted each type
   // This prevents bias from random pulls with uneven type coverage
