@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Milo Test Page - Press 'M' or click the button</title>
+  <title>Milo Test Page - The exact character from the book cover</title>
   <style>
     body {
       margin: 0;
@@ -27,115 +27,37 @@
     #milo {
       position: fixed;
       z-index: 10;
-      width: 110px;
-      height: 140px;
+      width: 180px;
+      height: 220px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.5s ease;
+      object-fit: cover;
+      object-position: center 20%; /* Crop to focus on the character, not the text */
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(255,240,100,0.6);
     }
-    /* Head -->
-    #milo-head {
-      position: absolute;
-      top: 5px;
-      left: 20px;
-      width: 72px;
-      height: 72px;
-      background: #ffeb3b;
-      border-radius: 50%;
-      box-shadow: 0 6px 0 #fbc02d;
-      z-index: 3;
+    @keyframes miloFly {
+      0% { transform: translateX(-200px) translateY(0px) rotate(-12deg); }
+      25% { transform: translateX(25vw) translateY(-40px) rotate(8deg); }
+      50% { transform: translateX(55vw) translateY(30px) rotate(-8deg); }
+      75% { transform: translateX(80vw) translateY(-25px) rotate(10deg); }
+      100% { transform: translateX(125vw) translateY(15px) rotate(-5deg); }
     }
-    /* Ears -->
-    #milo-ear-left, #milo-ear-right {
-      position: absolute;
-      top: 10px;
-      width: 22px;
-      height: 28px;
-      background: #ffeb3b;
-      z-index: 2;
+    #milo.flying {
+      animation: miloFly 8.5s linear forwards;
+      opacity: 1;
     }
-    #milo-ear-left { left: 10px; border-radius: 50% 10% 40% 60%; transform: rotate(-35deg); }
-    #milo-ear-right { left: 78px; border-radius: 10% 50% 60% 40%; transform: rotate(35deg); }
-    /* Eyes -->
-    #milo-eye-left, #milo-eye-right {
-      position: absolute;
-      top: 25px;
-      width: 16px;
-      height: 22px;
-      background: #fff;
-      border-radius: 50%;
-      box-shadow: inset 0 4px 0 #333;
-      z-index: 4;
-    }
-    #milo-eye-left { left: 32px; }
-    #milo-eye-right { left: 60px; }
-    /* Pupils -->
-    #milo-pupil-left, #milo-pupil-right {
-      position: absolute;
-      top: 30px;
-      width: 7px;
-      height: 10px;
-      background: #222;
-      border-radius: 50%;
-      z-index: 5;
-      transition: transform 0.2s;
-    }
-    #milo-pupil-left { left: 37px; }
-    #milo-pupil-right { left: 65px; }
-    /* Smile -->
-    #milo-smile {
-      position: absolute;
-      top: 46px;
-      left: 37px;
-      width: 36px;
-      height: 10px;
-      border: 3px solid #222;
-      border-top: none;
-      border-radius: 0 0 50px 50px;
-      z-index: 4;
-    }
-    /* Body -->
-    #milo-body {
-      position: absolute;
-      top: 72px;
-      left: 23px;
-      width: 64px;
-      height: 58px;
-      background: #ffeb3b;
-      border-radius: 25px;
-      box-shadow: 0 6px 0 #fbc02d;
-      z-index: 1;
-    }
-    /* Heart -->
-    #milo-heart {
-      position: absolute;
-      top: 85px;
-      left: 42px;
-      font-size: 24px;
-      color: #e91e63;
-      z-index: 2;
-    }
-    /* Flapping wings -->
-    #milo-wing-left, #milo-wing-right {
-      position: absolute;
-      top: 82px;
-      width: 28px;
-      height: 18px;
-      background: #ffeb3b;
-      box-shadow: 0 4px 0 #fbc02d;
-      z-index: 0;
-      transition: transform 0.18s ease;
-    }
-    #milo-wing-left { left: 5px; border-radius: 70% 10% 30% 70%; transform: rotate(-45deg); }
-    #milo-wing-right { left: 77px; border-radius: 10% 70% 70% 30%; transform: rotate(45deg); }
   </style>
 </head>
 <body>
   <div class="stars" id="stars"></div>
   
-  <div style="position:fixed; top:20px; left:20px; color:#f0c040; font-size:18px; z-index:100; text-shadow:0 0 10px #f0c040;">Milo Test Page — Click the button or press 'M'</div>
+  <div style="position:fixed; top:20px; left:20px; color:#f0c040; font-size:18px; z-index:100; text-shadow:0 0 10px #f0c040;">Milo Test Page — Exact character from the book cover (cropped and animated). Press 'M' or click the button.</div>
   
   <button onclick="flyMilo()" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9999;background:#f0c040;color:#111;padding:14px 32px;border:none;border-radius:9999px;font-size:16px;cursor:pointer;box-shadow:0 8px 25px rgba(240,192,64,0.6);font-weight:700;">🐦 Click to Make Milo Fly (or press M)</button>
+  
+  <img id="milo" src="milo.jpg" alt="Milo">
   
   <script>
     // Create stars
@@ -161,64 +83,24 @@
     style.textContent = `@keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }`;
     document.head.appendChild(style);
     
-    const milo = document.createElement('div');
-    milo.id = 'milo';
-    milo.innerHTML = `
-      <!-- Head -->
-      <div id="milo-head" style="position:absolute; top:5px; left:20px; width:72px; height:72px; background:#ffeb3b; border-radius:50%; box-shadow:0 6px 0 #fbc02d; z-index:3;"></div>
-      <!-- Ears -->
-      <div id="milo-ear-left" style="position:absolute; top:10px; left:10px; width:22px; height:28px; background:#ffeb3b; border-radius:50% 10% 40% 60%; transform:rotate(-35deg); z-index:2;"></div>
-      <div id="milo-ear-right" style="position:absolute; top:10px; left:78px; width:22px; height:28px; background:#ffeb3b; border-radius:10% 50% 60% 40%; transform:rotate(35deg); z-index:2;"></div>
-      <!-- Eyes -->
-      <div id="milo-eye-left" style="position:absolute; top:25px; left:32px; width:16px; height:22px; background:#fff; border-radius:50%; box-shadow:inset 0 4px 0 #333; z-index:4;"></div>
-      <div id="milo-eye-right" style="position:absolute; top:25px; left:60px; width:16px; height:22px; background:#fff; border-radius:50%; box-shadow:inset 0 4px 0 #333; z-index:4;"></div>
-      <!-- Pupils -->
-      <div id="milo-pupil-left" style="position:absolute; top:30px; left:37px; width:7px; height:10px; background:#222; border-radius:50%; z-index:5; transition:transform 0.2s;"></div>
-      <div id="milo-pupil-right" style="position:absolute; top:30px; left:65px; width:7px; height:10px; background:#222; border-radius:50%; z-index:5;"></div>
-      <!-- Smile -->
-      <div id="milo-smile" style="position:absolute; top:46px; left:37px; width:36px; height:10px; border:3px solid #222; border-top:none; border-radius:0 0 50px 50px; z-index:4;"></div>
-      <!-- Body -->
-      <div id="milo-body" style="position:absolute; top:72px; left:23px; width:64px; height:58px; background:#ffeb3b; border-radius:25px; box-shadow:0 6px 0 #fbc02d; z-index:1;"></div>
-      <!-- Heart -->
-      <div id="milo-heart" style="position:absolute; top:85px; left:42px; font-size:24px; color:#e91e63; z-index:2;">♥</div>
-      <!-- Flapping wings -->
-      <div id="milo-wing-left" style="position:absolute; top:82px; left:5px; width:28px; height:18px; background:#ffeb3b; border-radius:70% 10% 30% 70%; transform:rotate(-45deg); box-shadow:0 4px 0 #fbc02d; z-index:0; transition:transform 0.18s ease;"></div>
-      <div id="milo-wing-right" style="position:absolute; top:82px; left:77px; width:28px; height:18px; background:#ffeb3b; border-radius:10% 70% 70% 30%; transform:rotate(45deg); box-shadow:0 4px 0 #fbc02d; z-index:0; transition:transform 0.18s ease;"></div>
-    `;
-    document.body.appendChild(milo);
-    
-    let animationFrame;
-    let startTime;
-    let flightDuration;
-    let startBottom;
-    
-    function animateMilo(timestamp) {
-      if (!startTime) startTime = timestamp;
-      const progress = (timestamp - startTime) / flightDuration;
-      
-      if (progress < 1) {
-        const x = progress * window.innerWidth * 1.3;
-        const y = Math.sin(progress * Math.PI * 3) * 60; // bobbing
-        milo.style.transform = `translate(${x}px, ${y}px)`;
-        animationFrame = requestAnimationFrame(animateMilo);
-      } else {
-        cancelAnimationFrame(animationFrame);
-        milo.style.opacity = '0';
-        milo.style.transform = 'translate(-250px, 0px)';
-        startTime = null;
-      }
-    }
+    const milo = document.getElementById('milo');
     
     function flyMilo() {
-      startBottom = 15 + Math.random() * 60;
-      flightDuration = 6000 + Math.random() * 5000; // 6-11 seconds
+      const startBottom = 15 + Math.random() * 60;
+      const duration = 6 + Math.random() * 7;
       milo.style.bottom = startBottom + '%';
-      milo.style.left = '0';
+      milo.style.left = '-200px';
+      milo.style.opacity = '0';
+      void milo.offsetWidth;
+      milo.style.transition = 'opacity 0.4s ease';
       milo.style.opacity = '1';
-      milo.style.transform = 'translate(-250px, 0px)';
-      startTime = null;
-      animationFrame = requestAnimationFrame(animateMilo);
-      console.log('%cMilo flying! (random path, blinking eyes, flapping wings, pure JS animation to avoid CSP issues)', 'color:#f0c040;font-size:14px');
+      milo.classList.add('flying');
+      setTimeout(() => {
+        milo.classList.remove('flying');
+        milo.style.opacity = '0';
+        milo.style.left = '-200px';
+      }, duration * 1000);
+      console.log('%cMilo flying! (exact character from the book cover, cropped to focus on the character, random path, pure animation)', 'color:#f0c040;font-size:14px');
     }
     
     // 'M' key
@@ -228,13 +110,13 @@
     
     // Auto trigger
     setInterval(() => {
-      if (Math.random() > 0.4) flyMilo();
+      if (Math.random() > 0.3) flyMilo();
     }, 12000);
     
     // Initial
     setTimeout(flyMilo, 800);
     
-    console.log('%cMilo test page ready. Pure JS animation (no dynamic CSS keyframes to avoid CSP). Click the button or press M to make him fly with random path. The character is fully animated CSS (blinking eyes, flapping wings).', 'color:#f0c040;font-size:14px');
+    console.log('%cTest page ready. The image is the exact book cover character (cropped with object-position to focus on Milo, not the text). Click the button or press M to make him fly with random path. No CSP issues.', 'color:#f0c040;font-size:14px');
   </script>
 </body>
 </html>
