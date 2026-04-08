@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Your Plan | Miracle University</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="../stars.js" defer></script>
+  <style>
+    body { background: #0a0a1a; color: #e8e0f0; }
+    .lang-toggle {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: rgba(15,15,36,0.9);
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 13px;
+      z-index: 100;
+    }
+    .lang-toggle a {
+      color: #c39bd3;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    .lang-toggle a.active {
+      color: #f0c040;
+      font-weight: 700;
+    }
+    .pricing-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      position: relative;
+      z-index: 2;
+    }
+    .plan-card {
+      background: rgba(15,15,36,0.95);
+      border: 1px solid rgba(240,192,64,0.25);
+      border-radius: 24px;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+      transition: transform 0.3s ease;
+    }
+    .plan-card:hover {
+      transform: translateY(-8px);
+    }
+    .recommended {
+      position: absolute;
+      top: -14px;
+      right: 32px;
+      background: linear-gradient(90deg, #f0c040, #c39bd3);
+      color: #0a0a1a;
+      font-size: 0.8rem;
+      padding: 4px 20px;
+      border-radius: 9999px;
+      font-weight: 700;
+      box-shadow: 0 10px 15px -3px rgb(240 192 64);
+    }
+    .price {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #f0c040;
+      margin: 16px 0;
+    }
+    .plan-title {
+      background: rgba(240,192,64,0.1);
+      color: #f0c040;
+      padding: 6px 20px;
+      border-radius: 9999px;
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .features {
+      list-style: none;
+      margin: 24px 0;
+    }
+    .features li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(240,192,64,0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .features li:last-child {
+      border-bottom: none;
+    }
+    .btn-apply {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-group {
+      background: transparent;
+      border: 2px solid #f0c040;
+      color: #f0c040;
+    }
+    .btn-premium {
+      background: linear-gradient(to right, #f0c040, #c39bd3);
+      color: #0a0a1a;
+      border: none;
+    }
+    .top-note {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.95rem;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .back-link {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      color: #c39bd3;
+      text-decoration: none;
+      font-size: 0.95rem;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <a href="../index.html" class="back-link">← Back to Main</a>
+  
+  <div class="lang-toggle">
+    <a href="../payment.html">JP</a> | <a href="payment.html" class="active">EN</a>
+  </div>
+  
+  <div style="text-align:center;padding-top:80px;position:relative;z-index:2;">
+    <div style="font-size:2.8rem;margin-bottom:8px;">🌌</div>
+    <h1 style="font-size:2.4rem;color:#f0c040;margin-bottom:8px;">Choose Your Plan</h1>
+    <div class="top-note">
+      Installment payments available. Refunds not possible but term changes are.
+    </div>
+  </div>
+
+  <div class="pricing-container">
+    <!-- Group Plan -->
+    <div class="plan-card">
+      <div class="plan-title">GROUP COURSE</div>
+      <div class="price">$3,800</div>
+      <div style="color:#aaa;font-size:0.95rem;margin-bottom:24px;">6-Month Term Program</div>
+      
+      <ul class="features">
+        <li>🌙 Monthly Nao Group Zoom (90 min)</li>
+        <li>📝 Monthly Homework Delivery</li>
+        <li>📊 Member-Only Dashboard</li>
+        <li>👥 Limited to max 300 members</li>
+        <li>💳 Installment payment consultation available</li>
+      </ul>
+      
+      <button onclick="window.location.href='https://buy.stripe.com/placeholder-group'" class="btn-apply btn-group">
+        Apply with this plan
+      </button>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="plan-card" style="border-color:#f0c040;box-shadow:0 0 40px rgba(240,192,64,0.3);">
+      <div class="recommended">⭐ RECOMMENDED</div>
+      <div class="plan-title" style="background:#c39bd3;color:#0a0a1a;">GROUP + PRIVATE</div>
+      <div class="price" style="color:#f0c040;">$5,500</div>
+      <div style="color:#aaa;font-size:0.95rem;margin-bottom:24px;">6 Months + 30 min 1:1 with Nao</div>
+      
+      <ul class="features">
+        <li>🌟 Includes all Group Course features</li>
+        <li>👤 30-min private session with Nao</li>
+        <li>🔮 Individual cosmic reading included</li>
+        <li>🚀 Priority support</li>
+        <li>💳 Installment payment consultation available</li>
+      </ul>
+      
+      <button onclick="window.location.href='https://buy.stripe.com/placeholder-private'" class="btn-apply btn-premium">
+        Apply with this plan
+      </button>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:60px;padding-bottom:80px;color:#888;font-size:0.9rem;position:relative;z-index:2;">
+    Payments securely processed via Stripe<br>
+    Already a member? <a href="../login.html" style="color:#c39bd3;">Login here</a>
+  </div>
+
+  <script>
+    initStars(220);
+  </script>
+</body>
+</html>
