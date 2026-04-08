@@ -27,7 +27,6 @@
   <script>
     const milo = document.getElementById('milo');
     function flyMilo() {
-      if (Math.random() > 0.6) return; // random chance
       milo.classList.add('flying');
       setTimeout(() => {
         milo.classList.remove('flying');
@@ -35,10 +34,19 @@
         milo.style.opacity = '0';
       }, 9500);
     }
-    // Trigger occasionally
-    setInterval(flyMilo, 25000);
-    // Initial chance
-    setTimeout(flyMilo, 8000);
+    // Trigger occasionally (increased frequency for visibility)
+    setInterval(() => {
+      if (Math.random() > 0.3) flyMilo(); // 70% chance every 15s
+    }, 15000);
+    // Initial fly
+    setTimeout(flyMilo, 3000);
+    
+    // Secret keyboard combination: press "M" to force Milo to fly by
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'm') {
+        flyMilo();
+      }
+    });
   </script>
 <body>
 
