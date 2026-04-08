@@ -9,6 +9,7 @@ Nao Stanton's group consulting platform. Cosmic aesthetic matching the Soul Miss
 | `index.html` | / | Landing/sales page with pricing |
 | `login.html` | /login | Member login |
 | `dashboard.html` | /dashboard | Member dashboard (cohort, Zoom, homework) |
+| `community.html` | /community | **Discord-like Community Campus** — full interactive chat UI inspired by The Real World. Joy Boy energy, soul mission channels, viral lab, live voice simulation, persistent local messages. |
 | `admin.html` | /admin | Admin panel (password protected) |
 
 ## Credentials
