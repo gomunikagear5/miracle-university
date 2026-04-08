@@ -250,12 +250,6 @@ function setupAccordions() {
 }
 
 // Milo Easter Egg - flies across background occasionally (only on main page)
-const milo = document.createElement('img');
-milo.id = 'milo';
-milo.src = 'milo.jpg';
-milo.alt = 'Milo';
-milo.style.cssText = `position:fixed; bottom:25%; left:-180px; width:90px; height:90px; z-index:5; opacity:0; pointer-events:none; filter:drop-shadow(0 15px 25px rgba(255,230,120,0.7)); transition:opacity 0.6s ease; image-rendering:pixelated;`;
-document.body.appendChild(milo);
 
 function flyMilo() {
   // Randomize every flight for variety
@@ -263,20 +257,12 @@ function flyMilo() {
   const duration = 6 + Math.random() * 7; // 6-13 seconds
   const rotationRange = 8 + Math.random() * 12; // random rotation amount
   
-  milo.style.bottom = startBottom + '%';
-  milo.style.transition = 'none';
-  milo.style.left = '-180px';
-  milo.style.opacity = '0';
   
   // Force reflow
-  void milo.offsetWidth;
   
-  milo.style.transition = `opacity 0.4s ease, transform ${duration}s linear`;
-  milo.style.opacity = '1';
   
   // Random path with bob
   const keyframes = `
-    @keyframes miloFly${Date.now()} {
       0% { transform: translateX(-180px) translateY(0px) rotate(-${rotationRange}deg); }
       25% { transform: translateX(25vw) translateY(-${15 + Math.random()*40}px) rotate(${rotationRange/2}deg); }
       50% { transform: translateX(55vw) translateY(${10 + Math.random()*40}px) rotate(-${rotationRange}deg); }
@@ -288,11 +274,8 @@ function flyMilo() {
   style.textContent = keyframes;
   document.head.appendChild(style);
   
-  milo.style.animation = `miloFly${Date.now()} ${duration}s linear forwards`;
   
   setTimeout(() => {
-    milo.style.animation = '';
-    milo.style.opacity = '0';
     style.remove();
   }, duration * 1000 + 100);
 }
