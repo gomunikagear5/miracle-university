@@ -293,41 +293,62 @@ const milo = document.createElement('img');
 milo.id = 'milo';
 milo.src = 'milo.png';
 milo.alt = 'Milo';
-milo.style.cssText = 'position:fixed; bottom:25%; left:-180px; width:90px; height:90px; z-index:5; opacity:0; pointer-events:none; filter:drop-shadow(0 15px 25px rgba(255,230,120,0.7)); transition:opacity 0.6s ease;';
+milo.style.cssText = `position:fixed; bottom:25%; left:-180px; width:90px; height:90px; z-index:5; opacity:0; pointer-events:none; filter:drop-shadow(0 15px 25px rgba(255,230,120,0.7)); transition:opacity 0.6s ease; image-rendering:pixelated;`;
 document.body.appendChild(milo);
 
 function flyMilo() {
+  // Randomize every flight for variety
+  const startBottom = 15 + Math.random() * 55; // random height 15-70% from bottom
+  const duration = 6 + Math.random() * 7; // 6-13 seconds
+  const rotationRange = 8 + Math.random() * 12; // random rotation amount
+  
+  milo.style.bottom = startBottom + '%';
+  milo.style.transition = 'none';
+  milo.style.left = '-180px';
+  milo.style.opacity = '0';
+  
+  // Force reflow
+  void milo.offsetWidth;
+  
+  milo.style.transition = `opacity 0.4s ease, transform ${duration}s linear`;
   milo.style.opacity = '1';
-  milo.classList.add('flying');
+  
+  // Random path with bob
+  const keyframes = `
+    @keyframes miloFly${Date.now()} {
+      0% { transform: translateX(-180px) translateY(0px) rotate(-${rotationRange}deg); }
+      25% { transform: translateX(25vw) translateY(-${15 + Math.random()*40}px) rotate(${rotationRange/2}deg); }
+      50% { transform: translateX(55vw) translateY(${10 + Math.random()*40}px) rotate(-${rotationRange}deg); }
+      75% { transform: translateX(80vw) translateY(-${10 + Math.random()*30}px) rotate(${rotationRange}deg); }
+      100% { transform: translateX(120vw) translateY(${5 + Math.random()*20}px) rotate(-3deg); }
+    }
+  `;
+  const style = document.createElement('style');
+  style.textContent = keyframes;
+  document.head.appendChild(style);
+  
+  milo.style.animation = `miloFly${Date.now()} ${duration}s linear forwards`;
+  
   setTimeout(() => {
-    milo.classList.remove('flying');
-    milo.style.left = '-180px';
+    milo.style.animation = '';
     milo.style.opacity = '0';
-  }, 8500);
+    style.remove();
+  }, duration * 1000 + 100);
 }
 
-@keyframes miloFly {
-  0% { transform: translateX(-180px) translateY(0px) rotate(-12deg); }
-  20% { transform: translateX(25vw) translateY(-40px) rotate(8deg); }
-  45% { transform: translateX(55vw) translateY(30px) rotate(-6deg); }
-  70% { transform: translateX(80vw) translateY(-25px) rotate(10deg); }
-  100% { transform: translateX(120vw) translateY(15px) rotate(-5deg); }
-}
-const style = document.createElement('style');
-style.textContent = `@keyframes miloFly { ${miloFly.toString().match(/\{([\s\S]*?)\}/)[1]} } #milo.flying { animation: miloFly 8.5s linear forwards; }`;
-document.head.appendChild(style);
-
-// Trigger randomly (more frequently for visibility)
+// Trigger randomly
 setInterval(() => {
-  if (Math.random() > 0.35) flyMilo(); // ~65% chance every 18 seconds
-}, 18000);
+  if (Math.random() > 0.4) flyMilo(); // good visibility
+}, 14000);
 
 // Initial fly
-setTimeout(flyMilo, 4500);
+setTimeout(flyMilo, 2500);
 
-// Secret keyboard: press "M" to force Milo to fly
+// Secret keyboard: press "M" to force random Milo flight
 document.addEventListener('keydown', e => {
-  if (e.key.toLowerCase() === 'm') flyMilo();
+  if (e.key.toLowerCase() === 'm') {
+    flyMilo();
+  }
 });
 </script>
 </body>
