@@ -268,21 +268,56 @@ document.addEventListener('DOMContentLoaded', () => {
       bankProgress = Math.min(100, bankProgress + (cleared / 100));
       document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
       document.getElementById('bank-progress').style.width = bankProgress + '%';
-      const affirmation = 'I release money conflicts and allow abundance to flow freely.';
-      alert(`✨ Conflicts cleared: -$${cleared}\nAffirmation: ${affirmation}`);
+      // Near-miss pulse if close to 100%
+      if (bankProgress > 90) {
+        document.getElementById('bank-progress').style.animation = 'pulse 0.5s';
+      }
+      const affirmation = 'I release money conflicts and allow abundance to flow freely. 😂 Joy Boy laughs at the blocks!';
+      alert(`✨ Conflicts cleared: -$${cleared} (April Week 1 belief clear bonus!)\nAffirmation: ${affirmation}\n🌟 Cosmic Burst!`);
       // Update history
       const history = document.getElementById('bank-history');
       const newTrans = `<div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span>- $${cleared} Conflict Cleared</span>
+        <span>- $${cleared} Conflict Cleared (Week 2 affirmation)</span>
         <span style="color:#0f0;">+${Math.round((cleared / bankBalance) * 100)}%</span>
       </div>`;
       history.insertAdjacentHTML('afterbegin', newTrans);
+      // Intermittent burst
+      if (Math.random() < 0.3) {
+        const burst = 25;
+        credits += burst;
+        bankBalance += burst * 10;
+        alert(`🎉 Random Cosmic Burst! +${burst} credits +$${burst * 10} to bank - Keep the flow!`);
+        document.getElementById('credit-balance').textContent = credits;
+        document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
+      }
+      // Save to ClawVault
+      fetch('/api/save', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({bankBalance, conflicts, credits, streak, user: sessionStorage.getItem('mu_user_email')})
+      }).then(r => console.log('Saved to ClawVault'));
       console.log('Conflicts cleared, bank updated');
     } else {
-      alert('No conflicts to clear! Keep manifesting. 🌟');
+      alert('No conflicts to clear! Keep manifesting with Week 3 giving. 🌟');
     }
-    // TODO: save to ClawVault JSON via API
   };
+
+  // Add CSS for pulse animation
+  const style = document.createElement('style');
+  style.textContent = '@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }';
+  document.head.appendChild(style);
+
+  // Loss aversion on streak reset (simulated daily check)
+  const lastLogin = localStorage.getItem('lastLogin');
+  const today = new Date().toDateString();
+  if (lastLogin !== today) {
+    if (streak > 1) {
+      alert('Streak broken—restart the flames! Log in daily to build the multiplier. 🔥😂');
+      streak = 1;
+      document.getElementById('streak-count').textContent = streak + ' 🔥';
+    }
+    localStorage.setItem('lastLogin', today);
+  }
 });
 </script>
 </body>
