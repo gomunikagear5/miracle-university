@@ -108,11 +108,22 @@
     </div>
   </div>
 
-  <!-- Member Table -->
+  <!-- Member Management -->
   <div class="card fade-in" style="animation-delay:0.5s;">
-    <h3 style="margin-bottom:20px;">👥 メンバー一覧（デモ）</h3>
+    <h3 style="margin-bottom:20px;">👥 メンバー管理</h3>
+    <div style="margin-bottom:20px;">
+      <h4 style="margin-bottom:8px;">新メンバー追加</h4>
+      <div class="form-group">
+        <input type="text" id="new-name" placeholder="名前">
+        <input type="email" id="new-email" placeholder="メール">
+        <input type="text" id="new-plan" placeholder="プラン">
+        <input type="date" id="new-join-date" placeholder="参加日">
+        <input type="text" id="new-status" placeholder="ステータス" value="アクティブ">
+        <button class="btn btn-gold" onclick="addMember()" style="width:100%;margin-top:10px;">追加</button>
+      </div>
+    </div>
     <div style="overflow-x:auto;">
-      <table>
+      <table id="member-table">
         <thead>
           <tr>
             <th>名前</th>
@@ -120,45 +131,10 @@
             <th>プラン</th>
             <th>参加日</th>
             <th>ステータス</th>
+            <th>アクション</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>田中 美咲</td>
-            <td>misaki.t@example.com</td>
-            <td><span class="badge badge-purple">グループ+個別</span></td>
-            <td>2026-01-05</td>
-            <td><span class="badge badge-gold">アクティブ</span></td>
-          </tr>
-          <tr>
-            <td>Yuki Nakamura</td>
-            <td>yuki.n@example.com</td>
-            <td><span class="badge badge-gold">グループ</span></td>
-            <td>2026-01-08</td>
-            <td><span class="badge badge-gold">アクティブ</span></td>
-          </tr>
-          <tr>
-            <td>佐藤 花子</td>
-            <td>hanako.s@example.com</td>
-            <td><span class="badge badge-purple">グループ+個別</span></td>
-            <td>2026-01-10</td>
-            <td><span class="badge badge-gold">アクティブ</span></td>
-          </tr>
-          <tr>
-            <td>山本 陽子</td>
-            <td>yoko.y@example.com</td>
-            <td><span class="badge badge-gold">グループ</span></td>
-            <td>2026-01-12</td>
-            <td><span class="badge badge-gold">アクティブ</span></td>
-          </tr>
-          <tr>
-            <td>Emma Suzuki</td>
-            <td>emma.s@example.com</td>
-            <td><span class="badge badge-gold">グループ</span></td>
-            <td>2026-01-15</td>
-            <td><span class="badge badge-gold">アクティブ</span></td>
-          </tr>
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </div>
@@ -204,6 +180,7 @@ function loadStoredValues() {
 
   const count = localStorage.getItem('mu_cohort_count');
   if (count) document.getElementById('cohort-count-input').value = count;
+  renderMembers();
 }
 
 function saveZoom() {
@@ -272,6 +249,75 @@ https://miracle-university.github.io
 ━━━━━━━━━━━━━━━━━━━━`;
 
   document.getElementById('email-output').value = template;
+}
+
+let members = JSON.parse(localStorage.getItem('mu_members')) || [
+  {name: '田中 美咲', email: 'misaki.t@example.com', plan: 'グループ+個別', joinDate: '2026-01-05', status: 'アクティブ'},
+  {name: 'Yuki Nakamura', email: 'yuki.n@example.com', plan: 'グループ', joinDate: '2026-01-08', status: 'アクティブ'},
+  {name: '佐藤 花子', email: 'hanako.s@example.com', plan: 'グループ+個別', joinDate: '2026-01-10', status: 'アクティブ'},
+  {name: '山本 陽子', email: 'yoko.y@example.com', plan: 'グループ', joinDate: '2026-01-12', status: 'アクティブ'},
+  {name: 'Emma Suzuki', email: 'emma.s@example.com', plan: 'グループ', joinDate: '2026-01-15', status: 'アクティブ'}
+];
+
+function renderMembers() {
+  const tbody = document.getElementById('member-table').querySelector('tbody');
+  tbody.innerHTML = '';
+  members.forEach((m, index) => {
+    const badgeClass = m.plan.includes('+') ? 'badge-purple' : 'badge-gold';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${m.name}</td>
+      <td>${m.email}</td>
+      <td><span class="badge ${badgeClass}">${m.plan}</span></td>
+      <td>${m.joinDate}</td>
+      <td><span class="badge badge-gold">${m.status}</span></td>
+      <td>
+        <button class="btn btn-small" onclick="editMember(${index})">編集</button>
+        <button class="btn btn-small btn-outline" onclick="deleteMember(${index})">削除</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function addMember() {
+  const name = document.getElementById('new-name').value.trim();
+  const email = document.getElementById('new-email').value.trim();
+  const plan = document.getElementById('new-plan').value.trim();
+  const joinDate = document.getElementById('new-join-date').value;
+  const status = document.getElementById('new-status').value.trim();
+  if (name && email && plan && joinDate && status) {
+    members.push({name, email, plan, joinDate, status});
+    localStorage.setItem('mu_members', JSON.stringify(members));
+    renderMembers();
+    document.getElementById('new-name').value = '';
+    document.getElementById('new-email').value = '';
+    document.getElementById('new-plan').value = '';
+    document.getElementById('new-join-date').value = '';
+    document.getElementById('new-status').value = 'アクティブ';
+  } else {
+    alert('すべてのフィールドを入力してください。');
+  }
+}
+
+function editMember(index) {
+  const m = members[index];
+  const newName = prompt('名前:', m.name) || m.name;
+  const newEmail = prompt('メール:', m.email) || m.email;
+  const newPlan = prompt('プラン:', m.plan) || m.plan;
+  const newJoinDate = prompt('参加日:', m.joinDate) || m.joinDate;
+  const newStatus = prompt('ステータス:', m.status) || m.status;
+  members[index] = {name: newName, email: newEmail, plan: newPlan, joinDate: newJoinDate, status: newStatus};
+  localStorage.setItem('mu_members', JSON.stringify(members));
+  renderMembers();
+}
+
+function deleteMember(index) {
+  if (confirm('このメンバーを削除しますか?')) {
+    members.splice(index, 1);
+    localStorage.setItem('mu_members', JSON.stringify(members));
+    renderMembers();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -24,11 +24,22 @@
 <div style="position:relative;z-index:1;padding:40px 0 80px;">
 <div class="container">
 
-  <!-- Welcome -->
+  <!-- Welcome with Gamification -->
   <div style="margin-bottom:36px;" class="fade-in">
     <p class="section-label">メンバーエリア</p>
     <h1 style="font-size:2rem;margin-bottom:8px;">おかえりなさい ✦</h1>
     <p style="font-size:0.95rem;">宇宙はあなたの到着を知っていました。</p>
+    <div style="display:flex;gap:20px;align-items:center;margin-top:16px;">
+      <div style="background:rgba(212,175,55,0.1);padding:8px 16px;border-radius:12px;border:1px solid var(--gold-dim);">
+        <span style="color:var(--gold);font-size:0.8rem;">Cosmic Credits</span>
+        <span id="credit-balance" style="font-size:1.5rem;font-weight:800;color:var(--gold);display:block;">248</span>
+      </div>
+      <button onclick="dailyPull()" style="background:linear-gradient(135deg,#f0c040,#c39bd3);color:#0a0a1a;padding:8px 20px;border-radius:9999px;font-weight:700;border:none;cursor:pointer;">🌟 Daily Cosmic Pull</button>
+      <div style="background:rgba(255,255,255,0.05);padding:8px 16px;border-radius:12px;">
+        <span style="color:#ffcc00;font-size:0.8rem;">Streak</span>
+        <span id="streak-count" style="font-size:1.5rem;font-weight:800;color:#ffcc00;display:block;">7 🔥</span>
+      </div>
+    </div>
   </div>
 
   <!-- Cohort + Zoom -->
@@ -194,6 +205,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  // Gamification - Cosmic Credits and Streak
+  let credits = 248;
+  let streak = 7;
+  document.getElementById('credit-balance').textContent = credits;
+  document.getElementById('streak-count').textContent = streak + ' 🔥';
+
+  window.dailyPull = function() {
+    const multiplier = Math.min(streak + 1, 5);
+    const reward = Math.floor((10 + Math.random() * 40) * multiplier);
+    credits += reward;
+    streak += 1;
+    document.getElementById('credit-balance').textContent = credits;
+    document.getElementById('streak-count').textContent = streak + ' 🔥';
+    const msg = `🌟 Cosmic Alignment! +${reward} credits (x${multiplier} streak)`;
+    alert(msg);
+    // TODO: save to ClawVault JSON via API
+    console.log(msg);
+  };
 });
 </script>
 </body>
