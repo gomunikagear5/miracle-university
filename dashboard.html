@@ -24,18 +24,45 @@
 <div style="position:relative;z-index:1;padding:40px 0 80px;">
 <div class="container">
 
-  <!-- Welcome with Gamification -->
+  <!-- Welcome with Universe Bank -->
   <div style="margin-bottom:36px;" class="fade-in">
     <p class="section-label">メンバーエリア</p>
     <h1 style="font-size:2rem;margin-bottom:8px;">おかえりなさい ✦</h1>
     <p style="font-size:0.95rem;">宇宙はあなたの到着を知っていました。</p>
-    <div style="display:flex;gap:20px;align-items:center;margin-top:16px;">
-      <div style="background:rgba(212,175,55,0.1);padding:8px 16px;border-radius:12px;border:1px solid var(--gold-dim);">
-        <span style="color:var(--gold);font-size:0.8rem;">Cosmic Credits</span>
-        <span id="credit-balance" style="font-size:1.5rem;font-weight:800;color:var(--gold);display:block;">248</span>
+    <!-- Universe Bank Paper Account -->
+    <div class="card fade-in" style="animation-delay:0.1s;background:rgba(10,10,26,0.9);border:2px solid var(--gold);padding:16px;margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="color:var(--gold);font-weight:700;font-size:1.1rem;">🌌 UNIVERSE BANK</span>
+        <span style="color:var(--gold);font-size:0.9rem;">Paper Account</span>
       </div>
-      <button onclick="dailyPull()" style="background:linear-gradient(135deg,#f0c040,#c39bd3);color:#0a0a1a;padding:8px 20px;border-radius:9999px;font-weight:700;border:none;cursor:pointer;">🌟 Daily Cosmic Pull</button>
-      <div style="background:rgba(255,255,255,0.05);padding:8px 16px;border-radius:12px;">
+      <div style="font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:8px;" id="bank-balance">$12,450</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-bottom:16px;">Envisioned real money after program completion</div>
+      <div style="height:8px;background:rgba(255,255,255,0.1);border-radius:4px;margin-bottom:16px;">
+        <div style="width:65%;height:100%;background:linear-gradient(90deg,var(--gold),#c39bd3);border-radius:4px;"></div>
+      </div>
+      <div style="font-size:0.85rem;color:var(--muted);">Progress to full withdrawal: 65%</div>
+      <div style="margin-top:16px;">
+        <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Recent Transactions</div>
+        <div style="font-size:0.85rem;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span>+ $1,200 Course Completion</span>
+            <span style="color:#0f0;">+12%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span>- $450 Money Conflict Fee</span>
+            <span style="color:#f66;">-4%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span>+ $850 Giving Action (Ordering)</span>
+            <span style="color:#0f0;">+8%</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="clearConflicts()" style="margin-top:16px;width:100%;background:var(--gold);color:#0a0a1a;padding:10px;border:none;border-radius:8px;font-weight:700;">Clear Conflicts & Manifest</button>
+    </div>
+    <div style="display:flex;gap:20px;align-items:center;">
+      <button onclick="dailyPull()" style="background:linear-gradient(135deg,#f0c040,#c39bd3);color:#0a0a1a;padding:8px 20px;border-radius:9999px;font-weight:700;border:none;cursor:pointer;flex:1;">🌟 Daily Cosmic Pull</button>
+      <div style="background:rgba(255,255,255,0.05);padding:8px 16px;border-radius:12px;min-width:80px;text-align:center;">
         <span style="color:#ffcc00;font-size:0.8rem;">Streak</span>
         <span id="streak-count" style="font-size:1.5rem;font-weight:800;color:#ffcc00;display:block;">7 🔥</span>
       </div>
