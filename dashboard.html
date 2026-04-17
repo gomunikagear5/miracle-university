@@ -236,8 +236,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Gamification - Cosmic Credits and Streak
   let credits = 248;
   let streak = 7;
+  let bankBalance = 12450;
+  let bankProgress = 65;
+  let conflicts = 450; // Current conflict fee
   document.getElementById('credit-balance').textContent = credits;
   document.getElementById('streak-count').textContent = streak + ' 🔥';
+  document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
+  document.getElementById('bank-progress').style.width = bankProgress + '%';
 
   window.dailyPull = function() {
     const multiplier = Math.min(streak + 1, 5);
@@ -246,10 +251,37 @@ document.addEventListener('DOMContentLoaded', () => {
     streak += 1;
     document.getElementById('credit-balance').textContent = credits;
     document.getElementById('streak-count').textContent = streak + ' 🔥';
-    const msg = `🌟 Cosmic Alignment! +${reward} credits (x${multiplier} streak)`;
+    // Tie to bank: add to bank balance
+    bankBalance += reward * 10; // 1 credit = $10 envisioned
+    document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
+    const msg = `🌟 Cosmic Alignment! +${reward} credits (x${multiplier} streak) - +$${reward * 10} to Universe Bank`;
     alert(msg);
     // TODO: save to ClawVault JSON via API
     console.log(msg);
+  };
+
+  window.clearConflicts = function() {
+    if (conflicts > 0) {
+      const cleared = Math.floor(Math.random() * 200 + 100); // Random clear amount
+      conflicts = Math.max(0, conflicts - cleared);
+      bankBalance += cleared;
+      bankProgress = Math.min(100, bankProgress + (cleared / 100));
+      document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
+      document.getElementById('bank-progress').style.width = bankProgress + '%';
+      const affirmation = 'I release money conflicts and allow abundance to flow freely.';
+      alert(`✨ Conflicts cleared: -$${cleared}\nAffirmation: ${affirmation}`);
+      // Update history
+      const history = document.getElementById('bank-history');
+      const newTrans = `<div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span>- $${cleared} Conflict Cleared</span>
+        <span style="color:#0f0;">+${Math.round((cleared / bankBalance) * 100)}%</span>
+      </div>`;
+      history.insertAdjacentHTML('afterbegin', newTrans);
+      console.log('Conflicts cleared, bank updated');
+    } else {
+      alert('No conflicts to clear! Keep manifesting. 🌟');
+    }
+    // TODO: save to ClawVault JSON via API
   };
 });
 </script>
