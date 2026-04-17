@@ -108,10 +108,14 @@
       <span style="font-size:0.8rem;color:var(--text-dim);">2026年4月</span>
     </div>
     <div id="hw-body" style="color:var(--text-dim);line-height:1.8;font-size:0.95rem;">
-      <p style="margin-bottom:16px;">今月は「お金はエネルギーである」という宇宙の原則を体感するワークです。</p>
+      <p style="margin-bottom:16px;">今月は「お金はエネルギーである」という宇宙の原則を体感するワークです。完成でUniverse Bankにデポジット！</p>
+      <button onclick="completeWeek(1)" style="background:var(--gold);color:#0a0a1a;padding:8px 16px;border:none;border-radius:8px;margin-bottom:8px;font-weight:700;">✅ Week 1: Belief Clear (+$1,200 deposit)</button>
       <p style="margin-bottom:12px;"><strong style="color:var(--text);">Week 1:</strong> 自分の「お金のビリーフ（思い込み）」を3つ書き出す。「お金は◯◯だ」という文章を完成させてください。</p>
+      <button onclick="completeWeek(2)" style="background:var(--purple);color:#fff;padding:8px 16px;border:none;border-radius:8px;margin-bottom:8px;font-weight:700;">✅ Week 2: Affirmation (+$850 deposit)</button>
       <p style="margin-bottom:12px;"><strong style="color:var(--text);">Week 2:</strong> 毎朝目覚めたとき、「宇宙よ、今日も豊かさを受け取る準備ができています」と声に出して言う。</p>
+      <button onclick="completeWeek(3)" style="background:var(--gold);color:#0a0a1a;padding:8px 16px;border:none;border-radius:8px;margin-bottom:8px;font-weight:700;">✅ Week 3: Giving (+$1,000 deposit)</button>
       <p style="margin-bottom:12px;"><strong style="color:var(--text);">Week 3:</strong> 何か1つ、無条件で誰かに与える行動をする（お金、時間、才能）。宇宙への注文としての「先払い」。</p>
+      <button onclick="completeWeek(4)" style="background:var(--purple);color:#fff;padding:8px 16px;border:none;border-radius:8px;margin-bottom:8px;font-weight:700;">✅ Week 4: Sharing (+$1,500 deposit)</button>
       <p><strong style="color:var(--text);">Week 4:</strong> 今月のZoomセッションで、気づいたことを1〜2文で共有できるよう準備する。</p>
     </div>
   </div>
@@ -244,80 +248,160 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
   document.getElementById('bank-progress').style.width = bankProgress + '%';
 
+  // Full Gamification Prototype
+  let credits = parseInt(localStorage.getItem('mu_credits')) || 248;
+  let streak = parseInt(localStorage.getItem('mu_streak')) || 7;
+  let bankBalance = parseInt(localStorage.getItem('mu_bank')) || 12450;
+  let bankProgress = parseInt(localStorage.getItem('mu_progress')) || 65;
+  let conflicts = parseInt(localStorage.getItem('mu_conflicts')) || 450;
+  let leaderboard = JSON.parse(localStorage.getItem('mu_leaderboard')) || [
+    {name: 'Cosmic Warrior', credits: 1250},
+    {name: 'Joy Seeker', credits: 1180},
+    {name: 'Manifest Master', credits: 1050}
+  ];
+
+  // Update displays
+  document.getElementById('credit-balance').textContent = credits;
+  document.getElementById('streak-count').textContent = streak + ' 🔥'.repeat(Math.min(streak, 3));
+  document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
+  document.getElementById('bank-progress').style.width = bankProgress + '%';
+  document.getElementById('your-rank').textContent = credits + ' credits';
+  // Update leaderboard
+  const lbList = document.querySelectorAll('#leaderboard li');
+  leaderboard.slice(0,3).forEach((player, i) => {
+    if (lbList[i]) lbList[i].innerHTML = `<span>${i+1}. ${player.name}</span><span>${player.credits} credits</span>`;
+  });
+
+  // Daily Pull with variable ratio & intermittent reinforcement
   window.dailyPull = function() {
+    const actionsSinceLast = parseInt(localStorage.getItem('mu_actions')) || 0;
+    const pullChance = 0.7 - (actionsSinceLast * 0.1); // Variable ratio: harder after pulls
+    if (Math.random() > pullChance) {
+      alert('Near miss—do one more action to pull! So close...');
+      localStorage.setItem('mu_actions', actionsSinceLast + 1);
+      // Pulse animation on button
+      const btn = event.target;
+      btn.style.animation = 'pulse 0.5s';
+      return;
+    }
     const multiplier = Math.min(streak + 1, 5);
-    const reward = Math.floor((10 + Math.random() * 40) * multiplier);
+    const baseReward = 10 + Math.random() * 40;
+    const reward = Math.floor(baseReward * multiplier);
     credits += reward;
     streak += 1;
+    localStorage.setItem('mu_credits', credits);
+    localStorage.setItem('mu_streak', streak);
+    localStorage.setItem('mu_actions', 0);
     document.getElementById('credit-balance').textContent = credits;
-    document.getElementById('streak-count').textContent = streak + ' 🔥';
-    // Tie to bank: add to bank balance
-    bankBalance += reward * 10; // 1 credit = $10 envisioned
+    document.getElementById('streak-count').textContent = streak + ' 🔥'.repeat(Math.min(streak, 3));
+    // Bank tie-in
+    const bankAdd = reward * 10;
+    bankBalance += bankAdd;
     document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-    const msg = `🌟 Cosmic Alignment! +${reward} credits (x${multiplier} streak) - +$${reward * 10} to Universe Bank`;
+    localStorage.setItem('mu_bank', bankBalance);
+    // Dopamine feedback
+    const msg = `🎉 Cosmic Pull! +${reward} credits (x${multiplier} streak) - +$${bankAdd} Universe Bank! 😂 Joy Boy wins!`;
     alert(msg);
-    // TODO: save to ClawVault JSON via API
+    // Intermittent burst
+    if (Math.random() < 0.2) {
+      const burst = 25;
+      credits += burst;
+      bankBalance += burst * 10;
+      document.getElementById('credit-balance').textContent = credits;
+      document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
+      alert(`🚀 Random Burst! +${burst} credits +$${burst * 10} - Keep manifesting!`);
+      localStorage.setItem('mu_credits', credits);
+      localStorage.setItem('mu_bank', bankBalance);
+    }
+    // Save to ClawVault (simulate API)
+    fetch('/api/save', {method: 'POST', body: JSON.stringify({credits, streak, bankBalance, user: sessionStorage.getItem('mu_user_email')}), headers: {'Content-Type': 'application/json'}}).then(r => console.log('Saved'));
     console.log(msg);
   };
 
+  // Clear Conflicts with near-miss & affirmation
   window.clearConflicts = function() {
     if (conflicts > 0) {
-      const cleared = Math.floor(Math.random() * 200 + 100); // Random clear amount
+      const cleared = Math.floor(Math.random() * 200 + 100);
       conflicts = Math.max(0, conflicts - cleared);
       bankBalance += cleared;
       bankProgress = Math.min(100, bankProgress + (cleared / 100));
+      localStorage.setItem('mu_conflicts', conflicts);
+      localStorage.setItem('mu_bank', bankBalance);
+      localStorage.setItem('mu_progress', bankProgress);
       document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
       document.getElementById('bank-progress').style.width = bankProgress + '%';
-      // Near-miss pulse if close to 100%
       if (bankProgress > 90) {
         document.getElementById('bank-progress').style.animation = 'pulse 0.5s';
+        alert('Near full withdrawal—so close! Complete Week 4 to manifest!');
       }
       const affirmation = 'I release money conflicts and allow abundance to flow freely. 😂 Joy Boy laughs at the blocks!';
-      alert(`✨ Conflicts cleared: -$${cleared} (April Week 1 belief clear bonus!)\nAffirmation: ${affirmation}\n🌟 Cosmic Burst!`);
-      // Update history
+      alert(`✨ Cleared $${cleared} (April Week 1 bonus!)\nAffirmation: ${affirmation}`);
+      // Update history with April tie-in
       const history = document.getElementById('bank-history');
-      const newTrans = `<div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span>- $${cleared} Conflict Cleared (Week 2 affirmation)</span>
-        <span style="color:#0f0;">+${Math.round((cleared / bankBalance) * 100)}%</span>
-      </div>`;
-      history.insertAdjacentHTML('afterbegin', newTrans);
-      // Intermittent burst
-      if (Math.random() < 0.3) {
-        const burst = 25;
-        credits += burst;
-        bankBalance += burst * 10;
-        alert(`🎉 Random Cosmic Burst! +${burst} credits +$${burst * 10} to bank - Keep the flow!`);
-        document.getElementById('credit-balance').textContent = credits;
-        document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-      }
-      // Save to ClawVault
-      fetch('/api/save', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({bankBalance, conflicts, credits, streak, user: sessionStorage.getItem('mu_user_email')})
-      }).then(r => console.log('Saved to ClawVault'));
-      console.log('Conflicts cleared, bank updated');
+      history.insertAdjacentHTML('afterbegin', `<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span>- $${cleared} Conflict Cleared (Week 2 affirmation)</span><span style="color:#0f0;">+${Math.round((cleared / bankBalance) * 100)}%</span></div>`);
+      // Save
+      fetch('/api/save', {method: 'POST', body: JSON.stringify({conflicts, bankBalance, progress: bankProgress}), headers: {'Content-Type': 'application/json'}}).then(r => console.log('Saved'));
     } else {
-      alert('No conflicts to clear! Keep manifesting with Week 3 giving. 🌟');
+      alert('No conflicts! Try Week 3 giving for more deposits. 🌟');
     }
   };
 
-  // Add CSS for pulse animation
-  const style = document.createElement('style');
-  style.textContent = '@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }';
-  document.head.appendChild(style);
+  // April Theme Buttons (prototype for homework)
+  window.completeWeek = function(week) {
+    let add = 0;
+    switch (week) {
+      case 1: add = 1200; break; // Belief clear
+      case 2: add = 850; break; // Affirmation
+      case 3: add = 1000; break; // Giving
+      case 4: add = 1500; break; // Sharing
+    }
+    bankBalance += add;
+    credits += Math.floor(add / 10);
+    bankProgress = Math.min(100, bankProgress + 10);
+    document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
+    document.getElementById('credit-balance').textContent = credits;
+    document.getElementById('bank-progress').style.width = bankProgress + '%';
+    localStorage.setItem('mu_bank', bankBalance);
+    localStorage.setItem('mu_credits', credits);
+    localStorage.setItem('mu_progress', bankProgress);
+    alert(`✅ Week ${week} complete! +$${add} deposit to Universe Bank +${Math.floor(add / 10)} credits - Manifesting energy!`);
+    // Update history
+    document.getElementById('bank-history').insertAdjacentHTML('afterbegin', `<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span>+ $${add} Week ${week} Deposit</span><span style="color:#0f0;">+10%</span></div>`);
+    // Random burst
+    if (Math.random() < 0.4) {
+      const burst = 50;
+      bankBalance += burst;
+      alert(`🎊 Week burst! +$${burst} bonus - April energy flowing!`);
+      document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
+      localStorage.setItem('mu_bank', bankBalance);
+    }
+  };
 
-  // Loss aversion on streak reset (simulated daily check)
+  // Loss aversion & daily check
   const lastLogin = localStorage.getItem('lastLogin');
   const today = new Date().toDateString();
   if (lastLogin !== today) {
     if (streak > 1) {
-      alert('Streak broken—restart the flames! Log in daily to build the multiplier. 🔥😂');
+      alert('🔥 Streak broken—log in daily to keep the multiplier! Restart with Week 1 belief work. 😂');
       streak = 1;
+      localStorage.setItem('mu_streak', streak);
       document.getElementById('streak-count').textContent = streak + ' 🔥';
     }
     localStorage.setItem('lastLogin', today);
   }
+
+  // CSS for animations
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes confetti { 0% { transform: translateY(0) rotate(0); opacity:1; } 100% { transform: translateY(100vh) rotate(720deg); opacity:0; } }
+    .confetti { position: fixed; width: 10px; height: 10px; background: #ffd700; top: 0; left: 50%; animation: confetti 2s linear infinite; }
+  `;
+  document.head.appendChild(style);
+
+  // Leaderboard update (simple sort)
+  leaderboard.sort((a, b) => b.credits - a.credits);
+  localStorage.setItem('mu_leaderboard', JSON.stringify(leaderboard));
 });
 </script>
 </body>
