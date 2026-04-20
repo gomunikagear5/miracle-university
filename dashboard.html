@@ -3,406 +3,120 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ダッシュボード | ミラクル・ユニバーシティ</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="stars.js" defer></script>
+  <title>Miracle University - ダッシュボード</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body { font-family: sans-serif; background: linear-gradient(to bottom, #1e3c72, #2a5298); color: white; padding: 20px; }
+    #universe-bank { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; text-align: center; }
+    #bank-balance { font-size: 48px; font-weight: bold; }
+    #pull-to-refresh { background: gold; color: black; padding: 10px; border-radius: 5px; cursor: pointer; }
+    #infinite-scroll { height: 300px; overflow-y: scroll; }
+    #notifications { position: fixed; top: 10px; right: 10px; background: red; color: white; padding: 10px; display: none; }
+    .week-button { background: purple; color: white; padding: 10px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; }
+    .reward { animation: spin 1s; color: gold; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
 </head>
-<body><!-- v1.4 Force Full Deploy -->
-
-<!-- Header -->
-<header class="site-header">
-  <div class="container">
-    <span class="site-logo">🌌 ミラクル・ユニバーシティ</span>
-    <nav class="site-nav">
-      <span id="user-email" style="color:var(--text-dim);font-size:0.85rem;"></span>
-      <a href="community.html" style="margin-left:16px; background:linear-gradient(90deg,#f0c040,#c39bd3); color:#0a0a1a; padding:6px 18px; border-radius:9999px; font-weight:700; font-size:0.85rem; text-decoration:none;">🌌 ENTER CAMPUS</a>
-      <a href="#" id="signout-btn" style="margin-left:20px;color:var(--text-dim);font-size:0.85rem;">サインアウト</a>
-    </nav>
+<body>
+  <h1>Miracle University ダッシュボード</h1>
+  
+  <div id="universe-bank">
+    <h2>🌌 UNIVERSE BANK</h2>
+    <div id="bank-balance">12,450 ビジョン化</div>
+    <div id="pull-to-refresh" onclick="pullReward()">プルしてリフレッシュ - 変動報酬を獲得！</div>
+    <div id="recent-transactions"></div>
   </div>
-</header>
-
-<div style="position:relative;z-index:1;padding:40px 0 80px;">
-<div class="container">
-
-  <!-- Welcome with Universe Bank -->
-  <div style="margin-bottom:36px;" class="fade-in">
-    <p class="section-label">メンバーエリア</p>
-    <h1 style="font-size:2rem;margin-bottom:8px;">おかえりなさい ✦</h1>
-    <p style="font-size:0.95rem;">宇宙はあなたの到着を知っていました。</p>
-    <!-- Universe Bank Paper Account -->
-    <div class="card fade-in" style="animation-delay:0.1s;background:rgba(10,10,26,0.9);border:2px solid var(--gold);padding:16px;margin-bottom:20px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <span style="color:var(--gold);font-weight:700;font-size:1.1rem;">🌌 UNIVERSE BANK</span>
-        <span style="color:var(--gold);font-size:0.9rem;">Paper Account</span>
-      </div>
-      <div style="font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:8px;" id="bank-balance">$12,450</div>
-      <div style="font-size:0.8rem;color:var(--muted);margin-bottom:16px;">Envisioned real money after program completion</div>
-      <div style="height:8px;background:rgba(255,255,255,0.1);border-radius:4px;margin-bottom:16px;">
-        <div style="width:65%;height:100%;background:linear-gradient(90deg,var(--gold),#c39bd3);border-radius:4px;"></div>
-      </div>
-      <div style="font-size:0.85rem;color:var(--muted);">Progress to full withdrawal: 65%</div>
-      <div style="margin-top:16px;">
-        <div style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Recent Transactions</div>
-        <div style="font-size:0.85rem;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-            <span>+ $1,200 Course Completion</span>
-            <span style="color:#0f0;">+12%</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-            <span>- $450 Money Conflict Fee</span>
-            <span style="color:#f66;">-4%</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;">
-            <span>+ $850 Giving Action (Ordering)</span>
-            <span style="color:#0f0;">+8%</span>
-          </div>
-        </div>
-      </div>
-      <button onclick="clearConflicts()" style="margin-top:16px;width:100%;background:var(--gold);color:#0a0a1a;padding:10px;border:none;border-radius:8px;font-weight:700;">Clear Conflicts & Manifest</button>
-    </div>
-    <div style="display:flex;gap:20px;align-items:center;">
-      <button onclick="dailyPull()" style="background:linear-gradient(135deg,#f0c040,#c39bd3);color:#0a0a1a;padding:8px 20px;border-radius:9999px;font-weight:700;border:none;cursor:pointer;flex:1;">🌟 Daily Cosmic Pull</button>
-      <div style="background:rgba(255,255,255,0.05);padding:8px 16px;border-radius:12px;min-width:80px;text-align:center;">
-        <span style="color:#ffcc00;font-size:0.8rem;">Streak</span>
-        <span id="streak-count" style="font-size:1.5rem;font-weight:800;color:#ffcc00;display:block;">7 🔥</span>
-      </div>
-    </div>
+  
+  <h2>今月のテーマ: お金はエネルギー</h2>
+  <p>今月は「お金はエネルギー」をテーマに学びます。宿題を完了してUniverse Bankにデポジット！</p>
+  
+  <h2>ウィークリー課題</h2>
+  <div id="week-buttons">
+    <button class="week-button" onclick="completeWeek(1)">Week 1: エネルギー理解</button>
+    <button class="week-button" onclick="completeWeek(2)">Week 2: マネーフロー</button>
+    <button class="week-button" onclick="completeWeek(3)">Week 3: ビジョン化</button>
+    <button class="week-button" onclick="completeWeek(4)">Week 4: 統合</button>
   </div>
-
-  <!-- Cohort + Zoom -->
-  <div class="grid-2" style="margin-bottom:28px;">
-
-    <!-- Cohort Info -->
-    <div class="card fade-in" style="animation-delay:0.1s">
-      <span class="badge badge-gold" style="margin-bottom:12px;display:inline-block;">📅 現在のコホート</span>
-      <h3 id="cohort-name" style="margin-bottom:4px;">第1期 — 2026年1月〜6月</h3>
-      <p style="font-size:0.85rem;margin-bottom:16px;" id="cohort-dates">January–June 2026</p>
-      <div style="font-size:0.85rem;color:var(--text-dim);">
-        <span>👥 参加メンバー:</span>
-        <span style="color:var(--gold);font-weight:600;" id="cohort-count"> 247 / 300名</span>
-      </div>
-    </div>
-
-    <!-- Zoom CTA -->
-    <div class="card fade-in" style="animation-delay:0.2s;text-align:center;">
-      <span class="badge badge-purple" style="margin-bottom:12px;display:inline-block;">🎥 次のZoomセッション</span>
-      <div class="countdown" id="countdown-timer">
-        <div class="countdown-unit"><span class="countdown-num" id="cd-days">--</span><div class="countdown-label">日</div></div>
-        <div class="countdown-unit"><span class="countdown-num" id="cd-hours">--</span><div class="countdown-label">時間</div></div>
-        <div class="countdown-unit"><span class="countdown-num" id="cd-mins">--</span><div class="countdown-label">分</div></div>
-        <div class="countdown-unit"><span class="countdown-num" id="cd-secs">--</span><div class="countdown-label">秒</div></div>
-      </div>
-      <p style="font-size:0.8rem;margin-bottom:16px;" id="zoom-date-label">2026年5月1日（金）20:00 JST</p>
-      <a id="zoom-link-btn" href="#" target="_blank" class="btn btn-gold" style="width:100%;">🎥 Zoomに参加する</a>
-    </div>
-
-  </div>
-
-  <!-- Homework -->
-  <div class="card fade-in" style="animation-delay:0.3s;margin-bottom:28px;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
-      <div>
-        <span class="badge badge-gold" style="margin-bottom:8px;display:inline-block;">📝 今月のホームワーク</span>
-        <h3 id="hw-title">4月のテーマ：お金との関係を再設計する</h3>
-      </div>
-      <span style="font-size:0.8rem;color:var(--text-dim);">2026年4月</span>
-    </div>
-    <div id="hw-body" style="color:var(--text-dim);line-height:1.8;font-size:0.95rem;">
-      <p style="margin-bottom:16px;">今月は「お金はエネルギーである」という宇宙の原則を体感するワークです。完成でUniverse Bankにデポジット！</p>
-      <button onclick="completeWeek(1)" style="background:var(--gold);color:#0a0a1a;padding:8px 16px;border:none;border-radius:8px;margin-bottom:8px;font-weight:700;">✅ Week 1: Belief Clear (+$1,200 deposit)</button>
-      <p style="margin-bottom:12px;"><strong style="color:var(--text);">Week 1:</strong> 自分の「お金のビリーフ（思い込み）」を3つ書き出す。「お金は◯◯だ」という文章を完成させてください。</p>
-      <button onclick="completeWeek(2)" style="background:var(--purple);color:#fff;padding:8px 16px;border:none;border-radius:8px;margin-bottom:8px;font-weight:700;">✅ Week 2: Affirmation (+$850 deposit)</button>
-      <p style="margin-bottom:12px;"><strong style="color:var(--text);">Week 2:</strong> 毎朝目覚めたとき、「宇宙よ、今日も豊かさを受け取る準備ができています」と声に出して言う。</p>
-      <button onclick="completeWeek(3)" style="background:var(--gold);color:#0a0a1a;padding:8px 16px;border:none;border-radius:8px;margin-bottom:8px;font-weight:700;">✅ Week 3: Giving (+$1,000 deposit)</button>
-      <p style="margin-bottom:12px;"><strong style="color:var(--text);">Week 3:</strong> 何か1つ、無条件で誰かに与える行動をする（お金、時間、才能）。宇宙への注文としての「先払い」。</p>
-      <button onclick="completeWeek(4)" style="background:var(--purple);color:#fff;padding:8px 16px;border:none;border-radius:8px;margin-bottom:8px;font-weight:700;">✅ Week 4: Sharing (+$1,500 deposit)</button>
-      <p><strong style="color:var(--text);">Week 4:</strong> 今月のZoomセッションで、気づいたことを1〜2文で共有できるよう準備する。</p>
-    </div>
-  </div>
-
-  <!-- Archive & Yin/Yang -->
-  <div class="grid-2" style="margin-bottom:28px;">
-
-    <!-- Homework Archive -->
-    <div class="card fade-in" style="animation-delay:0.4s;">
-      <h3 style="margin-bottom:20px;">📚 過去のホームワーク</h3>
-      <div class="accordion-item">
-        <div class="accordion-header">3月：マトリックスの罠を外す<span class="chevron">▼</span></div>
-        <div class="accordion-body">「でも」「だって」という言葉が願望実現を阻んでいることに気づくワーク。1週間、「でも」を使うたびにメモをつける。</div>
-      </div>
-      <div class="accordion-item">
-        <div class="accordion-header">2月：B-Lifeを設計する<span class="chevron">▼</span></div>
-        <div class="accordion-body">あなたの「魂が選んだ人生（B-Life）」を具体的にイメージして書き出す。5年後の日常を一人称・現在形で描く。</div>
-      </div>
-      <div class="accordion-item">
-        <div class="accordion-header">1月：Yin & Yangの本質を知る<span class="chevron">▼</span></div>
-        <div class="accordion-body">自分の支配的なYin（受容・流れ）またはYang（決断・笑い）の性質を観察し、日記に記録。グループプログラムではここから始めます。</div>
-      </div>
-    </div>
-
-    <!-- Digital Nao Beta Signup -->
-    <div class="card fade-in" style="animation-delay:0.5s;text-align:center;">
-      <div style="font-size:3rem;margin-bottom:12px;">🌌</div>
-      <h3 style="margin-bottom:8px;">Digital Nao Beta</h3>
-      <p style="font-size:0.9rem;margin:0 auto 20px;max-width:none;">Naoの教えを基にしたAIと24/7チャット。ベータテストで宇宙の智慧に直接アクセス。</p>
-      <form class="waitlist-form" onsubmit="submitDigitalNaoBeta(event)" style="max-width:280px;margin:0 auto;">
-        <input type="text" id="beta-name" placeholder="お名前" required style="margin-bottom:8px;" />
-        <input type="email" id="beta-email" placeholder="メールアドレス" required />
-        <button type="submit" class="btn btn-purple" style="width:100%;margin-top:12px;">🌟 ベータ参加登録</button>
-      </form>
-    </div>
-
-  </div>
-
-  <!-- Announcements -->
-  <div class="card fade-in" style="animation-delay:0.6s;">
-    <h3 style="margin-bottom:20px;">📣 お知らせ</h3>
-    <div style="border-left:3px solid var(--gold);padding-left:16px;margin-bottom:16px;">
-      <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:4px;">2026年4月1日</div>
-      <p style="font-size:0.9rem;max-width:none;margin:0;">5月のZoomセッションは5月1日（金）20:00 JSTに決定しました。カレンダーへの登録をお忘れなく。</p>
-    </div>
-    <div style="border-left:3px solid var(--purple);padding-left:16px;">
-      <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:4px;">2026年3月15日</div>
-      <p style="font-size:0.9rem;max-width:none;margin:0;">第2期（7月〜12月）の事前登録が始まりました。現メンバーは優先申し込み可能です。</p>
-    </div>
-  </div>
-
-</div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  initStars(150);
-
-  // Auth check
-  if (sessionStorage.getItem('mu_logged_in') !== 'true') {
-    window.location.href = 'login.html';
-    return;
-  }
-
-  // Show email
-  const email = sessionStorage.getItem('mu_user_email') || 'member@test.com';
-  document.getElementById('user-email').textContent = email;
-
-  // Sign out
-  document.getElementById('signout-btn').addEventListener('click', (e) => {
-    e.preventDefault();
-    sessionStorage.removeItem('mu_logged_in');
-    sessionStorage.removeItem('mu_user_email');
-    window.location.href = 'login.html';
-  });
-
-  // Load Zoom link from admin localStorage
-  const zoomLink = localStorage.getItem('mu_zoom_link') || 'https://zoom.us/j/placeholder';
-  document.getElementById('zoom-link-btn').href = zoomLink;
-
-  // Load homework from admin
-  const hwStored = localStorage.getItem('mu_homework');
-  if (hwStored) {
-    document.getElementById('hw-body').innerHTML = hwStored;
-  }
-
-  // Load cohort info
-  const cohortName = localStorage.getItem('mu_cohort_name');
-  if (cohortName) document.getElementById('cohort-name').textContent = cohortName;
-
-  // Accordion
-  document.querySelectorAll('.accordion-header').forEach(h => {
-    h.addEventListener('click', () => {
-      const item = h.parentElement;
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    });
-  });
-
-  // Countdown to 2026-05-01 20:00 JST (UTC+9 = 11:00 UTC)
-  const target = new Date('2026-05-01T11:00:00Z');
-  function updateCountdown() {
-    const now = new Date();
-    const diff = target - now;
-    if (diff <= 0) {
-      document.getElementById('countdown-timer').innerHTML = '<div style="color:var(--gold);font-size:1.2rem;font-weight:600;">🎉 セッション開始！</div>';
-      return;
+  
+  <h2>無限スクロールフィード - ランダムインスピレーション</h2>
+  <div id="infinite-scroll" onscroll="checkScroll()"></div>
+  
+  <div id="notifications">新しい報酬が利用可能！チェックして！</div>
+  
+  <h2>リーダーボード</h2>
+  <ul id="leaderboard"></ul>
+  
+  <script>
+    let bankBalance = parseInt(localStorage.getItem('bankBalance')) || 12450;
+    let streak = parseInt(localStorage.getItem('streak')) || 7;
+    let notificationsEnabled = true;
+    
+    function updateBank() {
+      document.getElementById('bank-balance').textContent = bankBalance.toLocaleString() + ' ビジョン化';
+      localStorage.setItem('bankBalance', bankBalance);
     }
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-    document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-    document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-
-  // Gamification - Cosmic Credits and Streak
-  let credits = 248;
-  let streak = 7;
-  let bankBalance = 12450;
-  let bankProgress = 65;
-  let conflicts = 450; // Current conflict fee
-  document.getElementById('credit-balance').textContent = credits;
-  document.getElementById('streak-count').textContent = streak + ' 🔥';
-  document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-  document.getElementById('bank-progress').style.width = bankProgress + '%';
-
-  // Full Gamification Prototype
-  let credits = parseInt(localStorage.getItem('mu_credits')) || 248;
-  let streak = parseInt(localStorage.getItem('mu_streak')) || 7;
-  let bankBalance = parseInt(localStorage.getItem('mu_bank')) || 12450;
-  let bankProgress = parseInt(localStorage.getItem('mu_progress')) || 65;
-  let conflicts = parseInt(localStorage.getItem('mu_conflicts')) || 450;
-  let leaderboard = JSON.parse(localStorage.getItem('mu_leaderboard')) || [
-    {name: 'Cosmic Warrior', credits: 1250},
-    {name: 'Joy Seeker', credits: 1180},
-    {name: 'Manifest Master', credits: 1050}
-  ];
-
-  // Update displays
-  document.getElementById('credit-balance').textContent = credits;
-  document.getElementById('streak-count').textContent = streak + ' 🔥'.repeat(Math.min(streak, 3));
-  document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-  document.getElementById('bank-progress').style.width = bankProgress + '%';
-  document.getElementById('your-rank').textContent = credits + ' credits';
-  // Update leaderboard
-  const lbList = document.querySelectorAll('#leaderboard li');
-  leaderboard.slice(0,3).forEach((player, i) => {
-    if (lbList[i]) lbList[i].innerHTML = `<span>${i+1}. ${player.name}</span><span>${player.credits} credits</span>`;
-  });
-
-  // Daily Pull with variable ratio & intermittent reinforcement
-  window.dailyPull = function() {
-    const actionsSinceLast = parseInt(localStorage.getItem('mu_actions')) || 0;
-    const pullChance = 0.7 - (actionsSinceLast * 0.1); // Variable ratio: harder after pulls
-    if (Math.random() > pullChance) {
-      alert('Near miss—do one more action to pull! So close...');
-      localStorage.setItem('mu_actions', actionsSinceLast + 1);
-      // Pulse animation on button
-      const btn = event.target;
-      btn.style.animation = 'pulse 0.5s';
-      return;
+    
+    function pullReward() {
+      const rewards = [0, 100, 500, 1000, -200]; // 変動報酬: 勝ち/負け/ゼロ
+      const reward = rewards[Math.floor(Math.random() * rewards.length)];
+      bankBalance += reward;
+      updateBank();
+      const trans = document.createElement('span');
+      trans.textContent = (reward > 0 ? '+' : '') + reward + ' プル報酬';
+      trans.classList.add('reward');
+      document.getElementById('recent-transactions').prepend(trans);
+      if (reward > 0) streak++; else streak = 0;
+      localStorage.setItem('streak', streak);
+      showNotification('プル報酬: ' + reward + ' ビジョン化！');
     }
-    const multiplier = Math.min(streak + 1, 5);
-    const baseReward = 10 + Math.random() * 40;
-    const reward = Math.floor(baseReward * multiplier);
-    credits += reward;
-    streak += 1;
-    localStorage.setItem('mu_credits', credits);
-    localStorage.setItem('mu_streak', streak);
-    localStorage.setItem('mu_actions', 0);
-    document.getElementById('credit-balance').textContent = credits;
-    document.getElementById('streak-count').textContent = streak + ' 🔥'.repeat(Math.min(streak, 3));
-    // Bank tie-in
-    const bankAdd = reward * 10;
-    bankBalance += bankAdd;
-    document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-    localStorage.setItem('mu_bank', bankBalance);
-    // Dopamine feedback
-    const msg = `🎉 Cosmic Pull! +${reward} credits (x${multiplier} streak) - +$${bankAdd} Universe Bank! 😂 Joy Boy wins!`;
-    alert(msg);
-    // Intermittent burst
-    if (Math.random() < 0.2) {
-      const burst = 25;
-      credits += burst;
-      bankBalance += burst * 10;
-      document.getElementById('credit-balance').textContent = credits;
-      document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-      alert(`🚀 Random Burst! +${burst} credits +$${burst * 10} - Keep manifesting!`);
-      localStorage.setItem('mu_credits', credits);
-      localStorage.setItem('mu_bank', bankBalance);
+    
+    function completeWeek(week) {
+      bankBalance += 1200;
+      updateBank();
+      alert('Week ' + week + ' 完了！ +1200 ビジョン化');
     }
-    // Save to ClawVault (simulate API)
-    fetch('/api/save', {method: 'POST', body: JSON.stringify({credits, streak, bankBalance, user: sessionStorage.getItem('mu_user_email')}), headers: {'Content-Type': 'application/json'}}).then(r => console.log('Saved'));
-    console.log(msg);
-  };
-
-  // Clear Conflicts with near-miss & affirmation
-  window.clearConflicts = function() {
-    if (conflicts > 0) {
-      const cleared = Math.floor(Math.random() * 200 + 100);
-      conflicts = Math.max(0, conflicts - cleared);
-      bankBalance += cleared;
-      bankProgress = Math.min(100, bankProgress + (cleared / 100));
-      localStorage.setItem('mu_conflicts', conflicts);
-      localStorage.setItem('mu_bank', bankBalance);
-      localStorage.setItem('mu_progress', bankProgress);
-      document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-      document.getElementById('bank-progress').style.width = bankProgress + '%';
-      if (bankProgress > 90) {
-        document.getElementById('bank-progress').style.animation = 'pulse 0.5s';
-        alert('Near full withdrawal—so close! Complete Week 4 to manifest!');
+    
+    function checkScroll() {
+      const scroll = document.getElementById('infinite-scroll');
+      if (scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 20) {
+        addRandomContent();
       }
-      const affirmation = 'I release money conflicts and allow abundance to flow freely. 😂 Joy Boy laughs at the blocks!';
-      alert(`✨ Cleared $${cleared} (April Week 1 bonus!)\nAffirmation: ${affirmation}`);
-      // Update history with April tie-in
-      const history = document.getElementById('bank-history');
-      history.insertAdjacentHTML('afterbegin', `<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span>- $${cleared} Conflict Cleared (Week 2 affirmation)</span><span style="color:#0f0;">+${Math.round((cleared / bankBalance) * 100)}%</span></div>`);
-      // Save
-      fetch('/api/save', {method: 'POST', body: JSON.stringify({conflicts, bankBalance, progress: bankProgress}), headers: {'Content-Type': 'application/json'}}).then(r => console.log('Saved'));
-    } else {
-      alert('No conflicts! Try Week 3 giving for more deposits. 🌟');
     }
-  };
-
-  // April Theme Buttons (prototype for homework)
-  window.completeWeek = function(week) {
-    let add = 0;
-    switch (week) {
-      case 1: add = 1200; break; // Belief clear
-      case 2: add = 850; break; // Affirmation
-      case 3: add = 1000; break; // Giving
-      case 4: add = 1500; break; // Sharing
+    
+    function addRandomContent() {
+      const contents = ['新しいインスピレーション: お金は流れるエネルギー', 'ランダム報酬: +50 ビジョン化', 'モチベーション引用: "ビジョンは現実を創る"', '紛争チェック: -100 ビジョン化'];
+      const item = document.createElement('div');
+      item.textContent = contents[Math.floor(Math.random() * contents.length)];
+      document.getElementById('infinite-scroll').appendChild(item);
+      if (Math.random() < 0.2) { // 間欠報酬
+        bankBalance += 100;
+        updateBank();
+        showNotification('スクロール報酬: +100 ビジョン化！');
+      }
     }
-    bankBalance += add;
-    credits += Math.floor(add / 10);
-    bankProgress = Math.min(100, bankProgress + 10);
-    document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-    document.getElementById('credit-balance').textContent = credits;
-    document.getElementById('bank-progress').style.width = bankProgress + '%';
-    localStorage.setItem('mu_bank', bankBalance);
-    localStorage.setItem('mu_credits', credits);
-    localStorage.setItem('mu_progress', bankProgress);
-    alert(`✅ Week ${week} complete! +$${add} deposit to Universe Bank +${Math.floor(add / 10)} credits - Manifesting energy!`);
-    // Update history
-    document.getElementById('bank-history').insertAdjacentHTML('afterbegin', `<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span>+ $${add} Week ${week} Deposit</span><span style="color:#0f0;">+10%</span></div>`);
-    // Random burst
-    if (Math.random() < 0.4) {
-      const burst = 50;
-      bankBalance += burst;
-      alert(`🎊 Week burst! +$${burst} bonus - April energy flowing!`);
-      document.getElementById('bank-balance').textContent = '$' + bankBalance.toLocaleString();
-      localStorage.setItem('mu_bank', bankBalance);
+    
+    function showNotification(msg) {
+      if (notificationsEnabled) {
+        const notif = document.getElementById('notifications');
+        notif.textContent = msg;
+        notif.style.display = 'block';
+        setTimeout(() => notif.style.display = 'none', 5000);
+      }
     }
-  };
-
-  // Loss aversion & daily check
-  const lastLogin = localStorage.getItem('lastLogin');
-  const today = new Date().toDateString();
-  if (lastLogin !== today) {
-    if (streak > 1) {
-      alert('🔥 Streak broken—log in daily to keep the multiplier! Restart with Week 1 belief work. 😂');
-      streak = 1;
-      localStorage.setItem('mu_streak', streak);
-      document.getElementById('streak-count').textContent = streak + ' 🔥';
+    
+    // 初期ロード
+    updateBank();
+    for (let i = 0; i < 10; i++) addRandomContent();
+    
+    // PWAサービスワーカー
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js');
     }
-    localStorage.setItem('lastLogin', today);
-  }
-
-  // CSS for animations
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    @keyframes confetti { 0% { transform: translateY(0) rotate(0); opacity:1; } 100% { transform: translateY(100vh) rotate(720deg); opacity:0; } }
-    .confetti { position: fixed; width: 10px; height: 10px; background: #ffd700; top: 0; left: 50%; animation: confetti 2s linear infinite; }
-  `;
-  document.head.appendChild(style);
-
-  // Leaderboard update (simple sort)
-  leaderboard.sort((a, b) => b.credits - a.credits);
-  localStorage.setItem('mu_leaderboard', JSON.stringify(leaderboard));
-});
-</script>
+    
+    // プッシュ通知 (オプション)
+    Notification.requestPermission().then(perm => {
+      if (perm === 'granted') notificationsEnabled = true;
+    });
+  </script>
 </body>
 </html>
