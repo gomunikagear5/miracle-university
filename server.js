@@ -2,6 +2,18 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
+const { Server } = require('socket.io');
+const messagesFile = './chat-messages.json';
+const loadMessages = () => {
+  if (fs.existsSync(messagesFile)) {
+    return JSON.parse(fs.readFileSync(messagesFile, 'utf8'));
+  }
+  return [];
+};
+const saveMessages = (messages) => {
+  fs.writeFileSync(messagesFile, JSON.stringify(messages, null, 2));
+};
+let messages = loadMessages();
 
 const MODEL = 'digital-nao';
 const OLLAMA_URL = 'http://localhost:11434/api/chat';
@@ -106,6 +118,52 @@ const server = http.createServer(async (req, res) => {
 });
 
 const PORT = 3001;
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  console.log('User connected');
+
+  socket.on('login', (user) => {
+    socket.user = user;
+    socket.emit('logged in', user);
+  });
+
+  socket.on('get messages', (room) => {
+    socket.emit('messages', messages.filter(m => m.room === room));
+  });
+
+  socket.on('join', (room) => {
+    socket.join(room);
+    console.log(`User joined room: ${room}`);
+  });
+
+  socket.on('chat message', (msg) => {
+    if (!socket.user) {
+      socket.emit('unauthorized');
+      return;
+    }
+    msg.user = socket.user;
+    msg.timestamp = new Date().toISOString();
+    msg.id = Date.now().toString();
+    if (msg.parentId) {
+      const parent = messages.find(m => m.id === msg.parentId && m.room === msg.room);
+      if (parent) {
+        if (!parent.replies) parent.replies = [];
+        parent.replies.push(msg);
+      }
+    } else {
+      messages.push(msg);
+    }
+    saveMessages(messages);
+    console.log('Message:', msg);
+    io.to(msg.room).emit('chat message', msg);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
 server.listen(PORT, () => {
   console.log(`Digital Nao Local API running on http://localhost:${PORT}`);
   console.log('Using local Ollama model "digital-nao" with full Nao persona.');
