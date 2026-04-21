@@ -1,122 +1,131 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Miracle University - ダッシュボード</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    body { font-family: sans-serif; background: linear-gradient(to bottom, #1e3c72, #2a5298); color: white; padding: 20px; }
-    #universe-bank { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; text-align: center; }
-    #bank-balance { font-size: 48px; font-weight: bold; }
-    #pull-to-refresh { background: gold; color: black; padding: 10px; border-radius: 5px; cursor: pointer; }
-    #infinite-scroll { height: 300px; overflow-y: scroll; }
-    #notifications { position: fixed; top: 10px; right: 10px; background: red; color: white; padding: 10px; display: none; }
-    .week-button { background: purple; color: white; padding: 10px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; }
-    .reward { animation: spin 1s; color: gold; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miracle University - Dashboard</title>
+    <style>
+        body { font-family: 'Helvetica Neue', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: #e0f2fe; margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #a5b4fc; text-align: center; font-size: 2.5em; text-shadow: 0 0 20px #6366f1; }
+        .bank { background: rgba(165, 180, 252, 0.1); border: 2px solid #6366f1; border-radius: 16px; padding: 20px; margin: 20px 0; text-align: center; box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
+        .balance { font-size: 3em; font-weight: bold; color: #c4d0ff; margin: 10px 0; }
+        button { background: #6366f1; color: white; border: none; padding: 12px 24px; margin: 8px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        button:hover { background: #818cf8; transform: scale(1.05); box-shadow: 0 0 15px #a5b4fc; }
+        .feed { max-height: 400px; overflow-y: auto; background: rgba(165, 180, 252, 0.05); padding: 15px; border-radius: 12px; margin: 20px 0; }
+        .item { background: rgba(255,255,255,0.05); padding: 12px; margin: 8px 0; border-radius: 8px; }
+        .reward { color: #34d399; font-weight: bold; animation: pop 0.5s; }
+        @keyframes pop { 0% { transform: scale(0.8); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .leaderboard { background: rgba(165, 180, 252, 0.1); padding: 15px; border-radius: 12px; }
+    </style>
 </head>
 <body>
-  <h1>Miracle University ダッシュボード</h1>
-  
-  <div id="universe-bank">
-    <h2>🌌 UNIVERSE BANK</h2>
-    <div id="bank-balance">12,450 ビジョン化</div>
-    <div id="pull-to-refresh" onclick="pullReward()">プルしてリフレッシュ - 変動報酬を獲得！</div>
-    <div id="recent-transactions"></div>
-  </div>
-  
-  <h2>今月のテーマ: お金はエネルギー</h2>
-  <p>今月は「お金はエネルギー」をテーマに学びます。宿題を完了してUniverse Bankにデポジット！</p>
-  
-  <h2>ウィークリー課題</h2>
-  <div id="week-buttons">
-    <button class="week-button" onclick="completeWeek(1)">Week 1: エネルギー理解</button>
-    <button class="week-button" onclick="completeWeek(2)">Week 2: マネーフロー</button>
-    <button class="week-button" onclick="completeWeek(3)">Week 3: ビジョン化</button>
-    <button class="week-button" onclick="completeWeek(4)">Week 4: 統合</button>
-  </div>
-  
-  <h2>無限スクロールフィード - ランダムインスピレーション</h2>
-  <div id="infinite-scroll" onscroll="checkScroll()"></div>
-  
-  <div id="notifications">新しい報酬が利用可能！チェックして！</div>
-  
-  <h2>リーダーボード</h2>
-  <ul id="leaderboard"></ul>
-  
-  <script>
-    let bankBalance = parseInt(localStorage.getItem('bankBalance')) || 12450;
-    let streak = parseInt(localStorage.getItem('streak')) || 7;
-    let notificationsEnabled = true;
+    <div class="container">
+        <h1>🌌 Miracle University</h1>
+        <div class="bank">
+            <h2>🌟 UNIVERSE BANK</h2>
+            <div class="balance" id="balance">12450 ビジョン化</div>
+            <button onclick="pullRefresh()">Pull to Refresh - Variable Reward!</button>
+            <div id="transactions" style="margin-top:15px; min-height:60px;"></div>
+        </div>
+        
+        <h2>Weekly Challenges</h2>
+        <button onclick="completeWeek(1)">Week 1: Energy Belief</button>
+        <button onclick="completeWeek(2)">Week 2: Morning Affirmation</button>
+        <button onclick="completeWeek(3)">Week 3: Giving Action</button>
+        <button onclick="completeWeek(4)">Week 4: Share Insight</button>
+        
+        <h2>Infinite Scroll Feed - Motivational Cosmic Rewards</h2>
+        <div class="feed" id="feed" onscroll="if (this.scrollTop + this.clientHeight >= this.scrollHeight - 50) addFeedItem();"></div>
+        
+        <h2>Leaderboard</h2>
+        <div class="leaderboard" id="leaderboard"></div>
+        
+        <p style="text-align:center; margin-top:30px; opacity:0.7;">Prototype v2.8 - Slot Machine Engagement for Manifestation Mastery</p>
+    </div>
     
-    function updateBank() {
-      document.getElementById('bank-balance').textContent = bankBalance.toLocaleString() + ' ビジョン化';
-      localStorage.setItem('bankBalance', bankBalance);
-    }
-    
-    function pullReward() {
-      const rewards = [0, 100, 500, 1000, -200]; // 変動報酬: 勝ち/負け/ゼロ
-      const reward = rewards[Math.floor(Math.random() * rewards.length)];
-      bankBalance += reward;
-      updateBank();
-      const trans = document.createElement('span');
-      trans.textContent = (reward > 0 ? '+' : '') + reward + ' プル報酬';
-      trans.classList.add('reward');
-      document.getElementById('recent-transactions').prepend(trans);
-      if (reward > 0) streak++; else streak = 0;
-      localStorage.setItem('streak', streak);
-      showNotification('プル報酬: ' + reward + ' ビジョン化！');
-    }
-    
-    function completeWeek(week) {
-      bankBalance += 1200;
-      updateBank();
-      alert('Week ' + week + ' 完了！ +1200 ビジョン化');
-    }
-    
-    function checkScroll() {
-      const scroll = document.getElementById('infinite-scroll');
-      if (scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 20) {
-        addRandomContent();
-      }
-    }
-    
-    function addRandomContent() {
-      const contents = ['新しいインスピレーション: お金は流れるエネルギー', 'ランダム報酬: +50 ビジョン化', 'モチベーション引用: "ビジョンは現実を創る"', '紛争チェック: -100 ビジョン化'];
-      const item = document.createElement('div');
-      item.textContent = contents[Math.floor(Math.random() * contents.length)];
-      document.getElementById('infinite-scroll').appendChild(item);
-      if (Math.random() < 0.2) { // 間欠報酬
-        bankBalance += 100;
-        updateBank();
-        showNotification('スクロール報酬: +100 ビジョン化！');
-      }
-    }
-    
-    function showNotification(msg) {
-      if (notificationsEnabled) {
-        const notif = document.getElementById('notifications');
-        notif.textContent = msg;
-        notif.style.display = 'block';
-        setTimeout(() => notif.style.display = 'none', 5000);
-      }
-    }
-    
-    // 初期ロード
-    updateBank();
-    for (let i = 0; i < 10; i++) addRandomContent();
-    
-    // PWAサービスワーカー
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js');
-    }
-    
-    // プッシュ通知 (オプション)
-    Notification.requestPermission().then(perm => {
-      if (perm === 'granted') notificationsEnabled = true;
-    });
-  </script>
+    <script>
+        let balance = 12450;
+        const transactions = document.getElementById('transactions');
+        const feed = document.getElementById('feed');
+        const leaderboard = document.getElementById('leaderboard');
+        
+        function updateBalance() {
+            document.getElementById('balance').textContent = balance.toLocaleString() + ' ビジョン化';
+        }
+        
+        function pullRefresh() {
+            const rewards = [0, 250, 750, 1500, -300];
+            const reward = rewards[Math.floor(Math.random() * rewards.length)];
+            balance += reward;
+            updateBalance();
+            
+            const tx = document.createElement('div');
+            tx.className = 'reward';
+            tx.textContent = reward >= 0 ? `+${reward} Cosmic Reward! 🎉` : `${reward} Conflict Release`;
+            transactions.prepend(tx);
+            setTimeout(() => tx.remove(), 5000);
+            
+            if (Math.random() > 0.7) showNotification('Big manifestation hit!');
+        }
+        
+        function completeWeek(week) {
+            balance += 1200;
+            updateBalance();
+            alert(`Week ${week} completed! +1200 ビジョン化 added. Keep the energy flowing!`);
+        }
+        
+        function addFeedItem() {
+            const items = [
+                "The universe rewards bold orders. What are you calling in today?",
+                "Release the 'but' – pure desire aligns parallels instantly. 🧡",
+                "Joy Boy laugh shatters old chains. Manifest with laughter!",
+                "YAP lightworkers: Your imagination becomes reality faster here.",
+                "Sun God energy: Decide, laugh, flow – the metaverse listens."
+            ];
+            const item = document.createElement('div');
+            item.className = 'item';
+            item.innerHTML = items[Math.floor(Math.random() * items.length)];
+            feed.appendChild(item);
+            feed.scrollTop = feed.scrollHeight;
+            
+            if (Math.random() > 0.8) {
+                balance += 350;
+                updateBalance();
+                const r = document.createElement('div');
+                r.className = 'reward';
+                r.textContent = '+350 Intermittent Reward!';
+                feed.appendChild(r);
+            }
+        }
+        
+        function showNotification(msg) {
+            const notif = document.createElement('div');
+            notif.style.cssText = 'position:fixed; top:20px; right:20px; background:#22c55e; color:black; padding:15px; border-radius:8px; box-shadow:0 0 20px #86efac; z-index:100;';
+            notif.textContent = msg;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 4000);
+        }
+        
+        function updateLeaderboard() {
+            leaderboard.innerHTML = `
+                <ol style="padding-left:20px;">
+                    <li>1. Nao Stanton - 45,820 ビジョン化</li>
+                    <li>2. You - 12,450 ビジョン化 (climbing!)</li>
+                    <li>3. Joy Boy Collective - 9,750 ビジョン化</li>
+                </ol>
+            `;
+        }
+        
+        // Init
+        updateBalance();
+        for (let i = 0; i < 8; i++) addFeedItem();
+        updateLeaderboard();
+        
+        // Keyboard pull (for fun)
+        document.addEventListener('keydown', e => { if (e.key === 'r') pullRefresh(); });
+        
+        console.log('%cMiracle University Prototype v2.8 ready. Pull for joy! 🧡☀️', 'color:#a5b4fc; font-size:14px');
+    </script>
 </body>
 </html>
